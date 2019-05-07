@@ -1,0 +1,81 @@
+{
+    "name": "electro-reactro",
+    "version": "0.1.0",
+    "private": true,
+    "author": "Alberto",
+    "description": "starter boilerplate for electron apps with react",
+    "devDependencies": {
+        "electron": "^1.4.14",
+        "electron-builder": "^20.15.1",
+        "electron-builder-squirrel-windows": "^20.40.0",
+        "foreman": "^3.0.1",
+        "react-scripts": "^2.1.1"
+    },
+    "dependencies": {
+        "react": "^15.6.2",
+        "react-dom": "^15.4.2"
+    },
+    "build": {
+        "extends": null,
+        "appId": "campo",
+        "files": [
+            "./build/**/*",
+            "./src/electron-starter.js"
+        ],
+        "dmg": {
+            "contents": [
+                {
+                    "x": 110,
+                    "y": 150
+                },
+                {
+                    "x": 240,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "mac": {
+            "category": "public.app-category.healthcare",
+            "entitlements": "entitlements.mac.plist",
+            "icon": "app/assets/icons/mac/1024.png.icns",
+            "type": "distribution",
+            "publish": [
+                "github"
+            ]
+        },
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ]
+        },
+        "win": {
+            "target": "squirrel",
+            "icon": "build/favicon.ico"
+        },
+        "directories": {
+            "buildResources": "assets"
+        }
+    },
+    "homepage": "./",
+    "main": "./src/electron-starter.js",
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject",
+        "electron": "electron .",
+        "dev": "nf start -p 3000",
+        "electron-build": "electron-builder buid -mwl",
+        "release": "yarn build && electron-builder --publish=always",
+        "pack": "yarn build && yarn electron-build"
+    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ]
+}
