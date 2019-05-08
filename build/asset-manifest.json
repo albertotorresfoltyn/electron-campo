@@ -1,14 +1,14 @@
 {
-  "main.css": "./static/css/main.44567671.chunk.css",
-  "main.js": "./static/js/main.be8eca3b.chunk.js",
-  "main.js.map": "./static/js/main.be8eca3b.chunk.js.map",
-  "static/js/1.589b9769.chunk.js": "./static/js/1.589b9769.chunk.js",
-  "static/js/1.589b9769.chunk.js.map": "./static/js/1.589b9769.chunk.js.map",
-  "runtime~main.js": "./static/js/runtime~main.4a686d48.js",
-  "runtime~main.js.map": "./static/js/runtime~main.4a686d48.js.map",
-  "static/media/logo.svg": "./static/media/logo.5d5d9eef.svg",
-  "static/css/main.44567671.chunk.css.map": "./static/css/main.44567671.chunk.css.map",
-  "index.html": "./index.html",
-  "precache-manifest.3c91c913e05eef4446fe9fa87ee246ef.js": "./precache-manifest.3c91c913e05eef4446fe9fa87ee246ef.js",
-  "service-worker.js": "./service-worker.js"
+  "main.css": "www.codecrank.tech/static/css/main.54dca6f9.chunk.css",
+  "main.js": "www.codecrank.tech/static/js/main.0ff152cc.chunk.js",
+  "main.js.map": "www.codecrank.tech/static/js/main.0ff152cc.chunk.js.map",
+  "static/js/1.0aa612a3.chunk.js": "www.codecrank.tech/static/js/1.0aa612a3.chunk.js",
+  "static/js/1.0aa612a3.chunk.js.map": "www.codecrank.tech/static/js/1.0aa612a3.chunk.js.map",
+  "runtime~main.js": "www.codecrank.tech/static/js/runtime~main.064c82ef.js",
+  "runtime~main.js.map": "www.codecrank.tech/static/js/runtime~main.064c82ef.js.map",
+  "static/media/logo.svg": "www.codecrank.tech/static/media/logo.5d5d9eef.svg",
+  "static/css/main.54dca6f9.chunk.css.map": "www.codecrank.tech/static/css/main.54dca6f9.chunk.css.map",
+  "index.html": "www.codecrank.tech/index.html",
+  "precache-manifest.7391c57af20323e6341a13f059080e7c.js": "www.codecrank.tech/precache-manifest.7391c57af20323e6341a13f059080e7c.js",
+  "service-worker.js": "www.codecrank.tech/service-worker.js"
 }

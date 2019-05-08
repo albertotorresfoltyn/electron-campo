@@ -1,8 +1,8 @@
 {
-    "name": "electro-reactro",
+    "name": "SAG",
     "version": "0.1.0",
     "private": true,
-    "author": "Alberto",
+    "author": "Alberto <albertotorresfoltyn@gmail.com>" ,
     "description": "starter boilerplate for electron apps with react",
     "devDependencies": {
         "electron": "^1.4.14",
@@ -59,7 +59,7 @@
             "buildResources": "assets"
         }
     },
-    "homepage": "./",
+    "homepage": "www.codecrank.tech",
     "main": "./src/electron-starter.js",
     "scripts": {
         "start": "react-scripts start",
