@@ -2,18 +2,20 @@
     "name": "SAG",
     "version": "0.1.0",
     "private": true,
-    "author": "Alberto <albertotorresfoltyn@gmail.com>" ,
+    "author": "Alberto <albertotorresfoltyn@gmail.com>",
     "description": "starter boilerplate for electron apps with react",
     "devDependencies": {
         "electron": "^1.4.14",
-        "electron-builder": "^20.15.1",
+        "electron-builder": "^20.40.2",
         "electron-builder-squirrel-windows": "^20.40.0",
         "foreman": "^3.0.1",
-        "react-scripts": "^2.1.1"
+        "react-scripts": "^3.0.1"
     },
     "dependencies": {
         "react": "^15.6.2",
-        "react-dom": "^15.4.2"
+        "react-dom": "^15.4.2",
+        "react-redux": "^7.0.3",
+        "redux": "^4.0.1"
     },
     "build": {
         "extends": null,
