@@ -1,14 +1,16 @@
 {
-  "main.css": "www.codecrank.tech/static/css/main.54dca6f9.chunk.css",
-  "main.js": "www.codecrank.tech/static/js/main.0ff152cc.chunk.js",
-  "main.js.map": "www.codecrank.tech/static/js/main.0ff152cc.chunk.js.map",
-  "static/js/1.0aa612a3.chunk.js": "www.codecrank.tech/static/js/1.0aa612a3.chunk.js",
-  "static/js/1.0aa612a3.chunk.js.map": "www.codecrank.tech/static/js/1.0aa612a3.chunk.js.map",
-  "runtime~main.js": "www.codecrank.tech/static/js/runtime~main.064c82ef.js",
-  "runtime~main.js.map": "www.codecrank.tech/static/js/runtime~main.064c82ef.js.map",
-  "static/media/logo.svg": "www.codecrank.tech/static/media/logo.5d5d9eef.svg",
-  "static/css/main.54dca6f9.chunk.css.map": "www.codecrank.tech/static/css/main.54dca6f9.chunk.css.map",
-  "index.html": "www.codecrank.tech/index.html",
-  "precache-manifest.7391c57af20323e6341a13f059080e7c.js": "www.codecrank.tech/precache-manifest.7391c57af20323e6341a13f059080e7c.js",
-  "service-worker.js": "www.codecrank.tech/service-worker.js"
+  "files": {
+    "main.css": "www.codecrank.tech/static/css/main.68a98085.chunk.css",
+    "main.js": "www.codecrank.tech/static/js/main.e6d515c7.chunk.js",
+    "main.js.map": "www.codecrank.tech/static/js/main.e6d515c7.chunk.js.map",
+    "runtime~main.js": "www.codecrank.tech/static/js/runtime~main.bee09ea3.js",
+    "runtime~main.js.map": "www.codecrank.tech/static/js/runtime~main.bee09ea3.js.map",
+    "static/js/2.85db27dc.chunk.js": "www.codecrank.tech/static/js/2.85db27dc.chunk.js",
+    "static/js/2.85db27dc.chunk.js.map": "www.codecrank.tech/static/js/2.85db27dc.chunk.js.map",
+    "index.html": "www.codecrank.tech/index.html",
+    "precache-manifest.d02df27af4c3e575e3989f215a017367.js": "www.codecrank.tech/precache-manifest.d02df27af4c3e575e3989f215a017367.js",
+    "service-worker.js": "www.codecrank.tech/service-worker.js",
+    "static/css/main.68a98085.chunk.css.map": "www.codecrank.tech/static/css/main.68a98085.chunk.css.map",
+    "static/media/logo.svg": "www.codecrank.tech/static/media/logo.5d5d9eef.svg"
+  }
 }

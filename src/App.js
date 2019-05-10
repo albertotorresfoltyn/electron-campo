@@ -11,6 +11,7 @@ class App extends Component {
   }
 
   render() {
+    debugger;
     //this.setState({miValorLocal: null});
     return (
       <div className="App">

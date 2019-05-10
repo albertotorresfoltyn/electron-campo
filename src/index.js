@@ -2,8 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { Provider as ReduxProvider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import configureStore from './data/store';
+debugger;
 
+const reduxStore = configureStore();
 ReactDOM.render(<App tuvieja="entanga"/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
