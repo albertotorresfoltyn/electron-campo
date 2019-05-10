@@ -12,6 +12,7 @@
         "react-scripts": "^3.0.1"
     },
     "dependencies": {
+        "better-sqlite3": "^5.4.0",
         "react": "^16.4",
         "react-dom": "^16.4",
         "react-redux": "^7.0.3",
