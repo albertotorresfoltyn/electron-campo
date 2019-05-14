@@ -5,12 +5,12 @@ import App from './App';
 import { Provider as ReduxProvider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './data/store';
-debugger;
 
 const reduxStore = configureStore();
-ReactDOM.render(<App tuvieja="entanga"/>, document.getElementById('root'));
+ReactDOM.render(
+    <ReduxProvider store = {reduxStore}>
+        <App tuvieja="entanga"/>
+    </ReduxProvider>
+    , document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
