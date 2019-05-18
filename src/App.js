@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import Button from 'react-bootstrap/Button';
+
 import logo from './logo.svg'
 import './App.css'
 const cmp = ()=>(
@@ -14,6 +16,7 @@ const cmp = ()=>(
         Edit <code> src / App.js </code> and save to reload.{' '}
       </p>{' '}
     </header>{' '}
+     <Button variant = "primary" > Primary </Button>
   </div>
 )
 
