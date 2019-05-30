@@ -1,0 +1,20 @@
+{
+  "name": "cmfl",
+  "productName": "CMFL",
+  "version": "1.0.110",
+  "description": "CareManager for Laptop and Desktop",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "CellTrak Technologies Inc.",
+    "email": "support@celltrak.com",
+    "url": "http://www.celltrak.com/"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r babel-register ../internals/scripts/ElectronRebuild.js",
+    "postinstall": "npm run electron-rebuild"
+  },
+  "dependencies": {
+    "lodash": "^4.17.5",
+    "superagent": "^3.8.2"
+  }
+}

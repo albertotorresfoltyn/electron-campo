@@ -1,0 +1,269 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+@import "~font-awesome/css/font-awesome.css";
+
+*{
+  /* -colors - */
+  --footer-color: #156fb1;
+  --actn-btn-bg-off:#3bbbe8;
+  --actn-btn-fg-off: #ffffff;
+  --actn-btn-bg-on:#156fb1;
+  --actn-btn-fg-on: #ffffff;
+  --sidebar-border: #cbcaca;
+  --sidebar-back: #e6e7e8;
+  --list-divider: #e0dfdf;
+  --field-error: #ed1c24;
+  --ct-dark-blue: #003767;
+  --ct-light-blue: #56a0d3;
+  --ct-red: #e31b23;
+  --selected-record-bgd: #f7f7f7;
+  --button-bgd: #3bbbe8;
+  --active-button-bgd: #8ac31e;
+  --label-text: #515151;
+  --not-complete: #f7ecd5;
+  --not-complete-bright: #f1ca6d;
+  --not-complete-dark: #e76b13;
+
+  /* form */
+  --focused-field-bgd: #f9f9f9;
+  --focused-field-border: #3b99fc;
+  --focused-active-field-border: #67970c;
+
+  /* -fonts - */
+  --body-font-size: 12px;
+  --h1-font-size: 30px;
+  --h2-font-size: 24px;
+  --h3-font-size: 18px;
+  --h4-font-size: 14px;
+
+  }
+
+body {
+  position: relative;
+  color: black;
+  height: 100vh;
+  width: 100%;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #FFFFFF;
+  margin: 0;
+}
+*:focus {
+  outline: none;
+  }
+
+#pageWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  }
+
+h1 {
+  margin: 0;
+  font-weight: lighter;
+  font-size: 2rem;
+  }
+
+h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  }
+
+p {
+  font-size: 1.5rem;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  /*color: white;*/
+  /*opacity: 0.75;*/
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 1;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.footerShell{
+  background-color: #156fb1;
+}
+
+.sidebar-bgnd {
+  background-color: #e6e7e8;
+}
+
+.sidebar-border {
+  background-color: #cbcaca;
+}
+
+.actn-btn-bg-off { 
+  background-color: #3bbbe8;
+}
+
+.actn-btn-fg-off{ 
+  background-color: #FFFFFF;
+}
+
+.actn-btn-bg-on { 
+  background-color: #156fb1;
+}
+
+.actn-btn-fg-on{ 
+  background-color: #ffffff;
+}
+
+.actn-btn-bar-bg {
+  background-color: #dce0e3;
+}
+
+.started {
+  background-color: #3ca5d5; 
+}
+
+.not-starter {
+  background-color: #939598;
+}
+
+.saved {
+  background-color: #f26522;
+}
+
+.required {
+  background-color: #ed1c24; 
+}
+
+.error-bg {
+  background-color: #ed1c24; 
+} 
+
+.success {
+  background-color: #00a14b;
+}
+
+.hyperlink {
+  background-color: #3bbbe8;
+}
+
+.button {
+  background-color: var(--actn-btn-fg-on);
+  border-radius: 4px;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+/************* GLOBAL DEFAULT FORM ELEMENTS ***************/
+
+label {
+  padding: .25em 0;
+  margin: 0;
+  line-height: 1em;
+  font-size: 1rem;
+  font-weight: 400;
+  }
+
+input, select {
+  font-size: .9rem;
+  font-weight: 200;
+  line-height: 1.5em;
+  text-align: left;
+  padding: 0 3px;
+}
+
+input, textarea {
+  border: 1px solid #e1e0e0;
+  resize: none;
+  }
+
+input, textarea, select {
+     margin-top: .5em;
+     }
+
+input[type=radio] {
+  margin-top: 0;
+  }
+
+
+input[type=text]:focus, input[type=password]:focus, input[type=date]:focus, textarea:focus, select:focus {
+  border:1px solid var(--focused-field-border);
+  outline: none;
+  background-color: var(--focused-field-bgd);
+  }
+
+input[type=text].error, input[type=password].error, input[type=date].error, textarea.error, select.error {
+  border:1px solid var(--field-error);
+  outline: none;
+  background-color: var(--focused-field-bgd);
+  }
+
+select {
+  font-size: .9rem;
+  }
+
+/* Selects any element with an active placeholder */
+:placeholder-shown {
+  border: 1px solid #e1e0e0;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #b3b3b3;
+  text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+button {
+  background-color: var(--actn-btn-bg-off);
+  color: var(--actn-btn-fg-off);
+  border-radius: 4px;
+  padding: 0 .5em;
+  height: 2em;
+
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1em;
+  margin: 4px 2px;
+  cursor: pointer;
+  border: none;
+  width: auto;
+
+  }
+
+button:hover {
+  background-color: var(--active-button-bgd);
+  color: var(--actn-btn-fg-on);
+  cursor: pointer;
+  }
+
+button:focus {
+  background-color: var(--active-button-bgd);
+  border:2px solid var(--focused-active-field-border);
+  outline: none;
+  }
+
+button:active {
+  background-color: var(--focused-active-field-border);
+  border:2px solid var(--focused-active-field-border);
+  outline: none;
+  }

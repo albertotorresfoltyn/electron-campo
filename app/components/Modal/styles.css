@@ -1,0 +1,46 @@
+
+.cm-modal {
+    /* modal container fixed across whole screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    /* enables scrolling for tall modals */
+    overflow: auto;
+    color: rgb(0, 0, 0);
+    font-size: 1em;
+    height: 100vh;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.cm-modal-body {
+    padding: 0px 0px 0px 0px;
+    background: #fff;
+    /* margin exposes part of the modal background */
+    width: 50%;
+    left: 25%;
+    position: relative;
+    top: 25%;
+    border:1px solid #7d7d7d
+}
+
+.cm-modal-background {
+    /* modal background fixed across whole screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* semi-transparent black  */
+    background-color: #000;
+    opacity: 0.55;
+    /* z-index must be lower than .modal and above everything else  */
+    z-index: 900;
+}
+
+body.cm-modal-open {
+    /* I dont like this: body overflow is hidden to hide main scrollbar when modal window is open */
+    overflow: hidden;
+}
