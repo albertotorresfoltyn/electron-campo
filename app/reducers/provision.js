@@ -1,18 +1,16 @@
-import bcrypt from 'bcryptjs';
 import {
   SEND_CREDENTIALS, PROVISION_FAILURE,
   PROVISION_SUCCESS, SEND_USER_DATA_SUCCESS, SEND_USER_DATA_FAILURE,
   STORE_AUTH_DATA, LOGIN_ATTEMPT, SEND_USER_DATA,
 } from '../actions/provision';
 import passchecker from '../utils/checkPwdList';
-import { store } from '../utils/PersistentStorage';
 import cfg from '../config';
 
 const initinalState = {
   data: null,
   config: null,
   message: '',
-  success: !!store.get('device_id'),
+  success: true,
   securityAlreadySetup: false,
   waiting: false,
   auth: {

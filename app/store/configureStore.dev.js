@@ -2,9 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
 import rootReducer from '../reducers';
-import baseSaga from '../sagas';
 
 const history = createHashHistory();
 
@@ -21,12 +19,10 @@ const configureStore = (initialState?: rootReducer) => {
   if (process.env.NODE_ENV !== 'test') {
     middleware.push(logger);
   }
-  const sagaMiddleware = createSagaMiddleware();
 
   // Router Middleware
   const router = routerMiddleware(history);
   middleware.push(router);
-  middleware.push(sagaMiddleware);
 
   // Redux DevTools Configuration
   const actionCreators = {
@@ -49,7 +45,6 @@ const configureStore = (initialState?: rootReducer) => {
   // Create Store
   const store = createStore(rootReducer, initialState, enhancer);
 
-  sagaMiddleware.run(baseSaga);
 
   if (module.hot) {
     module.hot.accept(

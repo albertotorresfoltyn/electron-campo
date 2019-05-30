@@ -2,10 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
 import rootReducer from '../reducers';
-import baseSaga from '../sagas';
-
 const history = createHashHistory();
 
 const configureStore = (initialState?: rootReducer) => {

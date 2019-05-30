@@ -1,7 +1,7 @@
 {
   "name": "SAG",
   "productName": "SAG",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Sistema de control de Ganado",
   "homepage": "http://www.codecrank.tech",
   "author": {
@@ -168,24 +168,16 @@
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "bcryptjs": "^2.4.3",
     "bootstrap": "^4.3.1",
-    "chai": "^4.1.2",
-    "classnames": "^2.2.6",
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",
     "electron-log": "^2.2.16",
     "electron-updater": "^3.0.3",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
-    "i18next": "^11.3.3",
-    "moment": "^2.22.2",
-    "moment-timezone": "^0.5.21",
     "pkg-up": "^2.0.0",
     "react": "^16.4.0",
     "react-bootstrap": "^1.0.0-beta.8",
-    "react-datepicker": "^1.5.0",
     "react-dom": "^16.4.0",
     "react-hot-loader": "^4.2.0",
     "react-loading-overlay": "^0.3.0",
@@ -193,14 +185,11 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.6",
-    "react-signature-canvas": "^1.0.0-alpha.1",
-    "react-simple-popover": "^0.2.4",
-    "react-tooltip": "^3.6.1",
+    "reactstrap": "^8.0.0",
     "redux": "^4.0.0",
-    "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.2.0",
+    "resolve-url-loader": "^3.1.0",
     "source-map-support": "^0.5.6",
-    "sqlite3": "^4.0.8"
+    "sql.js": "^0.4.0"
   },
   "devEngines": {
     "node": ">=7.x",
