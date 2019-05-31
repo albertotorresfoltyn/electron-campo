@@ -3,7 +3,6 @@ import {
   PROVISION_SUCCESS, SEND_USER_DATA_SUCCESS, SEND_USER_DATA_FAILURE,
   STORE_AUTH_DATA, LOGIN_ATTEMPT, SEND_USER_DATA,
 } from '../actions/provision';
-import passchecker from '../utils/checkPwdList';
 import cfg from '../config';
 
 const initinalState = {
@@ -232,7 +231,7 @@ export default function provision(state = initinalState, action) {
       accState.secondAnswerMessage = !action.secondAnswer ? 'no_a2.label' : '';
       const passwordEquality = action.originalPassword === action.passwordCopy;
       accState.secondPasswordMessage = !passwordEquality ? 'password_doesnt_match_doesnt_match.label' : '';
-      const isValidPassword = passchecker(action.originalPassword);
+      const isValidPassword = () => true;
       accState.message = !isValidPassword ? 'cmfl81_login.label' : '';
       accState.message = ((!action.originalPassword) || (action.originalPassword.length < cfg.minPwLen)) ? 'pwd_too_short.label' : '';
 

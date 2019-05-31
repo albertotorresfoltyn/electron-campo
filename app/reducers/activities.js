@@ -1,15 +1,12 @@
 import electron from 'electron';
-import { ActivitiesStore } from '../utils/PersistentStorage';
+
 import {
   ACTIVITIES_UPDATE,
   ACTIVITIES_PERSIST,
   ACTIVITIES_DESTROY,
 } from '../actions/activities';
 
-const store = (electron && (electron.app || electron.remote.app)) ? new ActivitiesStore({
-  name: 'activities',
-  activities: [],
-}) : {
+const store = {
   get: () => null,
   set: () => null,
   push: () => null,
@@ -22,13 +19,7 @@ if (electron && (electron.app || electron.remote.app)) {
   // console.log('NO ELECTRON');
 }
 
-const initinalState = store.get(activities);
-
-/* const getUpdatesDictionary = (updates) => updates.reduce((dictionary, update) => {
-  return Object.assign(dictionary, { [update.type]: update });
-}, {}); */
-
-export default function activities(state = initinalState, action) {
+export default function activities(state = {}, action) {
   switch (action.type) {
     case ACTIVITIES_UPDATE:
     {
