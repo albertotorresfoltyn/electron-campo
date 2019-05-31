@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styles from './Home.css';
 import { Button } from 'reactstrap';
 import SQL from '../db';
+const fs = require('fs');
 const path = require('path');
 
 
@@ -15,7 +16,8 @@ export default class Home extends Component {
 
   doDatabase = () => { //run sql shit heres
     debugger;
-    let dbPath = path.dirname('example.db')
+    let dbPath = path.dirname('example.db')+'/'
+    console.log('el path es ', dbPath);
     let createDb = function (dbPath) {
       // Create a database.
       let db = new SQL.Database()
