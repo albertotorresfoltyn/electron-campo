@@ -1,7 +1,7 @@
 {
   "name": "SAG",
   "productName": "SAG",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Sistema de control de Ganado",
   "homepage": "http://www.codecrank.tech",
   "author": {
@@ -42,8 +42,8 @@
     ]
   },
   "build": {
-    "productName": "CMFL",
-    "artifactName": "CMFL-Setup-${version}.${ext}",
+    "productName": "SAG",
+    "artifactName": "SAG-Setup-${version}.${ext}",
     "appId": "com.celltrak.cmfl",
     "files": [
       "dist/",

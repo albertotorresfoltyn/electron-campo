@@ -1,14 +1,15 @@
 {
-  "name": "cmfl",
-  "productName": "CMFL",
-  "version": "1.0.117",
-  "description": "CareManager for Laptop and Desktop",
-  "main": "./main.prod.js",
+  "name": "SAG",
+  "productName": "SAG",
+  "version": "0.0.10",
+  "description": "Sistema de control de Ganado",
+  "homepage": "http://www.codecrank.tech",
   "author": {
-    "name": "CellTrak Technologies Inc.",
-    "email": "support@celltrak.com",
-    "url": "http://www.celltrak.com/"
+    "name": "EPA!.",
+    "email": "albertotorresfoltyn@gmail.com",
+    "url": "http://www.codecrank.tech"
   },
+  "main": "./main.prod.js",
   "scripts": {
     "electron-rebuild": "node -r babel-register ../internals/scripts/ElectronRebuild.js",
     "postinstall": "npm run electron-rebuild"
