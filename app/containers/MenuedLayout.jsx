@@ -18,7 +18,7 @@ class MenuedLayout extends React.Component {
     const { history } = this.props;
     return (
       <div>
-        <Navbar color="light" light expand="md">
+        <Navbar color="dark" light expand="md">
           <NavbarBrand onClick={() => { console.log(history); history.push('/'); }}> reactstrap </NavbarBrand>{' '}
         </Navbar>
         {this.props.children}
