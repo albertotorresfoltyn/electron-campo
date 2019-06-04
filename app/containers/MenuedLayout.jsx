@@ -1,30 +1,34 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint flowtype-errors/show-errors: 0 */
-import React from 'react';
-import {withRouter,} from 'react-router-dom';
+import React from 'react'
+import { withRouter } from 'react-router-dom'
 
-import {
-  Navbar,
-  NavbarBrand,
-} from 'reactstrap';
+import { Navbar, NavbarBrand } from 'reactstrap'
 
 class MenuedLayout extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  constructor (props) {
+    super(props)
+    this.state = {}
   }
-  render() {
-    const { history } = this.props;
+  render () {
+    const { history } = this.props
     return (
       <div>
         <Navbar color="light" light expand="md">
-          <NavbarBrand onClick={() => { console.log(history); history.push('/'); }}>Home, aunque quiero poner un font awesome con una casita</NavbarBrand>{' '}
+          <NavbarBrand
+            onClick={() => {
+              history.push('/')
+            }}
+          >
+            {' '}
+            <i class="fas fa-home"> </i>
+          </NavbarBrand>{' '}
         </Navbar>
         {this.props.children}
       </div>
-    );
+    )
   }
 }
 
-export default withRouter(MenuedLayout);
+export default withRouter(MenuedLayout)
