@@ -1,10 +1,7 @@
 {
   "name": "SAG",
   "productName": "SAG",
-
-  "version": "0.0.18",
-
-
+  "version": "0.0.19",
   "description": "Sistema de control de Ganado",
   "homepage": "http://www.codecrank.tech",
   "author": {
