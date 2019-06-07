@@ -4,9 +4,12 @@ import { Link } from 'react-router-dom';
 import styles from './Potrero.css';
 import { Button, Row, Col, Container } from 'reactstrap';
 import DataService from '../../services/DataService';
-import CampoCard from '../../components/CampoCard';
+import PotreroCard from './PotreroCard';
+import {
+  withRouter
+} from 'react-router-dom';
 
-export default class PotrerosList extends Component {
+class PotrerosList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,7 +38,7 @@ export default class PotrerosList extends Component {
                   md={{ size: 6, offset: 3 }}
                   className=""
                 >
-                  aca va el potrero :P
+                  <PotreroCard potrero = {potrero} onClick={()=>{this.props.history.push('/potreros/'+campo.IdCampo)}}/>
                 </Col>{' '}
               </Row>
               ))}
@@ -45,3 +48,5 @@ export default class PotrerosList extends Component {
     );
   }
 }
+
+export default withRouter(PotrerosList)
