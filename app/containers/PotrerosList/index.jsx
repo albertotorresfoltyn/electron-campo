@@ -18,8 +18,6 @@ class PotrerosList extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props)
-    debugger;
     this.setState({ potreros: DataService.getPotreros(this.props.match.params.campoId) });
   }
 
