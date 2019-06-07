@@ -12,13 +12,13 @@ const Example = ({campo, ...props }) => {
     <Card {...props}>
       <Card.Header tag="h3" className="bg-success text-white">{Nombre}</Card.Header>
       <Card.Body className="text">
-          <ListGroup>
-            <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
-            <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
-            <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
-            <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
-            <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
-          </ListGroup>
+        <ListGroup>
+          <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
+          <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
+          <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
+          <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
+          <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
+        </ListGroup>
       </Card.Body>
       <Card.Footer>
         <Button variant="primary">Entrar</Button>

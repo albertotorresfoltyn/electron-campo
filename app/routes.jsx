@@ -11,7 +11,7 @@ export default () => (
     <Switch>
       <MenuedLayout>
         <Route exact path="/" component={HomePage} />
-        <Route exact path="/potreros/:campoid" component={PotrerosList} />
+        <Route exact path="/potreros/:campoId" component={PotrerosList} />
       </MenuedLayout>
     </Switch>
   </AppL>
