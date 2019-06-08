@@ -38,7 +38,7 @@ class PotrerosList extends Component {
                   md={{ size: 6, offset: 3 }}
                   className=""
                 >
-                  <PotreroCard potrero = {potrero} onClick={()=>{this.props.history.push('/potreros/'+campo.IdCampo)}}/>
+                  <PotreroCard potrero = {potrero} onClick={()=>{this.props.history.push('/potrero/'+potrero.IdPotrero)}}/>
                 </Col>{' '}
               </Row>
               ))}

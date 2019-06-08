@@ -35,4 +35,15 @@ export default class DataService {
         return objects;
       }
     }
+
+    static getPotrero(potreroId, campoId) {
+      const db = SQL.connect();
+      if (db) {
+        debugger;
+        const rows = db.exec('SELECT * FROM `Potrero` WHERE `Potrero`.IdPotrero = ' + potreroId + ' AND `Potrero`.IdCampo = ' + campoId );
+        const objects = rowsToMagic(rows);
+        debugger;
+        return objects;
+      }
+    }
 }
