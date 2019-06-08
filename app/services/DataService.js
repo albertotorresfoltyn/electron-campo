@@ -34,8 +34,8 @@ export default class DataService {
       const objects = rowsToMagic(rows);
       return objects;
     }
-<<<<<<< HEAD
 
+  }
     static getPotrero(potreroId, campoId) {
       const db = SQL.connect();
       if (db) {
@@ -46,7 +46,7 @@ export default class DataService {
         return objects;
       }
     }
-=======
+
   }
->>>>>>> 2399364fe43250a129b1a2e6d71ee4246449fae1
-}
+
+

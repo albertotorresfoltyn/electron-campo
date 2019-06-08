@@ -10,7 +10,7 @@ const Example = ({campo, ...props }) => {
 
   return (
     <Card {...props}>
-      <Card.Header tag="h3" className="bg-success text-white">{Nombre}</Card.Header>
+      <Card.Header  className="bg-success text-white"> <h2>{Nombre}</h2></Card.Header>
       <Card.Body className="text">
         <ListGroup>
           <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>

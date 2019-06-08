@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, Row, Col, Container } from 'reactstrap';
+import { Button, Row, Col, Container, Breadcrumb, BreadcrumbItem,  Card, CardTitle, CardText  } from 'reactstrap';
 import DataService from '../../services/DataService';
 
 import {
@@ -30,15 +30,49 @@ class Potrero extends Component {
     return (
       <div>
         <div  data-tid="container">
-          <Container>
-            <div className="text-center pt-md-5">
-              <h1 className="display-4">POTRERO LPM!</h1>
-              <span> {this.state.potrero[0].Idpotrero}</span>
-             <span> {this.state.potrero[0].Descripcion}</span>
-            
-            </div>
+
+        <Breadcrumb>
+          <BreadcrumbItem active>POTRERO   {this.state.potrero[0].Nombre} - {this.state.potrero[0].Codigo}</BreadcrumbItem>
+        </Breadcrumb>
+        <Container>
+            <Row className="">
+              <Card body outline color="secondary" className="p-3 mb-2">
+                <CardTitle><strong>Resumen</strong></CardTitle>
+                <CardText>Aca esta el resumen del potrero</CardText>
+                    <CardText> 
+                      <span> {this.state.potrero[0].IdPotrero}</span>
+                      <span> {this.state.potrero[0].Descripcion}</span>
+                    </CardText>
+              </Card>
+            </Row>
+
+            <Row>
+              <Card body outline color="secondary" className="p-3 mb-2">
+                <CardTitle><strong>Estado Actual</strong></CardTitle>
+                <CardText>Aca esta el estado actual</CardText>
+                    <CardText> 
+                      <span> {this.state.potrero[0].IdPotrero}</span>
+                      <span> {this.state.potrero[0].Descripcion}</span>
+                    </CardText>
+              </Card>
+            </Row>
+
+            <Row>
+              <Card body outline color="secondary" className="p-3 mb-2">
+                <CardTitle><strong>Historial</strong></CardTitle>
+                <CardText>Aca esta el Historial del potrero</CardText>
+                    <CardText> 
+                      <span> {this.state.potrero[0].IdPotrero}</span>
+                      <span> {this.state.potrero[0].Descripcion}</span>
+                    </CardText>
+              </Card>
+            </Row>
+
+           
+        </Container>
+
+           
           
-          </Container>
         </div>
       </div>
     );
