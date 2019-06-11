@@ -22,7 +22,7 @@ class Potrero extends Component {
     console.log(this.props)
     debugger;
     //this.props.match.params.campoId  Mandar tmb esto 
-    this.setState({ potrero: DataService.getPotrero(this.props.match.params.potreroId, 1) });
+    this.setState({ potrero: DataService.getPotrero(this.props.match.params.potreroId) });
     console.log(this.state.potrero)
   }
 
