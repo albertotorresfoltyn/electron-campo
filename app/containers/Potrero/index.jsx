@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { Button, Row, Col, Container, Breadcrumb, BreadcrumbItem,  Card, CardTitle, CardText  } from 'reactstrap';
 import DataService from '../../services/DataService';
+import Estado from '../../components/Estado';
 
 import {
   withRouter
@@ -31,10 +32,20 @@ class Potrero extends Component {
       <div>
         <div  data-tid="container">
 
+       
+
         <Breadcrumb>
           <BreadcrumbItem active>POTRERO   {this.state.potrero[0].Nombre} - {this.state.potrero[0].Codigo}</BreadcrumbItem>
         </Breadcrumb>
+
         <Container>
+          <Row className="mb-3">
+            <Button className="mr-1" color="success">Ingreso</Button>{' '}
+            <Button className="mr-1" color="success">Egreso</Button>{' '}
+            <Button className="mr-1" color="success">Baja</Button>{' '}
+            <Button className="mr-1" color="success">Nacimiento</Button>{' '}
+          </Row>
+
             <Row className="">
               <Card body outline color="secondary" className="p-3 mb-2">
                 <CardTitle><strong>Resumen</strong></CardTitle>
@@ -51,8 +62,7 @@ class Potrero extends Component {
                 <CardTitle><strong>Estado Actual</strong></CardTitle>
                 <CardText>Aca esta el estado actual</CardText>
                     <CardText> 
-                      <span> {this.state.potrero[0].IdPotrero}</span>
-                      <span> {this.state.potrero[0].Descripcion}</span>
+                    <Estado  key={this.state.potrero[0].Nombre}></Estado>
                     </CardText>
               </Card>
             </Row>
@@ -67,6 +77,9 @@ class Potrero extends Component {
                     </CardText>
               </Card>
             </Row>
+         
+
+            
 
            
         </Container>
