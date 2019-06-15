@@ -9,10 +9,12 @@ const Example = ({campo, ...props }) => {
   const { IdCampo, Nombre, Descripcion, Superficie, Total } = campo
 
   return (
-    <Card {...props}>
+   
+   <Card {...props}>
       <Card.Header  className="bg-success text-white"> <h2 className="text-uppercase">{Nombre}</h2></Card.Header>
       <Card.Body className="text">
         <ListGroup>
+          
           <ListGroupItem><strong>Nombre:</strong> {Nombre}</ListGroupItem>
           <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
           <ListGroupItem><strong>Superficie:</strong> {Superficie}</ListGroupItem>
@@ -20,9 +22,11 @@ const Example = ({campo, ...props }) => {
           
         </ListGroup>
       </Card.Body>
+      
       <Card.Footer>
         <Button variant="primary">Entrar</Button>
       </Card.Footer>
+    
     </Card>
   )
 }

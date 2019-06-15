@@ -24,6 +24,14 @@ class MenuedLayout extends React.Component {
             {' '}
             <i class="fas fa-home"> </i>
           </NavbarBrand>{' '}
+          <NavbarBrand
+            onClick={() => {
+              history.goBack();
+            }}
+          >
+            {' '}
+            <i class="fas fa-arrow-left"> </i>
+          </NavbarBrand>{' '}
         </Navbar>
         {this.props.children}
       </div>

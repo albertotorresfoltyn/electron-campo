@@ -29,17 +29,24 @@ class PotrerosList extends Component {
             <div className="text-center pt-md-5">
               <h1 className="display-4">POTREROS</h1>
             </div>
+            <Row className="pt-md-5 text-center">
             {this.state.potreros.map(potrero => (
-              <Row key={potrero.Idpotrero} className="pt-md-5 text-center">
+              
+               
+               
                 <Col
                   key={potrero.IdPotrero}
-                  md={{ size: 6, offset: 3 }}
+                  md={{ size: 3 }}
                   className=""
                 >
                   <PotreroCard potrero = {potrero} onClick={()=>{this.props.history.push('/potrero/'+potrero.IdPotrero)}}/>
-                </Col>{' '}
-              </Row>
-              ))}
+                </Col>
+                
+              
+            
+              ))}  
+              
+               </Row>
           </Container>
         </div>
       </div>
