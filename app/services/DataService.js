@@ -47,7 +47,7 @@ export default class DataService {
       
         const rows = db.exec(`SELECT * FROM \`Potrero\` where IdPotrero = ${  potreroId}`);
         const objects = rowsToMagic(rows);
-        return objects;
+        return objects[0];
       }
     }
 

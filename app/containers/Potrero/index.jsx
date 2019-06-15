@@ -23,19 +23,19 @@ class Potrero extends Component {
     console.log(this.props)
     debugger;
     //this.props.match.params.campoId  Mandar tmb esto 
-    this.setState({ potrero: DataService.getPotrero(this.props.match.params.potreroId) });
-    console.log(this.state.potrero)
+    this.setState({ potrero: DataService.getPotrero(this.props.match.params.potreroId)});
+  
   }
 
   render() {
+
+    const {potrero} = this.state;
+
     return (
       <div>
         <div  data-tid="container">
-
-       
-
         <Breadcrumb>
-          <BreadcrumbItem active>POTRERO   {this.state.potrero[0].Nombre} - {this.state.potrero[0].Codigo}</BreadcrumbItem>
+          <BreadcrumbItem active>POTRERO {potrero.Nombre} - {potrero.Codigo}</BreadcrumbItem>
         </Breadcrumb>
 
         <Container>
@@ -51,8 +51,8 @@ class Potrero extends Component {
                 <CardTitle><strong>Resumen</strong></CardTitle>
                 <CardText>Aca esta el resumen del potrero</CardText>
                     <CardText> 
-                      <span> {this.state.potrero[0].IdPotrero}</span>
-                      <span> {this.state.potrero[0].Descripcion}</span>
+                      <span> {potrero.IdPotrero}</span>
+                      <span> {potrero.Descripcion}</span>
                     </CardText>
               </Card>
             </Row>
@@ -62,7 +62,7 @@ class Potrero extends Component {
                 <CardTitle><strong>Estado Actual</strong></CardTitle>
                 <CardText>Aca esta el estado actual</CardText>
                     <CardText> 
-                    <Estado  key={this.state.potrero[0].Nombre}></Estado>
+                    <Estado  key={potrero.Nombre}></Estado>
                     </CardText>
               </Card>
             </Row>
@@ -72,8 +72,8 @@ class Potrero extends Component {
                 <CardTitle><strong>Historial</strong></CardTitle>
                 <CardText>Aca esta el Historial del potrero</CardText>
                     <CardText> 
-                      <span> {this.state.potrero[0].IdPotrero}</span>
-                      <span> {this.state.potrero[0].Descripcion}</span>
+                      <span> {potrero.IdPotrero}</span>
+                      <span> {potrero.Descripcion}</span>
                     </CardText>
               </Card>
             </Row>

@@ -30,6 +30,3 @@ const data02 = [
 }
 
 export default estado
-
-
-
