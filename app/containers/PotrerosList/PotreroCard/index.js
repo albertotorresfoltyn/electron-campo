@@ -16,13 +16,13 @@ const Example = ( {potrero,...props }) => {
 
       <Card.Body className="text">
         
-        <ListGroup>
-          <ListGroupItem><strong>Nombre:</strong> {Nombre}</ListGroupItem>
-          <ListGroupItem><strong>Descripción:</strong> {Descripcion}</ListGroupItem>
-          <ListGroupItem><strong>Superficie:</strong> {Superficie}</ListGroupItem>
-          <ListGroupItem><strong>Calidad:</strong> {Calidad}</ListGroupItem>
-          <ListGroupItem><strong>Codigo:</strong> {Codigo}</ListGroupItem>
-        </ListGroup>
+      
+        <p><strong>Nombre:</strong> {Nombre}</p>
+        <p><strong>Descripción:</strong> {Descripcion}</p>
+        <p><strong>Superficie:</strong> {Superficie}</p>
+        <p><strong>Calidad:</strong> {Calidad}</p>
+         
+      
       
       </Card.Body>
 

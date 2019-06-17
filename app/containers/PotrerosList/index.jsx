@@ -5,6 +5,7 @@ import styles from './Potrero.css';
 import { Button, Row, Col, Container } from 'reactstrap';
 import DataService from '../../services/DataService';
 import PotreroCard from './PotreroCard';
+import Estado from '../../components/Estado';
 import {
   withRouter
 } from 'react-router-dom';
@@ -25,15 +26,13 @@ class PotrerosList extends Component {
     return (
       <div>
         <div className={styles.container} data-tid="container">
-          <Container>
+          <Container className="text-center">
             <div className="text-center pt-md-5">
-              <h1 className="display-4">POTREROS</h1>
+              <h3 className="">POTREROS</h3>
             </div>
             <Row className="pt-md-5 text-center">
             {this.state.potreros.map(potrero => (
-              
-               
-               
+            
                 <Col
                   key={potrero.IdPotrero}
                   md={{ size: 3 }}
@@ -47,7 +46,31 @@ class PotrerosList extends Component {
               ))}  
               
                </Row>
+               <div className="text-center pt-md-5">
+              <h3>MAPA</h3>
+            </div>
+               <Row className="text-center">
+                <img className="mx-auto" width="600" height="280" src="../app/assets/img/mapa.png" ></img>
+               </Row>
+               <div className="text-center pt-md-5">
+              <h3>ESTADO</h3>
+            </div>
+             
+              
+            
+             <Estado className="mx-auto" ></Estado>
+             
+                  
+                  
+              
+            
+
+
           </Container>
+
+          
+
+
         </div>
       </div>
     );

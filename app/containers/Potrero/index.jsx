@@ -60,23 +60,14 @@ class Potrero extends Component {
             <Row>
               <Card body outline color="secondary" className="p-3 mb-2">
                 <CardTitle><strong>Estado Actual</strong></CardTitle>
-                <CardText>Aca esta el estado actual</CardText>
+                <CardText></CardText>
                     <CardText> 
                     <Estado  key={potrero.Nombre}></Estado>
                     </CardText>
               </Card>
             </Row>
 
-            <Row>
-              <Card body outline color="secondary" className="p-3 mb-2">
-                <CardTitle><strong>Historial</strong></CardTitle>
-                <CardText>Aca esta el Historial del potrero</CardText>
-                    <CardText> 
-                      <span> {potrero.IdPotrero}</span>
-                      <span> {potrero.Descripcion}</span>
-                    </CardText>
-              </Card>
-            </Row>
+           
          
 
             
