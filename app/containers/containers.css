@@ -41,3 +41,7 @@
       transform: rotate(360deg);
     }
   }
+
+  .color-blue{
+  background-color: #203A45;
+  }

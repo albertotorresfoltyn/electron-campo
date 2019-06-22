@@ -23,9 +23,9 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <div className={styles.container} data-tid="container">
-        <Jumbotron className="text-center">
-           <strong><h1 className="display-3">Buenaventura Ñangarekohápe</h1></strong>
+        <div data-tid="container ">
+        <Jumbotron  className={styles.colorBlue} >
+           <strong><h1 className="display-4">Buenaventura Ñangarekohápe</h1></strong>
        </Jumbotron>
           <Container>
             {

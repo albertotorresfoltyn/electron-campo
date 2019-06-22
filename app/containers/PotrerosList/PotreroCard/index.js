@@ -10,25 +10,15 @@ const Example = ( {potrero,...props }) => {
   const { Nombre, Descripcion, Superficie, Calidad, Codigo } = potrero
 
   return (
-    <Card {...props}>
-      <Card.Header className="bg-sucess text-black"> <h4 className="text-uppercase">{Nombre}</h4>
+    <Card {...props} className="mb-2">
+      <Card.Header className="bg-info text-white p-0 m-0"> <span className="text-uppercase">{Nombre}</span>
       </Card.Header>
 
-      <Card.Body className="text">
-        
-      
-        <p><strong>Nombre:</strong> {Nombre}</p>
-        <p><strong>Descripción:</strong> {Descripcion}</p>
+      <Card.Body className="text p-1">
         <p><strong>Superficie:</strong> {Superficie}</p>
         <p><strong>Calidad:</strong> {Calidad}</p>
-         
-      
-      
+        <p><strong>Total Cabezas:</strong> 150</p>
       </Card.Body>
-
-      <Card.Footer>
-        <Button variant="primary">Entrar</Button>
-      </Card.Footer>
     </Card>
   )
 }
