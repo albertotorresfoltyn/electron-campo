@@ -10,7 +10,7 @@ const Example = ({campo, ...props }) => {
   return (
    
    <Card {...props}>
-      <Card.Header  className="bg-info text-white"> <h4 className="text-uppercase">{Nombre}</h4></Card.Header>
+      <Card.Header  className="bg-primary text-white"> <h4 className="text-uppercase">{Nombre}</h4></Card.Header>
       <Card.Body className="text">
         <p><strong>Superficie:</strong> {Superficie}</p>
         <p><strong>Cantidad de Potreros:</strong> {Total}</p>

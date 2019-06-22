@@ -34,9 +34,7 @@ class Potrero extends Component {
     return (
       <div>
         <div  data-tid="container">
-        <Breadcrumb>
-          <BreadcrumbItem active>POTRERO {potrero.Nombre} - {potrero.Codigo}</BreadcrumbItem>
-        </Breadcrumb>
+        <Breadcrumb className="blueColor"><BreadcrumbItem active>POTRERO {potrero.Nombre} - {potrero.Codigo}</BreadcrumbItem>        </Breadcrumb>
 
         <Container>
           <Row className="mb-3">

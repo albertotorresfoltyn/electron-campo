@@ -6,6 +6,7 @@ import { Button, Row, Col, Container, Breadcrumb, BreadcrumbItem } from 'reactst
 import DataService from '../../services/DataService';
 import PotreroCard from './PotreroCard';
 import Estado from '../../components/Estado';
+import Leyenda from '../../components/Leyenda';
 import {
   withRouter
 } from 'react-router-dom';
@@ -26,9 +27,7 @@ class PotrerosList extends Component {
     return (
       <div>
         
-        <Breadcrumb>
-            <BreadcrumbItem active>LA EUGENIA</BreadcrumbItem>
-        </Breadcrumb>
+        <Breadcrumb ><BreadcrumbItem active >LA EUGENIA</BreadcrumbItem></Breadcrumb>
 
         <div className={styles.container} data-tid="container">
           <Container fluid className="text-center">
@@ -50,9 +49,13 @@ class PotrerosList extends Component {
                 
                 
                 <Breadcrumb><BreadcrumbItem active>ESTADO</BreadcrumbItem></Breadcrumb>
-                <Estado className="mx-auto" ></Estado>
+                <Row>
+                  <Col><Estado className="mx-auto" ></Estado></Col>
+                  <Col><Leyenda className="mx-auto" ></Leyenda></Col>
 
+                </Row>
 
+                
               </Col>
             </Row>
 
