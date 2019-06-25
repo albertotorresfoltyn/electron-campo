@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.css';
 import { Button, Row, Col, Container, Jumbotron } from 'reactstrap';
+
 import DataService from '../services/DataService';
 import CampoCard from './CampoCard';
 import {
@@ -24,7 +25,7 @@ class Home extends Component {
     return (
       <div>
         <div data-tid="container ">
-        <Jumbotron  className={styles.colorBlue} >
+        <Jumbotron  className={styles.colorBlue } >
            <strong><h1 className="display-4">Buenaventura Ñangarekohápe</h1></strong>
        </Jumbotron>
           <Container>

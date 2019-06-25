@@ -11,7 +11,7 @@ const Example = ( {potrero,...props }) => {
 
   return (
     <Card {...props} className="mb-2">
-      <Card.Header className="bg-info text-white p-0 m-0"> <span className="text-uppercase">{Nombre}</span>
+      <Card.Header className="bg-primary text-white p-0 m-0"> <span className="text-uppercase">{Nombre}</span>
       </Card.Header>
 
       <Card.Body className="text p-1">
