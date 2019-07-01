@@ -1,0 +1,16 @@
+
+    
+.bg-fulldark  {
+  background-color:#000 ;
+}
+
+.bg-dark  ol{
+  background-color:#343a40 ;
+}
+.text-white li {
+  color: white;
+}
+
+.withoutborder{
+  border-radius: 0 !important;
+}

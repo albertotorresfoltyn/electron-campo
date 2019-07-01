@@ -15,14 +15,14 @@ class MenuedLayout extends React.Component {
     const { history } = this.props
     return (
       <div>
-        <Navbar color="light" light expand="md">
+        <Navbar className="bg-fulldark text-white" expand="md">
           <NavbarBrand
             onClick={() => {
               history.push('/')
             }}
           >
             {' '}
-            <i class="fas fa-home"> </i>
+            <i className="fas fa-home"> </i>
           </NavbarBrand>{' '}
           <NavbarBrand
             onClick={() => {
@@ -30,7 +30,7 @@ class MenuedLayout extends React.Component {
             }}
           >
             {' '}
-            <i class="fas fa-arrow-left"> </i>
+            <i className="fas fa-arrow-left"> </i>
           </NavbarBrand>{' '}
         </Navbar>
         {this.props.children}

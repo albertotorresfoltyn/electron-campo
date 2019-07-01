@@ -25,7 +25,7 @@ class Home extends Component {
     return (
       <div>
         <div data-tid="container ">
-        <Jumbotron  className={styles.colorBlue } >
+        <Jumbotron  className="withoutborder bg-dark text-white text-center" >
            <strong><h1 className="display-4">Buenaventura Ñangarekohápe</h1></strong>
        </Jumbotron>
           <Container>

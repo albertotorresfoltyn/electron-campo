@@ -27,7 +27,7 @@ class PotrerosList extends Component {
     return (
       <div>
         
-        <Breadcrumb ><BreadcrumbItem active >LA EUGENIA</BreadcrumbItem></Breadcrumb>
+        <Breadcrumb className="text-white bg-dark" ><BreadcrumbItem active >LA EUGENIA</BreadcrumbItem></Breadcrumb>
 
         <div className={styles.container} data-tid="container">
           <Container fluid className="text-center">

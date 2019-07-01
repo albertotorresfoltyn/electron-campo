@@ -61,6 +61,20 @@ export default class DataService {
         return objects;
       }
     }
+ // Devuelve listado de categoria hacienda
+ static getCategoriaHacienda() {
+  const db = SQL.connect();
+  if (db) {
+    const rows = db.exec(`SELECT * FROM \`CategoriaHacienda\``);
+    debugger
+    const objects = rowsToMagic(rows);
+    return objects;
+  }
+}
+
+
+
+
 
   }
 
