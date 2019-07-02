@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button, Row, Col, Container, Breadcrumb, BreadcrumbItem,  Card, CardTitle, CardText  } from 'reactstrap';
 import DataService from '../../services/DataService';
 import Estado from '../../components/Estado';
+import Leyenda from '../../components/Leyenda';
 
 import {
   withRouter
@@ -56,14 +57,26 @@ class Potrero extends Component {
             </Row>
 
             <Row>
+            <Col>
               <Card body outline color="secondary" className="p-3 mb-2">
                 <CardTitle><strong>Estado Actual</strong></CardTitle>
-                <CardText></CardText>
+              
                     <CardText> 
-                    <Estado  key={potrero.Nombre}></Estado>
+                    <Row>
+                    <Col> <Estado  key={potrero.Nombre}></Estado></Col>
+                    <Col> <Leyenda className="mx-auto" ></Leyenda></Col>
+
+                </Row>
+
+                   
+                   
                     </CardText>
               </Card>
+              </Col>
+             
             </Row>
+           
+
 
            
          

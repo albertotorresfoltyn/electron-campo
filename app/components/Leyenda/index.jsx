@@ -26,7 +26,7 @@ class Leyenda extends Component {
       <ListGroup>
 
       {this.state.categorias.map(cat => (
-            <ListGroupItem className="text-light p-0 m-0 btn-sm" style={{ backgroundColor : cat.Color}}  >{cat.Nombre}</ListGroupItem>
+            <ListGroupItem className="text-light p-2 m-0" style={{ backgroundColor : cat.Color}}  >{cat.Nombre}</ListGroupItem>
 
           ))}  
       
