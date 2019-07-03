@@ -7,7 +7,7 @@ import { ListGroup, ListGroupItem } from 'reactstrap';
 import CardImg from 'react-bootstrap/CardImg';
 
 const Example = ( {potrero,...props }) => {
-  const { Nombre, Descripcion, Superficie, Calidad, Codigo } = potrero
+  const { Nombre, Descripcion, Superficie, Calidad, Codigo, Categoria, Rendimiento, CantidadSaleros, CantidadAguadas, CargaSoportada } = potrero
 
   return (
     <Card {...props} className="mb-2">
@@ -18,6 +18,9 @@ const Example = ( {potrero,...props }) => {
         <p><strong>Superficie:</strong> {Superficie}</p>
         <p><strong>Calidad:</strong> {Calidad}</p>
         <p><strong>Total Cabezas:</strong> 150</p>
+        <p><strong>Cantidad Saleros:</strong>{CantidadSaleros}</p>
+        <p><strong>Cantidad Aguadas:</strong>{CantidadAguadas}</p>
+        <p><strong>Carga soportada:</strong>{CargaSoportada}</p>
       </Card.Body>
     </Card>
   )
