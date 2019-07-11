@@ -43,10 +43,11 @@
   "build": {
     "productName": "SAG",
     "artifactName": "SAG-Setup-${version}.${ext}",
-    "appId": "com.celltrak.cmfl",
+    "appId": "com.epa.sag",
     "files": [
       "dist/",
       "node_modules/",
+      "db/**",
       "app.html",
       "main.prod.js",
       "main.prod.js.map",
@@ -70,10 +71,6 @@
     "win": {
       "asar": true,
       "publisherName": "EPA",
-      "signingHashAlgorithms": [
-        "sha256"
-      ],
-      "certificateFile": "./certificates/MySPC.pfx",
       "target": [
         "nsis"
       ]
@@ -178,9 +175,11 @@
     "pkg-up": "^2.0.0",
     "react": "^16.4.0",
     "react-bootstrap": "^1.0.0-beta.9",
+    "react-date-picker": "^7.6.0",
     "react-dom": "^16.4.0",
     "react-hot-loader": "^4.2.0",
     "react-loading-overlay": "^0.3.0",
+    "react-modern-datepicker": "^1.0.0",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

@@ -80,7 +80,7 @@ app.on('ready', async () => {
       mainWindow.webContents.openDevTools();
     }
     mainWindow.setMenu(null);
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
     mainWindow.show();
     mainWindow.focus();
   });

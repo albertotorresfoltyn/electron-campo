@@ -1,4 +1,4 @@
-import SQL from '../db';
+import SQL from '../../db';
 
 const fs = require('fs');
 const path = require('path');
@@ -18,7 +18,7 @@ const rowsToMagic = (rows) => {
 };
 
 export default class DataService {
-  
+
   //Devuelve todos los campos
   static getCampos() {
     const db = SQL.connect();
@@ -44,7 +44,7 @@ export default class DataService {
     static getPotrero(potreroId) {
       const db = SQL.connect();
       if (db) {
-      
+
         const rows = db.exec(`SELECT * FROM \`Potrero\` where IdPotrero = ${  potreroId}`);
         const objects = rowsToMagic(rows);
         return objects[0];
@@ -55,7 +55,7 @@ export default class DataService {
     static getDetallePotrero(potreroId) {
       const db = SQL.connect();
       if (db) {
-      
+
         const rows = db.exec(`SELECT * FROM \`PotreroDetalle\` where IdPotrero = ${  potreroId}`);
         const objects = rowsToMagic(rows);
         return objects;

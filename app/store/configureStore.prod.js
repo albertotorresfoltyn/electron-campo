@@ -18,13 +18,9 @@ const configureStore = (initialState?: rootReducer) => {
   if (process.env.NODE_ENV !== 'test') {
     middleware.push(logger);
   }
-  const sagaMiddleware = createSagaMiddleware();
-
   // Router Middleware
   const router = routerMiddleware(history);
   middleware.push(router);
-  middleware.push(sagaMiddleware);
-
   // Redux DevTools Configuration
   const actionCreators = {
     ...routerActions

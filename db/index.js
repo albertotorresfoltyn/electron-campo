@@ -1,15 +1,14 @@
-import {
+import electron, {
   app,
   BrowserWindow,
-  ipcMain
+  ipcMain,
 } from 'electron';
-import electron from 'electron';
-console.log('app', app);
+
 /* eslint-disable func-names */
 const fs = require('fs');
 const SQL = require('sql.js');
-const isDev = require('electron-is-dev');
 
+const isDev = (process.env.NODE_ENV !== 'production');
 
 /**
  * The following two functions extends the sql object without inheritance... JAVASCRIPT MAGIC!
@@ -37,13 +36,17 @@ SQL.dbClose = function (databaseHandle, databaseFileName) {
 };
 
 SQL.connect = function () {
-  const dbPath = (isDev) ? '/db' : `${electron.remote.app.getPath('userData')}/stores`;
-  const dbName = '/sagDB.db'
-  const createDb = function (dbPath) {
+  const dbPath = (isDev) ? '/../db' : `${electron.remote.app.getPath('userData')}/`;
+  console.log('estoy en desa?', isDev);
+  const dbName = '/sagDB.db';
+  const dbFilePath = `${__dirname}${dbPath}${dbName}`;
+  const createDb = function () {
     // Create a database.
     const db = new SQL.Database();
+    const ddlpath = './db/schema.sql';
+    console.log('ELPAAATTTH-------------------------------------', ddlpath, process.env.NODE_ENV);
     const query = fs.readFileSync(
-      path.join(__dirname, 'db', 'schema.sql'),
+      ddlpath,
       'utf8',
     );
     const result = db.exec(query);
@@ -54,30 +57,29 @@ SQL.connect = function () {
     ) {
       console.log('Created a new database.');
       return db;
-    } else {
-      console.log('Database creation failed.');
-      return null;
     }
+    console.log('Database creation failed.');
+    return null;
   };
-  const db = SQL.dbOpen(`${__dirname}${dbPath}${dbName}`);
+  const db = SQL.dbOpen(dbFilePath);
   if (db === null) {
     /* The file doesn't exist so create a new database. */
     return createDb(`${dbPath}${dbName}`);
-  } else {
-    /*
+  }
+  /*
       The file is a valid sqlite3 database. This simple query will demonstrate
       whether it's in good health or not.
     */
-    const query = 'SELECT count(*) as `count` FROM `sqlite_master`';
-    const row = db.exec(query);
-    const tableCount = parseInt(row[0].values);
-    if (tableCount === 0) {
-      console.log('The file is an empty SQLite3 database.');
-      createDb(`${dbPath}${dbName}`);
-    } else {
-      console.log('The database has', tableCount, 'tables.');
-    }
-    return db;
+  const query = 'SELECT count(*) as `count` FROM `sqlite_master`';
+  const row = db.exec(query);
+  // eslint-disable-next-line radix
+  const tableCount = parseInt(row[0].values);
+  if (tableCount === 0) {
+    console.log('The file is an empty SQLite3 database.');
+    createDb(`${dbPath}${dbName}`);
+  } else {
+    console.log('The database has', tableCount, 'tables.');
   }
+  return db;
 };
 export default SQL;
