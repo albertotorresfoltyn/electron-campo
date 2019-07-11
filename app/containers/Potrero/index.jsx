@@ -53,7 +53,9 @@ class Potrero extends Component {
   }
 
   render () {
-    const { potrero } = this.state
+    const { potrero } = this.state;
+    const { Nombre, Descripcion, Superficie, Calidad, Codigo, Categoria, Rendimiento, CantidadSaleros, CantidadAguadas, CargaSoportada } = potrero
+
     return (
       <div>
         <div data-tid="container">
@@ -89,10 +91,14 @@ class Potrero extends Component {
                   <strong>Resumen</strong>
                 </CardTitle>
                 <CardText>Aca esta el resumen del potrero</CardText>
-                <CardText>
-                  <span> {potrero.IdPotrero}</span>
-                  <span> {potrero.Descripcion}</span>
-                </CardText>
+                    <CardText>
+                      <span> {potrero.IdPotrero}</span>
+                      <span> {potrero.Descripcion}</span>
+                      <p><strong>Rendimiento:</strong> {Rendimiento}</p>
+                      <p><strong>CantidadSaleros:</strong> {CantidadSaleros}</p>
+                      <p><strong>CantidadAguadas:</strong> {CantidadAguadas}</p>
+                      <p><strong>CargaSoportada:</strong> {CargaSoportada}</p>
+                    </CardText>
               </Card>
             </Row>
 
