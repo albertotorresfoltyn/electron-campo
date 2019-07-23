@@ -16,7 +16,7 @@ import {
   CardText
 } from 'reactstrap';
 import ModernDatepicker from 'react-modern-datepicker'
-
+import MovementDiff from './MovementDiff';
 
 export default class MovementDialog extends Component {
   constructor(props) {
@@ -45,7 +45,6 @@ export default class MovementDialog extends Component {
               <label>
                 Fecha del movimiento:{' '}
                 <ModernDatepicker
-                  date={new Date()}
                   format={'DD-MM-YYYY'}
                   showBorder
                   style={{ zIndex: 1000 }}
@@ -68,12 +67,30 @@ export default class MovementDialog extends Component {
               </label>
             </Col>
           </Row>
+          <Row>
+            <Col>
+              <MovementDiff
+                type='add'
+                initialValues={[{type: 'vaca', qtty: 10}, {type: 'toro', qtty: 20}, {type: 'ternero', qtty: 30}, {type:'ternera', qtty: 40} ]}
+                differentialValues={[5, 10, 15, 20]}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <MovementDiff
+                type='del'
+                initialValues={[{ type: 'vaca', qtty: 15 }, { type: 'toro', qtty: 20 }, { type: 'ternero', qtty: 30 }, { type: 'ternera', qtty: 40 }]}
+                differentialValues={[5, 10, 15, 20]}
+              />
+            </Col>
+          </Row>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.toggle}>
+          <Button color="primary" onClick={this.props.toggle}>
             Do Something
                 </Button>{' '}
-          <Button color="secondary" onClick={this.toggle}>
+          <Button color="secondary" onClick={this.props.toggle}>
             Cancel
                 </Button>
         </ModalFooter>
