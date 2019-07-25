@@ -12,10 +12,9 @@ const Example = ({campo, ...props }) => {
    <Card {...props}>
       <Card.Header  className="bg-primary text-white"> <h4 className="text-uppercase">{Nombre}</h4></Card.Header>
       <Card.Body className="text">
-        <p><strong>Superficie:</strong> {Superficie}</p>
-        <p><strong>Cantidad de Potreros:</strong> {Total}</p>
-        <p><strong>Descripción:</strong> {Descripcion}</p>
-       
+        <p> {Superficie}<strong> ha</strong></p>
+        <p> {Total}<strong> potreros</strong></p>
+         
       </Card.Body>
     </Card>
   )

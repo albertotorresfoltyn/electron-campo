@@ -15,9 +15,8 @@ const Example = ( {potrero,...props }) => {
       </Card.Header>
 
       <Card.Body className="text p-1">
-        <p><strong>Superficie:</strong> {Superficie}</p>
-        <p><strong>Calidad:</strong> {Calidad}</p>
-        <p><strong>Total Cabezas:</strong> 150</p>
+        <p> {Superficie}<strong> ha</strong></p>
+        <p> 150<strong> cabezas</strong></p>
       </Card.Body>
     </Card>
   )
