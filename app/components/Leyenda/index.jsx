@@ -13,7 +13,7 @@ class Leyenda extends Component {
 
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({ categorias: DataService.getCategoriaHacienda() });
   
   }

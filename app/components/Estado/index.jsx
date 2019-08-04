@@ -9,7 +9,7 @@ class Estado extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      categorias: [],
+      categorias: [],J
     };
 
 

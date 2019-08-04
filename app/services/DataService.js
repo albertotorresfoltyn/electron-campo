@@ -66,7 +66,7 @@ export default class DataService {
   const db = SQL.connect();
   if (db) {
     const rows = db.exec(`SELECT * FROM \`CategoriaHacienda\``);
-    debugger
+
     const objects = rowsToMagic(rows);
     return objects;
   }
