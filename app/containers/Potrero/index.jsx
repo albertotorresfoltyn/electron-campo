@@ -80,9 +80,9 @@ class Potrero extends Component {
                       <span> {potrero.IdPotrero}</span>
                       <span> {potrero.Descripcion}</span>
                       <p><strong>Rendimiento:</strong> {Rendimiento}</p>
-                      <p><strong>CantidadSaleros:</strong> {CantidadSaleros}</p>
-                      <p><strong>CantidadAguadas:</strong> {CantidadAguadas}</p>
-                      <p><strong>CargaSoportada:</strong> {CargaSoportada}</p>
+                      <p><strong>Cantidad Saleros:</strong> {CantidadSaleros}</p>
+                      <p><strong>Cantidad Aguadas:</strong> {CantidadAguadas}</p>
+                      <p><strong>Carga Soportada:</strong> {CargaSoportada}</p>
                     </CardText>
               </Card>
             </Row>
