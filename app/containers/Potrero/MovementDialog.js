@@ -31,6 +31,8 @@ export default class MovementDialog extends Component {
   constructor(props) {
     super(props);
 
+    this.changesValues = this.changesValues.bind(this);
+
     this.dropdownToggleCampo = this.dropdownToggleCampo.bind(this);
     this.changeValueCampo = this.changeValueCampo.bind(this);
 
@@ -41,7 +43,13 @@ export default class MovementDialog extends Component {
       openDropCampo: false,
       openDropPotrero: false,
       campos: [],
-      potreros: []
+      potreros: [],
+      estadoPotreroOriginal:[
+        { type: "vaca", qtty: 100, total:100},
+        { type: "toro", qtty: 200 ,total:200},
+        { type: "ternero", qtty: 300,total:300},
+        { type: "ternera", qtty: 50 ,total:50}
+      ]  // recibirlo como prop, lo seteo desde prop aca
     };
   }
 
@@ -85,6 +93,15 @@ export default class MovementDialog extends Component {
       ? evt.target.value
       : this.state.financialGoal;
     this.setState({ financialGoal });
+  }
+
+  changesValues(type, value) {
+    debugger
+    const record  = this.state.estadoPotreroOriginal.find( v => v.type === type);
+    if(record){
+      record.total -= value;
+    }
+  
   }
 
   render() {
@@ -161,26 +178,16 @@ export default class MovementDialog extends Component {
        
               <MovementDiff
                 type="del"
-                initialValues={[
-                  { type: "vaca", qtty: 15 },
-                  { type: "toro", qtty: 20 },
-                  { type: "ternero", qtty: 30 },
-                  { type: "ternera", qtty: 40 }
-                ]}
-                differentialValues={[5, 10, 15, 20]}
+                initialValues={this.state.estadoPotreroOriginal}
+                changesValues={this.changesValues}
               />
                <Alert color="secondary">DESTINO </Alert>
            <span></span>
         
               <MovementDiff
                 type="add"
-                initialValues={[
-                  { type: "vaca", qtty: 10 },
-                  { type: "toro", qtty: 20 },
-                  { type: "ternero", qtty: 30 },
-                  { type: "ternera", qtty: 40 }
-                ]}
-                differentialValues={[5, 10, 15, 20]}
+                initialValues={this.state.estadoPotreroOriginal}
+                changesValues={this.changesValues}
               />
          
         </ModalBody>

@@ -7,6 +7,7 @@ export default class MovementDiff extends Component {
     return op ==='add'?q1+q2:q1-q2; //TODO: Verify if I can remove the q2 number to q2 to avoid negative values
   }
   render() {
+    debugger;
     return (
       <div>
 
@@ -23,22 +24,25 @@ export default class MovementDiff extends Component {
         <tbody>
 
         {
+        
         this.props.initialValues.map( (element, index) => {
-          const diff = this.props.differentialValues[index];
+          //const diff = this.props.differentialValues[index];
           return  <tr>
           <th scope="row">{element.type}</th>
-          <td>{this.props.type === 'add' ? '+' : '-'}{diff}</td>
+          <td>{element.qtty}</td>
           
           <td className=""> 
           
           <Input
             type="number"
             placeholder="Cant. ganado a mover"
+            onChange = { (e)=>{ this.props.changesValues( element.type, e.target.value)  } }
            
           />
         
         </td>
-          <td>{this.doFancyOp(element.qtty, diff, this.props.type)}</td>
+        <td>{element.total}</td>
+ 
         </tr>
           
           
