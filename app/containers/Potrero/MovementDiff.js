@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Table } from 'reactstrap';
 
 export default class MovementDiff extends Component {
 
@@ -8,15 +9,38 @@ export default class MovementDiff extends Component {
   render() {
     return (
       <div>
-      Tipo ganado   -   Cantidad Original   -   Cantidad movimiento -   Total Final
-      {
+
+
+<Table bordered>
+        <thead>
+          <tr>
+            <th>Tipo Ganado</th>
+            <th>Cant. Original</th>
+            <th>Cant. Movimiento</th>
+            <th>Total Final</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        {
         this.props.initialValues.map( (element, index) => {
           const diff = this.props.differentialValues[index];
-          return <div>
-            <div>{element.type}</div><div>{element.qtty}</div><div>{this.props.type === 'add' ? '+' : '-'}{diff}</div><div>{this.doFancyOp(element.qtty, diff, this.props.type)}</div>
-          </div>
+          return  <tr>
+          <th scope="row">{element.type}</th>
+          <td>{this.props.type === 'add' ? '+' : '-'}{diff}</td>
+          
+          <td>{this.doFancyOp(element.qtty, diff, this.props.type)}</td>
+          <td></td>
+        </tr>
+          
+          
+         
         })
       }
+        </tbody>
+      </Table>
+ 
+    
       </div>
     )
   }

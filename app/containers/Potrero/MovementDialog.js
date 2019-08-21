@@ -20,7 +20,8 @@ import {
   Table,
   CardHeader,
   CardFooter,
-  CardBody
+  CardBody,
+  Alert 
 } from "reactstrap";
 import ModernDatepicker from "react-modern-datepicker";
 import MovementDiff from "./MovementDiff";
@@ -92,6 +93,7 @@ export default class MovementDialog extends Component {
         isOpen={this.props.isOpen}
         toggle={this.props.toggle}
         className={this.props.className}
+        size="lg"
       >
         <ModalHeader toggle={this.toggle}>Nuevo movimiento</ModalHeader>
         <ModalBody>
@@ -155,74 +157,8 @@ export default class MovementDialog extends Component {
             </CardBody>
           </Card>
 
-          <Card>
-            <CardHeader>ORIGEN </CardHeader>
-            <CardBody>
-              <CardText>
-                <Row>
-                  <Table>
-                    <thead>
-                      <tr>
-                        <th>Hacienda</th>
-                        <th>Cant. Original</th>
-                        <th>Cant. Movimiento</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </Row>
-              </CardText>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader>DESTINO </CardHeader>
-            <CardBody>
-              <CardText>
-                <Row>
-                  <Col></Col>
-                  <Col></Col>
-                </Row>
-              </CardText>
-            </CardBody>
-          </Card>
-
-          <Row>
-            <Col>
-              <MovementDiff
-                type="add"
-                initialValues={[
-                  { type: "vaca", qtty: 10 },
-                  { type: "toro", qtty: 20 },
-                  { type: "ternero", qtty: 30 },
-                  { type: "ternera", qtty: 40 }
-                ]}
-                differentialValues={[5, 10, 15, 20]}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+          <Alert  className="mt-3" color="secondary">ORIGEN</Alert>
+       
               <MovementDiff
                 type="del"
                 initialValues={[
@@ -233,8 +169,22 @@ export default class MovementDialog extends Component {
                 ]}
                 differentialValues={[5, 10, 15, 20]}
               />
-            </Col>
-          </Row>
+               <Alert color="secondary">
+               DESTINO
+      </Alert>
+           <span></span>
+        
+              <MovementDiff
+                type="add"
+                initialValues={[
+                  { type: "vaca", qtty: 10 },
+                  { type: "toro", qtty: 20 },
+                  { type: "ternero", qtty: 30 },
+                  { type: "ternera", qtty: 40 }
+                ]}
+                differentialValues={[5, 10, 15, 20]}
+              />
+         
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.props.toggle}>
