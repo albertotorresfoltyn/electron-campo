@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'reactstrap';
+import { Table, FormGroup, Label, Input } from 'reactstrap';
 
 export default class MovementDiff extends Component {
 
@@ -29,8 +29,16 @@ export default class MovementDiff extends Component {
           <th scope="row">{element.type}</th>
           <td>{this.props.type === 'add' ? '+' : '-'}{diff}</td>
           
+          <td className=""> 
+          
+          <Input
+            type="number"
+            placeholder="Cant. ganado a mover"
+           
+          />
+        
+        </td>
           <td>{this.doFancyOp(element.qtty, diff, this.props.type)}</td>
-          <td></td>
         </tr>
           
           

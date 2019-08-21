@@ -157,7 +157,7 @@ export default class MovementDialog extends Component {
             </CardBody>
           </Card>
 
-          <Alert  className="mt-3" color="secondary">ORIGEN</Alert>
+          <Alert className="mt-3" color="secondary"  >ORIGEN</Alert>
        
               <MovementDiff
                 type="del"
@@ -169,9 +169,7 @@ export default class MovementDialog extends Component {
                 ]}
                 differentialValues={[5, 10, 15, 20]}
               />
-               <Alert color="secondary">
-               DESTINO
-      </Alert>
+               <Alert color="secondary">DESTINO </Alert>
            <span></span>
         
               <MovementDiff
