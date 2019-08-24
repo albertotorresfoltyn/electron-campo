@@ -51,7 +51,6 @@ export default class MovementDialog extends Component {
         { type: "ternera", qtty: 50,cantMov:0, total: 50 }
       ], // recibirlo como prop, lo seteo desde prop aca
       estadoPotreroDestino: [
-        { type: "vaca", qtty: 100,cantMov:0, total: 100 },
         { type: "toro", qtty: 200,cantMov:0, total: 200 },
         { type: "ternero", qtty: 300,cantMov:0, total: 300 },
         { type: "ternera", qtty: 50,cantMov:0, total: 50 }
@@ -102,7 +101,7 @@ export default class MovementDialog extends Component {
   }
 
   changesValues(type, value) {
-    debugger;
+    
     const recordO = this.state.estadoPotreroOrigen.find(v => v.type === type);
     if (recordO) {
       if(value > recordO.qtty){
@@ -129,7 +128,10 @@ export default class MovementDialog extends Component {
       }
       else{
         // el tipo de hacienda no existe en el destino y tengo que agregarla 
-
+        const regNuevo = { type: type, qtty: 0,cantMov:parseInt(value), total: parseInt(value) };
+        const arrayPotreroD = this.state.estadoPotreroDestino;
+        arrayPotreroD.push(regNuevo);
+        this.setState({ estadoPotreroOrigen : arrayPotrero, estadoPotreroDestino : arrayPotreroD});
 
       }
      
@@ -227,10 +229,10 @@ export default class MovementDialog extends Component {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.props.toggle}>
-            Do Something
+          Guardar Movimiento
           </Button>{" "}
           <Button color="secondary" onClick={this.props.toggle}>
-            Cancel
+          Cancelar
           </Button>
         </ModalFooter>
       </Modal>
