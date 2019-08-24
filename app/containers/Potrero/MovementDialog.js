@@ -38,6 +38,8 @@ export default class MovementDialog extends Component {
 
     this.dropdownTogglePotrero = this.dropdownTogglePotrero.bind(this);
     this.changeValuePotrero = this.changeValuePotrero.bind(this);
+    this.guardarMovimiento = this.guardarMovimiento.bind(this);
+    
 
     this.state = {
       openDropCampo: false,
@@ -82,6 +84,16 @@ export default class MovementDialog extends Component {
     });
   }
 
+  // Guarda el moviemiento en BD 
+  guardarMovimiento() {
+    // validaciones
+    
+    // guardar los movimientos
+    DataService.guardarMovimiento();
+    //cerrar el modal  
+    this.props.toggle();
+  }
+
   cargarPotreros(idCampo) {
     debugger
     const potreros = DataService.getPotreros(idCampo);
@@ -98,6 +110,7 @@ export default class MovementDialog extends Component {
     this.setState({ campoSelected: e.currentTarget.textContent });
     this.cargarPotreros(e.currentTarget.id);
   }
+
   changeValuePotrero(e) {
     this.setState({ potreroSelected: e.currentTarget.textContent });
     this.loadProtreros();
@@ -239,8 +252,8 @@ export default class MovementDialog extends Component {
           />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.props.toggle}>
-          Guardar Movimiento
+          <Button color="primary" onClick={this.guardarMovimiento}>
+            Guardar Movimiento
           </Button>{" "}
           <Button color="secondary" onClick={this.props.toggle}>
           Cancelar

@@ -94,8 +94,42 @@ export default class DataService {
         { type: "ternera", qtty: 2000,cantMov:0, total: 2000 }
       ]
     }
+  }
+
+  static guardarMovimiento() {
+    debugger
+    const db = SQL.connect();
+    if (db) {
+      
+
+      try {
+
+        db.run("INSERT INTO Movimiento VALUES   VALUES (\
+          '2038',\
+          '10/10/2019',\
+          'detalle',\
+          '{}',\
+          '{}'\
+           )"
+        
+      );
+        
+
+
     
-  
+    
+
+      debugger 
+      console.log(rows);
+        
+      } catch (error) {
+        
+      }
+     
+     
+    }
+ 
+   
   }
 
 
