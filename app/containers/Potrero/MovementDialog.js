@@ -57,10 +57,12 @@ export default class MovementDialog extends Component {
 
     this.cargarPotreros(campos[0].IdCampo);
     this.loadProtreros();
-   
-   
   }
-  
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ tipoMovimiento: nextProps.tipoMovimiento});
+ }
+
   loadProtreros (){
     const potreroOrigen = DataService.getDetalleByPotrero(this.state.potreroSelected);
     const potreroDestino = DataService.getDetalleByPotrero(this.props.IdPotrero);
@@ -156,7 +158,7 @@ export default class MovementDialog extends Component {
         className={this.props.className}
         size="lg"
       >
-        <ModalHeader toggle={this.toggle}>Nuevo movimiento</ModalHeader>
+        <ModalHeader toggle={this.toggle}>Nuevo movimiento del tipo {this.props.tipoMovimiento} </ModalHeader>
         <ModalBody>
           <Card>
             <CardHeader>
