@@ -27,10 +27,12 @@ import MovementDialog from './MovementDialog';
 class Potrero extends Component {
   constructor (props) {
     super(props)
+ 
     this.state = {
       potrero: DataService.getPotrero(this.props.match.params.potreroId),
       modalVisible: false,
     };
+    debugger
     this.toggle = this.toggle.bind(this);
   }
 
@@ -108,7 +110,7 @@ class Potrero extends Component {
                 </Card>
               </Col>
             </Row>
-            <MovementDialog isOpen={this.state.modalVisible} toggle={this.toggle} campos={this.state.campos} potreros={this.state.potreros} potreroAux={this.state.potreroAux} />
+            <MovementDialog isOpen={this.state.modalVisible} toggle={this.toggle} campos={this.state.campos} IdPotrero={this.state.potrero.IdPotrero} potreroAux={this.state.potreroAux} />
           </Container>
         </div>
       </div>

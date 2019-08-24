@@ -20,7 +20,7 @@ export default class MovementDiff extends Component {
           </thead>
           <tbody>
             {this.props.initialValues.map((element, index) => {
-              //const diff = this.props.differentialValues[index];
+            
               return (
                 <tr>
                   <th scope="row">{element.type}</th>
@@ -31,6 +31,7 @@ export default class MovementDiff extends Component {
                       <Input
                         type="number"
                         placeholder="Cant. ganado a mover"
+                        value = {element.cantMov}
                         onChange={e => {
                           this.props.changesValues(
                             element.type,

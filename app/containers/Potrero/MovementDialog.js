@@ -44,27 +44,28 @@ export default class MovementDialog extends Component {
       openDropPotrero: false,
       campos: [],
       potreros: [],
-      estadoPotreroOrigen: [
-        { type: "vaca", qtty: 100, cantMov:0, total: 100 },
-        { type: "toro", qtty: 200,cantMov:0, total: 200 },
-        { type: "ternero", qtty: 300, cantMov:0,total: 300 },
-        { type: "ternera", qtty: 50,cantMov:0, total: 50 }
-      ], // recibirlo como prop, lo seteo desde prop aca
-      estadoPotreroDestino: [
-        { type: "toro", qtty: 200,cantMov:0, total: 200 },
-        { type: "ternero", qtty: 300,cantMov:0, total: 300 },
-        { type: "ternera", qtty: 50,cantMov:0, total: 50 }
-      ] // recibirlo como prop, lo seteo desde prop aca
+      estadoPotreroOrigen: [], // recibirlo como prop, lo seteo desde prop aca
+      estadoPotreroDestino: [] // recibirlo como prop, lo seteo desde prop aca
     };
   }
 
   componentDidMount() {
     /*  Campos */
     const campos = DataService.getCampos();
-    this.setState({ campos: campos });
+    this.setState({ campos: campos});
     this.state.campoSelected = campos[0].Nombre;
 
     this.cargarPotreros(campos[0].IdCampo);
+    this.loadProtreros();
+   
+   
+  }
+  
+  loadProtreros (){
+    const potreroOrigen = DataService.getDetalleByPotrero(this.state.potreroSelected);
+    const potreroDestino = DataService.getDetalleByPotrero(this.props.IdPotrero);
+    this.setState({ estadoPotreroOrigen: potreroOrigen,estadoPotreroDestino:potreroDestino    });
+
   }
 
   dropdownToggleCampo() {
@@ -80,7 +81,13 @@ export default class MovementDialog extends Component {
   }
 
   cargarPotreros(idCampo) {
+    debugger
     const potreros = DataService.getPotreros(idCampo);
+    const idPotreroDestino = this.props.IdPotrero;
+    // sacar de este listado el potrero destino. 
+    potreros.splice(potreros.findIndex(function(i){
+      return i.IdPotrero === idPotreroDestino
+  }), 1);
     this.setState({ potreros: potreros });
     this.state.potreroSelected = potreros[0].Nombre;
   }
@@ -91,6 +98,7 @@ export default class MovementDialog extends Component {
   }
   changeValuePotrero(e) {
     this.setState({ potreroSelected: e.currentTarget.textContent });
+    this.loadProtreros();
   }
 
   handleChange(evt) {
@@ -109,6 +117,7 @@ export default class MovementDialog extends Component {
       }
       // Modificando el origen 
       recordO.total = recordO.qtty - value;
+      recordO.cantMov = value;
       const arrayPotrero = this.state.estadoPotreroOrigen;
       const indexPotrero = this.state.estadoPotreroOrigen.findIndex(v => v.type === type);
       arrayPotrero[indexPotrero] = recordO;
