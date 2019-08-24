@@ -21,7 +21,7 @@ import {
   CardHeader,
   CardFooter,
   CardBody,
-  Alert 
+  Alert
 } from "reactstrap";
 import ModernDatepicker from "react-modern-datepicker";
 import MovementDiff from "./MovementDiff";
@@ -44,12 +44,12 @@ export default class MovementDialog extends Component {
       openDropPotrero: false,
       campos: [],
       potreros: [],
-      estadoPotreroOriginal:[
-        { type: "vaca", qtty: 100, total:100},
-        { type: "toro", qtty: 200 ,total:200},
-        { type: "ternero", qtty: 300,total:300},
-        { type: "ternera", qtty: 50 ,total:50}
-      ]  // recibirlo como prop, lo seteo desde prop aca
+      estadoPotreroOriginal: [
+        { type: "vaca", qtty: 100, total: 100 },
+        { type: "toro", qtty: 200, total: 200 },
+        { type: "ternero", qtty: 300, total: 300 },
+        { type: "ternera", qtty: 50, total: 50 }
+      ] // recibirlo como prop, lo seteo desde prop aca
     };
   }
 
@@ -96,12 +96,19 @@ export default class MovementDialog extends Component {
   }
 
   changesValues(type, value) {
-    debugger
-    const record  = this.state.estadoPotreroOriginal.find( v => v.type === type);
-    if(record){
-      record.total -= value;
+    debugger;
+    const record = this.state.estadoPotreroOriginal.find(v => v.type === type);
+    if (record) {
+      if(value > record.qtty){
+        return;
+      }
+      record.total = record.qtty - value;
+      const arrayPotrero = this.state.estadoPotreroOriginal;
+      const indexPotrero = this.state.estadoPotreroOriginal.findIndex(v => v.type === type);
+      arrayPotrero[indexPotrero] = record;
+      this.setState({ estadoPotreroOriginal : arrayPotrero});
+
     }
-  
   }
 
   render() {
@@ -174,22 +181,23 @@ export default class MovementDialog extends Component {
             </CardBody>
           </Card>
 
-          <Alert className="mt-3" color="secondary"  >ORIGEN</Alert>
-       
-              <MovementDiff
-                type="del"
-                initialValues={this.state.estadoPotreroOriginal}
-                changesValues={this.changesValues}
-              />
-               <Alert color="secondary">DESTINO </Alert>
-           <span></span>
-        
-              <MovementDiff
-                type="add"
-                initialValues={this.state.estadoPotreroOriginal}
-                changesValues={this.changesValues}
-              />
-         
+          <Alert className="mt-3" color="secondary">
+            ORIGEN
+          </Alert>
+
+          <MovementDiff
+            type="del"
+            initialValues={this.state.estadoPotreroOriginal}
+            changesValues={this.changesValues}
+          />
+          <Alert color="secondary">DESTINO </Alert>
+          <span></span>
+
+          <MovementDiff
+            type="add"
+            initialValues={this.state.estadoPotreroOriginal}
+            changesValues={this.changesValues}
+          />
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.props.toggle}>
