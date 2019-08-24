@@ -44,7 +44,13 @@ export default class MovementDialog extends Component {
       openDropPotrero: false,
       campos: [],
       potreros: [],
-      estadoPotreroOriginal: [
+      estadoPotreroOrigen: [
+        { type: "vaca", qtty: 100, total: 100 },
+        { type: "toro", qtty: 200, total: 200 },
+        { type: "ternero", qtty: 300, total: 300 },
+        { type: "ternera", qtty: 50, total: 50 }
+      ], // recibirlo como prop, lo seteo desde prop aca
+      estadoPotreroDestino: [
         { type: "vaca", qtty: 100, total: 100 },
         { type: "toro", qtty: 200, total: 200 },
         { type: "ternero", qtty: 300, total: 300 },
@@ -97,16 +103,33 @@ export default class MovementDialog extends Component {
 
   changesValues(type, value) {
     debugger;
-    const record = this.state.estadoPotreroOriginal.find(v => v.type === type);
-    if (record) {
-      if(value > record.qtty){
+    const recordO = this.state.estadoPotreroOrigen.find(v => v.type === type);
+    if (recordO) {
+      if(value > recordO.qtty){
         return;
       }
-      record.total = record.qtty - value;
-      const arrayPotrero = this.state.estadoPotreroOriginal;
-      const indexPotrero = this.state.estadoPotreroOriginal.findIndex(v => v.type === type);
-      arrayPotrero[indexPotrero] = record;
-      this.setState({ estadoPotreroOriginal : arrayPotrero});
+      // Modificando el origen 
+      recordO.total = recordO.qtty - value;
+      const arrayPotrero = this.state.estadoPotreroOrigen;
+      const indexPotrero = this.state.estadoPotreroOrigen.findIndex(v => v.type === type);
+      arrayPotrero[indexPotrero] = recordO;
+
+      // modificar el destino 
+      const recordD = this.state.estadoPotreroDestino.find(v => v.type === type);
+      if(recordD){
+        // el tipo de hacienda existe en el destino 
+        recordD.total = recordD.qtty + parseInt(value);
+        const arrayPotreroD = this.state.estadoPotreroDestino;
+        const indexPotreroD = this.state.estadoPotreroDestino.findIndex(v => v.type === type);
+        arrayPotreroD[indexPotreroD] = recordD;
+        this.setState({ estadoPotreroOrigen : arrayPotrero, estadoPotreroDestino : arrayPotreroD});
+
+      }else{
+        // el tipo de hacienda no existe en el destino y tengo que agregarla 
+
+
+      }
+     
 
     }
   }
@@ -186,16 +209,16 @@ export default class MovementDialog extends Component {
           </Alert>
 
           <MovementDiff
-            type="del"
-            initialValues={this.state.estadoPotreroOriginal}
+            type="edit"
+            initialValues={this.state.estadoPotreroOrigen}
             changesValues={this.changesValues}
           />
           <Alert color="secondary">DESTINO </Alert>
           <span></span>
 
           <MovementDiff
-            type="add"
-            initialValues={this.state.estadoPotreroOriginal}
+            type="readonly"
+            initialValues={this.state.estadoPotreroDestino}
             changesValues={this.changesValues}
           />
         </ModalBody>
