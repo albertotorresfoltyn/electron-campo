@@ -39,7 +39,7 @@ export default class MovementDiff extends Component {
                         }}
                       />
                     ) : (
-                      <span> {element.qtty}</span>
+                      <span> {element.cantMov}</span>
                     )}
                   </td>
                   <td>{element.total}</td>

@@ -45,16 +45,16 @@ export default class MovementDialog extends Component {
       campos: [],
       potreros: [],
       estadoPotreroOrigen: [
-        { type: "vaca", qtty: 100, total: 100 },
-        { type: "toro", qtty: 200, total: 200 },
-        { type: "ternero", qtty: 300, total: 300 },
-        { type: "ternera", qtty: 50, total: 50 }
+        { type: "vaca", qtty: 100, cantMov:0, total: 100 },
+        { type: "toro", qtty: 200,cantMov:0, total: 200 },
+        { type: "ternero", qtty: 300, cantMov:0,total: 300 },
+        { type: "ternera", qtty: 50,cantMov:0, total: 50 }
       ], // recibirlo como prop, lo seteo desde prop aca
       estadoPotreroDestino: [
-        { type: "vaca", qtty: 100, total: 100 },
-        { type: "toro", qtty: 200, total: 200 },
-        { type: "ternero", qtty: 300, total: 300 },
-        { type: "ternera", qtty: 50, total: 50 }
+        { type: "vaca", qtty: 100,cantMov:0, total: 100 },
+        { type: "toro", qtty: 200,cantMov:0, total: 200 },
+        { type: "ternero", qtty: 300,cantMov:0, total: 300 },
+        { type: "ternera", qtty: 50,cantMov:0, total: 50 }
       ] // recibirlo como prop, lo seteo desde prop aca
     };
   }
@@ -118,13 +118,16 @@ export default class MovementDialog extends Component {
       const recordD = this.state.estadoPotreroDestino.find(v => v.type === type);
       if(recordD){
         // el tipo de hacienda existe en el destino 
-        recordD.total = recordD.qtty + parseInt(value);
+        const res= recordD.qtty + parseInt(value);
+        recordD.total = isNaN(res)?recordD.qtty: res;
+        recordD.cantMov = isNaN(parseInt(value))? 0: value;
         const arrayPotreroD = this.state.estadoPotreroDestino;
         const indexPotreroD = this.state.estadoPotreroDestino.findIndex(v => v.type === type);
         arrayPotreroD[indexPotreroD] = recordD;
-        this.setState({ estadoPotreroOrigen : arrayPotrero, estadoPotreroDestino : arrayPotreroD});
+         this.setState({ estadoPotreroOrigen : arrayPotrero, estadoPotreroDestino : arrayPotreroD});
 
-      }else{
+      }
+      else{
         // el tipo de hacienda no existe en el destino y tengo que agregarla 
 
 
