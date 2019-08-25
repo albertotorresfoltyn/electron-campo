@@ -82,4 +82,5 @@ SQL.connect = function () {
   }
   return db;
 };
+
 export default SQL;

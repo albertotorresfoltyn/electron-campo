@@ -1,13 +1,13 @@
-import SQL from "../../db";
+import SQL from '../../db';
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const rowsToMagic = rows => {
+const rowsToMagic = (rows) => {
   const results = rows[0];
   const { columns, values } = results;
   const result = [];
-  values.map(val => {
+  values.map((val) => {
     const elem = {};
     columns.map((colName, index) => {
       elem[colName] = val[index];
@@ -18,25 +18,21 @@ const rowsToMagic = rows => {
 };
 
 export default class DataService {
-  //Devuelve todos los campos
+  // Devuelve todos los campos
   static getCampos() {
     const db = SQL.connect();
     if (db) {
-      const rows = db.exec(
-        "SELECT Campo.*, COUNT() as Total FROM  `Campo` LEFT JOIN Potrero ON Campo.IdCampo = Potrero.IdCampo"
-      );
+      const rows = db.exec('SELECT Campo.*, COUNT() as Total FROM  `Campo` LEFT JOIN Potrero ON Campo.IdCampo = Potrero.IdCampo',);
       const objects = rowsToMagic(rows);
       return objects;
     }
   }
 
-  //Devuelve todos los potreros correspondientes a un campo
+  // Devuelve todos los potreros correspondientes a un campo
   static getPotreros(campoId) {
     const db = SQL.connect();
     if (db) {
-      const rows = db.exec(
-        `SELECT * FROM \`Potrero\` where idCampo = ${campoId}`
-      );
+      const rows = db.exec(`SELECT * FROM \`Potrero\` where idCampo = ${campoId}`,);
       const objects = rowsToMagic(rows);
       return objects;
     }
@@ -46,9 +42,7 @@ export default class DataService {
   static getPotrero(potreroId) {
     const db = SQL.connect();
     if (db) {
-      const rows = db.exec(
-        `SELECT * FROM \`Potrero\` where IdPotrero = ${potreroId}`
-      );
+      const rows = db.exec(`SELECT * FROM \`Potrero\` where IdPotrero = ${potreroId}`,);
       const objects = rowsToMagic(rows);
       return objects[0];
     }
@@ -58,9 +52,7 @@ export default class DataService {
   static getDetallePotrero(potreroId) {
     const db = SQL.connect();
     if (db) {
-      const rows = db.exec(
-        `SELECT * FROM \`PotreroDetalle\` where IdPotrero = ${potreroId}`
-      );
+      const rows = db.exec(`SELECT * FROM \`PotreroDetalle\` where IdPotrero = ${potreroId}`,);
       const objects = rowsToMagic(rows);
       return objects;
     }
@@ -69,14 +61,14 @@ export default class DataService {
   static getCategoriaHacienda() {
     const db = SQL.connect();
     if (db) {
-      const rows = db.exec(`SELECT * FROM \`CategoriaHacienda\``);
+      const rows = db.exec('SELECT * FROM `CategoriaHacienda`');
 
       const objects = rowsToMagic(rows);
       return objects;
     }
   }
   // POTRERO
-  //MOCK
+  // MOCK
   static getDetalleByPotrero(potreroId) {
 
     if(potreroId == 2042){
@@ -86,55 +78,28 @@ export default class DataService {
         { type: "ternera", qtty: 50,cantMov:0, total: 50 }
       ]
     }
-    else{
+
       return [
         { type: "vaca", qtty: 2000,cantMov:0, total: 2000 },
         { type: "toro", qtty: 3000,cantMov:0, total: 3000 },
         { type: "ternero", qtty: 1000,cantMov:0, total: 1000 },
         { type: "ternera", qtty: 2000,cantMov:0, total: 2000 }
       ]
-    }
+
   }
 
   static guardarMovimiento() {
-    debugger
+    debugger;
     const db = SQL.connect();
     if (db) {
-
-
       try {
-
-        db.exec(`INSERT INTO \`Movimiento\` VALUES  (\
-          \`121122134511551112\`\
-          \`2038\`,\
-          \`10/10/2019:00:00\`,\
-          \`detalle\`,\
-          \`{}\`,\
-          \`{}\`\
-           )`
-
-      );
-
-
-
-
-
-
-      debugger
-      console.log(rows);
-
+        const rows = db.exec('INSERT INTO `Movimiento` VALUES (10999, 2038, "20/10/2019","esta","{}","{}")');
+        db.close();
+        debugger;
+        console.log(rows);
       } catch (error) {
-
+        console.log(error)
       }
-
-
     }
-
-
   }
-
-
-
-
-
 }
