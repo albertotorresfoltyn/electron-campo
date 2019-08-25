@@ -88,12 +88,13 @@ export default class DataService {
 
   }
 
-  static guardarMovimiento() {
+  static guardarMovimiento(mov) {
     debugger;
     const db = SQL.connect();
+    const values = Object.values(mov);
     if (db) {
       try {
-        const rows = db.exec('INSERT INTO `Movimiento` VALUES (10999, 2038, "20/10/2019","esta","{}","{}")');
+        const rows = db.run('INSERT INTO `Movimiento` (IdPotrero, Fecha, Observaciones, MovimientoDetalle, PotreroDetalle) VALUES (?, ?,?,?,?)', values);
         SQL.close(db);
         debugger;
         console.log(rows);
