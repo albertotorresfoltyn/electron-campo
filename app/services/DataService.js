@@ -94,7 +94,7 @@ export default class DataService {
     if (db) {
       try {
         const rows = db.exec('INSERT INTO `Movimiento` VALUES (10999, 2038, "20/10/2019","esta","{}","{}")');
-        db.close();
+        SQL.close(db);
         debugger;
         console.log(rows);
       } catch (error) {

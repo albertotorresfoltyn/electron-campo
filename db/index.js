@@ -66,6 +66,8 @@ SQL.connect = function () {
     /* The file doesn't exist so create a new database. */
     return createDb(`${dbPath}${dbName}`);
   }
+    db.ourFileName = dbFilePath;
+
   /*
       The file is a valid sqlite3 database. This simple query will demonstrate
       whether it's in good health or not.
@@ -83,4 +85,8 @@ SQL.connect = function () {
   return db;
 };
 
+SQL.close = function (db) {
+  debugger;
+  this.dbClose(db, db.ourFileName);
+};
 export default SQL;
