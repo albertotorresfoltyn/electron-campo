@@ -104,14 +104,14 @@ export default class DataService {
 
       try {
 
-        db.run("INSERT INTO \`Movimiento\` VALUES  (\
+        db.exec(`INSERT INTO \`Movimiento\` VALUES  (\
           \`121122134511551112\`\
           \`2038\`,\
           \`10/10/2019:00:00\`,\
           \`detalle\`,\
           \`{}\`,\
           \`{}\`\
-           )"
+           )`
 
       );
 
