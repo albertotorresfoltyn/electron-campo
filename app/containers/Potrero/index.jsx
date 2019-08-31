@@ -3,10 +3,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Row,
   Col,
   Container,
@@ -14,8 +10,10 @@ import {
   BreadcrumbItem,
   Card,
   CardTitle,
-  CardText
-  
+  CardText,
+  CardHeader,
+  CardBody,
+  Table
 } from "reactstrap";
 import DataService from "../../services/DataService";
 import Estado from "../../components/Estado";
@@ -38,6 +36,10 @@ class Potrero extends Component {
 
     this.state = {
       potrero: DataService.getPotrero(this.props.match.params.potreroId),
+      potreroDetalle: DataService.getDetalleByPotrero(
+        this.props.match.params.potreroId
+      ),
+      coloresHacienda: DataService.getCategoriaHacienda(),
       modalVisible: false,
       tipoMovimiento: ""
     };
@@ -71,6 +73,7 @@ class Potrero extends Component {
       CantidadAguadas,
       CargaSoportada
     } = potrero;
+
     return (
       <div>
         <div data-tid="container">
@@ -120,58 +123,127 @@ class Potrero extends Component {
               </Button>{" "}
             </Row>
 
-            <Row className="">
-              <Card body outline color="secondary" className="p-3 mb-2">
-                <CardTitle>
-                  <strong>Resumen</strong>
-                </CardTitle>
-                <CardText>Aca esta el resumen del potrero</CardText>
+            <Card>
+              <CardHeader>RESUMEN - {potrero.Nombre}</CardHeader>
+              <CardBody>
                 <CardText>
-                  <span> {potrero.IdPotrero}</span>
-                  <span> {potrero.Descripcion}</span>
-                  <p>
-                    <strong>Rendimiento:</strong> {Rendimiento}
-                  </p>
-                  <p>
-                    <strong>Cantidad Saleros:</strong> {CantidadSaleros}
-                  </p>
-                  <p>
-                    <strong>Cantidad Aguadas:</strong> {CantidadAguadas}
-                  </p>
-                  <p>
-                    <strong>Carga Soportada:</strong> {CargaSoportada}
-                  </p>
+                  <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <Container>
+                        <Row>
+                          <Col>
+                            <small class="text-muted">Descripción</small>
+                            <h6 class="my-0">{potrero.Descripcion}</h6>
+                          </Col>
+                        </Row>
+                      </Container>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <Container>
+                        <Row>
+                          <Col>
+                            <small class="text-muted">Calidad</small>
+                            <h6 class="my-0">{potrero.Calidad}</h6>
+                          </Col>
+                          <Col>
+                            <small class="text-muted">Superficie</small>
+                            <h6 class="my-0">{potrero.Superficie} ha</h6>
+                          </Col>
+                        </Row>
+                      </Container>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <Container>
+                        <Row>
+                          <Col>
+                            <small class="text-muted">Cantidad Saleros</small>
+                            <h6 class="my-0">{potrero.CantidadSaleros}</h6>
+                          </Col>
+                          <Col>
+                            <small class="text-muted">Rendimiento</small>
+                            <h6 class="my-0">{potrero.Rendimiento}</h6>
+                          </Col>
+                        </Row>
+                      </Container>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <Container>
+                        <Row>
+                          <Col>
+                            <small class="text-muted">Cantidad Aguadas</small>
+                            <h6 class="my-0">{potrero.CantidadAguadas}</h6>
+                          </Col>
+                          <Col>
+                            <small class="text-muted">Carga Soportada</small>
+                            <h6 class="my-0">{potrero.CargaSoportada}</h6>
+                          </Col>
+                        </Row>
+                      </Container>
+                    </li>
+                  </ul>
                 </CardText>
-              </Card>
-            </Row>
+              </CardBody>
+            </Card>
 
-            <Row>
-              <Col>
-                <Card body outline color="secondary" className="p-3 mb-2">
-                  <CardTitle>
-                    <strong>Estado Actual</strong>
-                  </CardTitle>
-                  <CardText>
-                    <Row>
-                      <Col>
-                        {" "}
-                        <Estado key={potrero.Nombre} />
-                      </Col>
-                      <Col>
-                        {" "}
-                        <Leyenda className="mx-auto" />
-                      </Col>
-                    </Row>
-                  </CardText>
-                </Card>
-              </Col>
-            </Row>
+            <Card>
+              <CardHeader>Estado Actual</CardHeader>
+              <CardBody>
+                <CardText>
+                  <Row>
+                    <Col>
+                    <Table size="md"  bordered>
+                    <thead>
+                      <tr>
+                        <th>Tipo Hacienda</th>
+                        <th>Cantidad</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.potreroDetalle.map(items => (
+                        <tr>
+                          <th scope="row">
+                            {
+                              <div>
+                                <Button
+                                  style={{
+                                    backgroundColor: this.state.coloresHacienda.find(
+                                      e =>
+                                        e.Nombre.toUpperCase() ==
+                                        items.type.toUpperCase()
+                                    ).Color
+                                  }}
+                                  size="lg" 
+                                >
+                                 
+                                </Button>
+                                {' '}
+                               
+                                {items.type}
+                              </div>
+                            }
+                          </th>
+                          <th>{items.total}</th>
+                        
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                    </Col>
+                    <Col>
+                    <Estado key={potrero.Nombre} />
+                    </Col>
+                  </Row>
+                 
+                </CardText>
+              </CardBody>
+            </Card>
+         
             <MovementDialog
               isOpen={this.state.modalVisible}
               toggle={this.toggle}
               campos={this.state.campos}
               IdPotrero={this.state.potrero.IdPotrero}
-              tipoMovimiento ={this.state.tipoMovimiento}
+              tipoMovimiento={this.state.tipoMovimiento}
             />
           </Container>
         </div>

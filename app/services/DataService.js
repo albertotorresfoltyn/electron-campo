@@ -110,6 +110,7 @@ export default class DataService {
       return objects;
     }
   }
+   
   // POTRERO
  
   static getDetalleByPotrero(idPotrero) {
