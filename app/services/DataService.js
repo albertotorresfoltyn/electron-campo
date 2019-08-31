@@ -10,7 +10,8 @@ const rowsToMagic = (rows) => {
   values.map((val) => {
     const elem = {};
     columns.map((colName, index) => {
-      elem[colName] = val[index];
+      elem[colName] = (colName == 'MovimientoDetalle' || colName == "PotreroDetalle")? JSON.parse(val[index]):val[index];
+    
     });
     result.push(elem);
   });
@@ -68,8 +69,19 @@ export default class DataService {
     }
   }
   // POTRERO
-  // MOCK
-  static getDetalleByPotrero(potreroId) {
+ 
+  static getDetalleByPotrero(idPotrero) {
+
+    const db = SQL.connect();
+
+
+    if (db) {
+      const rows = db.exec(`SELECT PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`);
+
+      const objects = rowsToMagic(rows);
+      
+      return objects;
+    }
 
     if(potreroId == 2042){
       return [

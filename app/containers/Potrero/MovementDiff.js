@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { Table, FormGroup, Label, Input } from "reactstrap";
 
 export default class MovementDiff extends Component {
-  doFancyOp(q1, q2, op) {
-    return op === "add" ? q1 + q2 : q1 - q2; //TODO: Verify if I can remove the q2 number to q2 to avoid negative values
-  }
+
   render() {
  
     return (
