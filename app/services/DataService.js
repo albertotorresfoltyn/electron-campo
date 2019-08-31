@@ -1,5 +1,33 @@
 import SQL from '../../db';
 
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+// despues sacar esto, no va hacer falta controlar 
+function isEmpty(obj) {
+
+    // null and undefined are "empty"
+    if (obj == null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0)    return false;
+    if (obj.length === 0)  return true;
+
+    // If it isn't an object at this point
+    // it is empty, but it can't be anything *but* empty
+    // Is it empty?  Depends on your application.
+    if (typeof obj !== "object") return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
+}
+
 const fs = require('fs');
 const path = require('path');
 
@@ -15,6 +43,20 @@ const rowsToMagic = (rows) => {
     });
     result.push(elem);
   });
+  return result;
+};
+
+const toPotreroModel = (rows) => {
+  const result = [];
+  console.log(rows);
+  if(!isEmpty(rows)){
+    rows.map((ele) => {
+     const elem = {type: ele.type , qtty: ele.amount, cantMov:0, total: ele.amount};
+     result.push(elem);
+    });
+  }
+  
+ 
   return result;
 };
 
@@ -78,26 +120,11 @@ export default class DataService {
     if (db) {
       const rows = db.exec(`SELECT PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`);
 
-      const objects = rowsToMagic(rows);
+console.log("potdetalle");      console.log(rowsToMagic(rows)[0].PotreroDetalle);
+      const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
       
       return objects;
     }
-
-    if(potreroId == 2042){
-      return [
-        { type: "toro", qtty: 200,cantMov:0, total: 200 },
-        { type: "ternero", qtty: 300,cantMov:0, total: 300 },
-        { type: "ternera", qtty: 50,cantMov:0, total: 50 }
-      ]
-    }
-
-      return [
-        { type: "vaca", qtty: 2000,cantMov:0, total: 2000 },
-        { type: "toro", qtty: 3000,cantMov:0, total: 3000 },
-        { type: "ternero", qtty: 1000,cantMov:0, total: 1000 },
-        { type: "ternera", qtty: 2000,cantMov:0, total: 2000 }
-      ]
-
   }
 
   static guardarMovimiento(mov) {
