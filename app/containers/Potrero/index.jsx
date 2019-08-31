@@ -185,7 +185,7 @@ class Potrero extends Component {
               </CardBody>
             </Card>
 
-            <Card>
+            <Card className="mt-3">
               <CardHeader>Estado Actual</CardHeader>
               <CardBody>
                 <CardText>
@@ -230,7 +230,17 @@ class Potrero extends Component {
                   </Table>
                     </Col>
                     <Col>
-                    <Estado key={potrero.Nombre} />
+
+                    <Card>
+              <CardHeader>Gráfico del potrero {potrero.Nombre}</CardHeader>
+              <CardBody>
+                <CardText>
+                    <Estado key={potrero.Nombre} potreroDetalle={this.state.potreroDetalle} colores={ this.state.coloresHacienda} />
+                 
+                    </CardText>
+              </CardBody>
+            </Card>
+                    
                     </Col>
                   </Row>
                  

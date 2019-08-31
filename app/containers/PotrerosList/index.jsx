@@ -50,8 +50,7 @@ class PotrerosList extends Component {
                 
                 <Breadcrumb><BreadcrumbItem active>ESTADO</BreadcrumbItem></Breadcrumb>
                 <Row>
-                  <Col><Estado className="mx-auto" ></Estado></Col>
-                  <Col><Leyenda className="mx-auto" ></Leyenda></Col>
+                
 
                 </Row>
 

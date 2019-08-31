@@ -48,7 +48,7 @@ const rowsToMagic = (rows) => {
 
 const toPotreroModel = (rows) => {
   const result = [];
-  console.log(rows);
+  
   if(!isEmpty(rows)){
     rows.map((ele) => {
      const elem = {type: ele.type , qtty: ele.amount, cantMov:0, total: ele.amount};
@@ -120,8 +120,6 @@ export default class DataService {
 
     if (db) {
       const rows = db.exec(`SELECT PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`);
-
-console.log("potdetalle");      console.log(rowsToMagic(rows)[0].PotreroDetalle);
       const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
       
       return objects;
@@ -129,15 +127,15 @@ console.log("potdetalle");      console.log(rowsToMagic(rows)[0].PotreroDetalle)
   }
 
   static guardarMovimiento(mov) {
-    debugger;
+    
     const db = SQL.connect();
     const values = Object.values(mov);
     if (db) {
       try {
         const rows = db.run('INSERT INTO `Movimiento` (IdPotrero, Fecha, Observaciones, MovimientoDetalle, PotreroDetalle) VALUES (?, ?,?,?,?)', values);
         SQL.close(db);
-        debugger;
-        console.log(rows);
+      
+      
       } catch (error) {
         console.log(error)
       }
