@@ -28,6 +28,7 @@ import ModernDatepicker from "react-modern-datepicker";
 import MovementDiff from "./MovementDiff";
 import DataService from "../../services/DataService";
 import DataConvert from "../../utils/DataConvert";
+import { debug } from "util";
 
 export default class MovementDialog extends Component {
   constructor(props) {
@@ -40,7 +41,6 @@ export default class MovementDialog extends Component {
     this.changeValuePotrero = this.changeValuePotrero.bind(this);
     this.guardarMovimiento = this.guardarMovimiento.bind(this);
     this.cargarPotreros = this.cargarPotreros.bind(this);
-
     this.getCantTotalMov = this.getCantTotalMov.bind(this);
     this.loadProtreros = this.loadProtreros.bind(this);
     
@@ -55,7 +55,7 @@ export default class MovementDialog extends Component {
       estadoPotreroDestino: [], // recibirlo como prop, lo seteo desde prop aca
       observaciones: "",
       potreroSelected: {},
-      tipoMovimiento : "" // albert , todas los estados si o si se setean aca siempre?
+      tipoMovimiento : "" 
     };
   }
 
@@ -67,9 +67,8 @@ export default class MovementDialog extends Component {
     // setea el campo seleccionado como el primero de la lista (Tenemos solo uno )
     this.setState({ campos});
     this.setState({  campoSelected: campos[0].Nombre});
-   
-    this.cargarPotreros(campos[0].IdCampo);
-    this.loadProtreros();
+    this.cargarPotreros(campos[0].IdCampo );
+    
 
  
   }
@@ -81,13 +80,10 @@ export default class MovementDialog extends Component {
   // Cargar informacion de los dos potreros que intervienen en la operacion
   loadProtreros() {
     // Cargo potrero Origen 
-
      const potreroOrigen = DataService.getDetalleByPotrero(
       this.state.potreroSelected.IdPotrero
     );
 
-
-    
     // Cargo potrero destino  
     const potreroDestino = DataService.getDetalleByPotrero(
       this.props.IdPotrero
@@ -159,16 +155,18 @@ export default class MovementDialog extends Component {
       potreros.findIndex(i => i.IdPotrero === idPotreroDestino), 1 );
    
       // Guarda en el estado
-    this.setState({ potreros});
-    this.setState({ potreroSelected: potreros[0] }); // por defecto seteo el primero
-    this.state.potreroSelected =  potreros[0]; // albert 
+    this.setState({potreros: potreros,  potreroSelected: potreros[0]}, this.loadProtreros); // por defecto seteo el primero
+    
+   
   }
 
+  // se dispara cuando cambia el drop de campo
   changeValueCampo(e) {
     this.setState({ campoSelected: e.currentTarget.textContent });
     this.cargarPotreros(e.currentTarget.id);
   }
 
+  // se dispara cuando cambia el drop de potreros
   changeValuePotrero(e) {
     this.setState({ potreroSelected: this.state.potreros.find( x=> x.IdPotrero == e.currentTarget.id)  });
     this.loadProtreros();
@@ -181,6 +179,7 @@ export default class MovementDialog extends Component {
     this.setState({ financialGoal });
   }
 
+  // se cambia algun valor en los input para mover hacienda
   changesValues(type, value) {
     const recordO = this.state.estadoPotreroOrigen.find(v => v.type === type);
     if (recordO) {

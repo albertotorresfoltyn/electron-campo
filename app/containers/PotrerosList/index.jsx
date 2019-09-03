@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Potrero.css';
-import { Button, Row, Col, Container, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Button, Row, Col, Container, Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, CardText } from 'reactstrap';
 import DataService from '../../services/DataService';
 import PotreroCard from './PotreroCard';
 import Estado from '../../components/Estado';
@@ -10,17 +10,50 @@ import Leyenda from '../../components/Leyenda';
 import {
   withRouter
 } from 'react-router-dom';
+import { debug } from 'util';
 
 class PotrerosList extends Component {
   constructor(props) {
     super(props);
+    this.calcularTotalDetalle = this.calcularTotalDetalle.bind(this);
+    
     this.state = {
       potreros: [],
+      potrerosResumen : []
     };
+
   }
 
   componentWillMount() {
-    this.setState({ potreros: DataService.getPotreros(this.props.match.params.campoId) });
+   
+    this.setState({ potreros: DataService.getPotreros(this.props.match.params.campoId), potrerosResumen:  this.calcularTotalDetalle (DataService.getDetallePotreros())});
+ 
+  }
+
+  // Calcula el detalle resumen total 
+  calcularTotalDetalle (list) {
+
+    console.log(list);
+    console.log("Proceso de REDUCE");
+    list.reduce((acc, i)=>{
+      var isPresent = acc.find((e)=>{return e.type===i.type});
+      if (!isPresent) {
+        acc.push(i) //primer valor en la sumarizacion
+      } else {
+         isPresent.total += i.total; // sumo
+         //reemplazo en el arreglo
+         var index = acc.findIndex((e)=>{return e.type===i.type});
+          if (index !== -1) {
+              acc[index] = isPresent;
+          }
+      }
+      return acc;
+      }, []);
+      console.log(list);
+      return list;
+     
+      
+    
   }
 
   render() {
@@ -50,8 +83,7 @@ class PotrerosList extends Component {
                 
                 <Breadcrumb><BreadcrumbItem active>ESTADO</BreadcrumbItem></Breadcrumb>
                 <Row>
-                
-
+                   <Estado key={this.props.match.params.campoId} potreroDetalle={this.state.potrerosResumen} />
                 </Row>
 
                 

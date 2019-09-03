@@ -191,63 +191,59 @@ class Potrero extends Component {
                 <CardText>
                   <Row>
                     <Col>
-                    <Table size="md"  bordered>
-                    <thead>
-                      <tr>
-                        <th>Tipo Hacienda</th>
-                        <th>Cantidad</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.potreroDetalle.map(items => (
-                        <tr>
-                          <th scope="row">
-                            {
-                              <div>
-                                <Button
-                                  style={{
-                                    backgroundColor: this.state.coloresHacienda.find(
-                                      e =>
-                                        e.Nombre.toUpperCase() ==
-                                        items.type.toUpperCase()
-                                    ).Color
-                                  }}
-                                  size="lg" 
-                                >
-                                 
-                                </Button>
-                                {' '}
-                               
-                                {items.type}
-                              </div>
-                            }
-                          </th>
-                          <th>{items.total}</th>
-                        
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                      <Table size="md" bordered>
+                        <thead>
+                          <tr>
+                            <th>Tipo Hacienda</th>
+                            <th>Cantidad</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.state.potreroDetalle.map(items => (
+                            <tr>
+                              <th scope="row">
+                                {
+                                  <div>
+                                    <Button
+                                      style={{
+                                        backgroundColor: this.state.coloresHacienda.find(
+                                          e =>
+                                            e.Nombre.toUpperCase() ==
+                                            items.type.toUpperCase()
+                                        ).Color
+                                      }}
+                                      size="lg"
+                                    ></Button>{" "}
+                                    {items.type}
+                                  </div>
+                                }
+                              </th>
+                              <th>{items.total}</th>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
                     </Col>
                     <Col>
-
-                    <Card>
-              <CardHeader>Gráfico del potrero {potrero.Nombre}</CardHeader>
-              <CardBody>
-                <CardText>
-                    <Estado key={potrero.Nombre} potreroDetalle={this.state.potreroDetalle} colores={ this.state.coloresHacienda} />
-                 
-                    </CardText>
-              </CardBody>
-            </Card>
-                    
+                      <Card>
+                        <CardHeader>
+                          Gráfico del potrero {potrero.Nombre}
+                        </CardHeader>
+                        <CardBody>
+                          <CardText>
+                            <Estado
+                              key={potrero.Nombre}
+                              potreroDetalle={this.state.potreroDetalle}
+                            />
+                          </CardText>
+                        </CardBody>
+                      </Card>
                     </Col>
                   </Row>
-                 
                 </CardText>
               </CardBody>
             </Card>
-         
+
             <MovementDialog
               isOpen={this.state.modalVisible}
               toggle={this.toggle}
