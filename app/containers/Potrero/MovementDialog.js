@@ -27,39 +27,47 @@ import {
 import ModernDatepicker from "react-modern-datepicker";
 import MovementDiff from "./MovementDiff";
 import DataService from "../../services/DataService";
+import DataConvert from "../../utils/DataConvert";
 
 export default class MovementDialog extends Component {
   constructor(props) {
     super(props);
 
     this.changesValues = this.changesValues.bind(this);
-
     this.dropdownToggleCampo = this.dropdownToggleCampo.bind(this);
     this.changeValueCampo = this.changeValueCampo.bind(this);
-
     this.dropdownTogglePotrero = this.dropdownTogglePotrero.bind(this);
     this.changeValuePotrero = this.changeValuePotrero.bind(this);
     this.guardarMovimiento = this.guardarMovimiento.bind(this);
-    this.toMovimientoEntity = this.toMovimientoEntity.bind(this);
-    this.toDefaultEntity = this.toDefaultEntity.bind(this);
+    this.cargarPotreros = this.cargarPotreros.bind(this);
 
+    this.getCantTotalMov = this.getCantTotalMov.bind(this);
+    this.loadProtreros = this.loadProtreros.bind(this);
+    
+    
     this.state = {
+      campoSelected: "",
       openDropCampo: false,
       openDropPotrero: false,
       campos: [],
       potreros: [],
       estadoPotreroOrigen: [], // recibirlo como prop, lo seteo desde prop aca
       estadoPotreroDestino: [], // recibirlo como prop, lo seteo desde prop aca
-      observaciones: ""
+      observaciones: "",
+      potreroSelected: {},
+      tipoMovimiento : "" // albert , todas los estados si o si se setean aca siempre?
     };
   }
 
   componentDidMount() {
-    /*  Campos */
+    debugger;
+    // recupera todos los campos
     const campos = DataService.getCampos();
-    this.setState({ campos });
-    this.state.campoSelected = campos[0].Nombre;
-
+    
+    // setea el campo seleccionado como el primero de la lista (Tenemos solo uno )
+    this.setState({ campos});
+    this.setState({  campoSelected: campos[0].Nombre});
+   
     this.cargarPotreros(campos[0].IdCampo);
     this.loadProtreros();
 
@@ -70,15 +78,22 @@ export default class MovementDialog extends Component {
     this.setState({ tipoMovimiento: nextProps.tipoMovimiento });
   }
 
+  // Cargar informacion de los dos potreros que intervienen en la operacion
   loadProtreros() {
+    // Cargo potrero Origen 
 
-     DataService.getDetalleByPotrero( this.props.IdPotrero);
-    const potreroOrigen = DataService.getDetalleByPotrero(
-      this.state.potreroSelected
+     const potreroOrigen = DataService.getDetalleByPotrero(
+      this.state.potreroSelected.IdPotrero
     );
+
+
+    
+    // Cargo potrero destino  
     const potreroDestino = DataService.getDetalleByPotrero(
       this.props.IdPotrero
     );
+
+    // guardo en el estado 
     this.setState({
       estadoPotreroOrigen: potreroOrigen,
       estadoPotreroDestino: potreroDestino
@@ -97,46 +112,25 @@ export default class MovementDialog extends Component {
     });
   }
 
-  toMovimientoEntity(idPotrero, obs, movDetalle, potDetalle) {
-    const mov = {
-      idPotrero: idPotrero,
-      Fecha: new Date()
-        .toJSON()
-        .slice(0, 10)
-        .split("-")
-        .reverse()
-        .join("/"),
-      Observaciones: obs,
-      movimientoDetalle: JSON.stringify(movDetalle),
-      potreroDetalle: JSON.stringify(potDetalle)
-    };
-    return mov;
-  }
-
-  toDefaultEntity(type, amount) {
-    const mov = {
-      type: type,
-      amount: amount
-    };
-    return mov;
-  }
-
+  // devuelve cantidad de moviemientos que hizo el usuario en esa lista
+  // Suma de campo cantMov del listado que se pasa como parametro
   getCantTotalMov(list) {
     return list.map(o => o.cantMov).reduce((a, c) => a + c);
   }
 
-  // Guarda el moviemiento en BD
+  // Guarda Moviemiento en Base de datos  
   guardarMovimiento() {
+    
     // validaciones
     if (this.getCantTotalMov(this.state.estadoPotreroOrigen) > 0) {
-        const mov = this.toMovimientoEntity(
+        const mov = DataConvert.toMovimientoEntity(
         this.props.IdPotrero,
         this.state.observaciones,
         this.state.estadoPotreroOrigen.map(e =>
-          this.toDefaultEntity(e.type, e.cantMov)
+          DataConvert.toDefaultEntity(e.type, e.cantMov)
         ),
           this.state.estadoPotreroOrigen.map(e =>
-          this.toDefaultEntity(e.type, e.total)
+            DataConvert.toDefaultEntity(e.type, e.total)
         )
       );
      
@@ -153,16 +147,21 @@ export default class MovementDialog extends Component {
     }
   }
 
+  
+
+  // Busca potreros de BD y guarda en estado
   cargarPotreros(idCampo) {
     const potreros = DataService.getPotreros(idCampo);
     const idPotreroDestino = this.props.IdPotrero;
+   
     // sacar de este listado el potrero destino.
     potreros.splice(
-      potreros.findIndex(i => i.IdPotrero === idPotreroDestino),
-      1
-    );
-    this.setState({ potreros });
-    this.state.potreroSelected = potreros[0].IdPotrero;
+      potreros.findIndex(i => i.IdPotrero === idPotreroDestino), 1 );
+   
+      // Guarda en el estado
+    this.setState({ potreros});
+    this.setState({ potreroSelected: potreros[0] }); // por defecto seteo el primero
+    this.state.potreroSelected =  potreros[0]; // albert 
   }
 
   changeValueCampo(e) {
@@ -171,7 +170,7 @@ export default class MovementDialog extends Component {
   }
 
   changeValuePotrero(e) {
-    this.setState({ potreroSelected: e.currentTarget.textContent });
+    this.setState({ potreroSelected: this.state.potreros.find( x=> x.IdPotrero == e.currentTarget.id)  });
     this.loadProtreros();
   }
 
@@ -281,7 +280,7 @@ export default class MovementDialog extends Component {
                       toggle={this.dropdownTogglePotrero}
                     >
                       <DropdownToggle caret>
-                        {this.state.potreroSelected}
+                        {this.state.potreroSelected.Nombre}
                       </DropdownToggle>
                       <DropdownMenu>
                         {this.state.potreros.map(e => (

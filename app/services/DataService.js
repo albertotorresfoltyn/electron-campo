@@ -114,16 +114,24 @@ export default class DataService {
   // POTRERO
  
   static getDetalleByPotrero(idPotrero) {
+   
+console.log("idpotrero" + idPotrero);
+try {
+  const db = SQL.connect();
 
-    const db = SQL.connect();
 
-
-    if (db) {
-      const rows = db.exec(`SELECT PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`);
-      const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
-      
-      return objects;
-    }
+  if (db) {
+    const rows = db.exec(`SELECT PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`);
+    debugger
+    const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
+    
+    return objects;
+  }
+  
+} catch (error) {
+  console.log(error);
+}
+   
   }
 
   static guardarMovimiento(mov) {
