@@ -7,8 +7,8 @@ export default class DataConvert {
 
   
   // Crear entidad para tabla MOVIMIENTO 
-  // idPotrero - Fecha - Observaciones - movimientoDetalle - potreroDetalle
-  static toMovimientoEntity(idPotrero, obs, movDetalle, potDetalle) {
+  // idPotrero - Fecha - Observaciones -  Motivo - movimientoDetalle - potreroDetalle
+  static toMovimientoEntity(idPotrero, obs, motivo,movDetalle, potDetalle) {
     const mov = {
       idPotrero: idPotrero,
       Fecha: new Date()
@@ -18,6 +18,7 @@ export default class DataConvert {
         .reverse()
         .join("/"),
       Observaciones: obs,
+      Motivo: motivo,
       movimientoDetalle: JSON.stringify(movDetalle),
       potreroDetalle: JSON.stringify(potDetalle)
     };

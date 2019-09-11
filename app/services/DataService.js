@@ -119,7 +119,7 @@ export default class DataService {
 
 //listado de motivos de muerte de Base de datos
 static getMotivos() {
-  var lmotivos = [{type: 0, amount: 'Enfermedad'}, {type: 0, amount: 'Desconocido'}];
+  var lmotivos = [{type: 0, amount: 'Enfermedad'}, {type: 1, amount: 'Desconocido'}, {type: 2, amount: 'Robo'}];
   return lmotivos;
 
 }
@@ -131,7 +131,7 @@ static getMotivos() {
     if (db) {
       try {
         const rows = db.run(
-          "INSERT INTO `Movimiento` (IdPotrero, Fecha, Observaciones, MovimientoDetalle, PotreroDetalle) VALUES (?, ?,?,?,?)",
+          "INSERT INTO `Movimiento` (IdPotrero, Fecha, Motivo, Observaciones, MovimientoDetalle, PotreroDetalle) VALUES (?, ?,?,?,?,?)",
           values
         );
         SQL.close(db);

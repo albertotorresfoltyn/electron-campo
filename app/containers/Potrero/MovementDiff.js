@@ -20,7 +20,7 @@ export default class MovementDiff extends Component {
             {this.props.initialValues.map((element, index) => {
             
               return (
-                <tr>
+                <tr key={index}>
                   <th scope="row">{element.type}</th>
                   <td>{element.qtty}</td>
 

@@ -41,6 +41,9 @@ export default class MovementDialog extends Component {
     this.cargarPotreros = this.cargarPotreros.bind(this);
     this.getCantTotalMov = this.getCantTotalMov.bind(this);
     this.loadProtreros = this.loadProtreros.bind(this);
+    this.validatehasMovement = this.validatehasMovement.bind(this);
+
+    
 
     this.state = {
       campoSelected: "",
@@ -132,7 +135,7 @@ export default class MovementDialog extends Component {
       switch (this.props.tipoMovimiento) {
         case "INGRESO":
 
-            errormsj = validatehasMovement();
+            errormsj = this.validatehasMovement();
             if(errormsj != "" ) {
               alert(errormsj);
               return false;
@@ -140,6 +143,7 @@ export default class MovementDialog extends Component {
             mov = DataConvert.toMovimientoEntity(
               this.props.IdPotrero,
               this.state.observaciones,
+              "",
               this.state.estadoPotreroOrigen.map(e =>
                 DataConvert.toDefaultEntity(e.type, e.cantMov)
               ),
@@ -149,7 +153,7 @@ export default class MovementDialog extends Component {
             );
             break;
         case "EGRESO":
-            errormsj = validatehasMovement();
+            errormsj =this.validatehasMovement();
             if(errormsj != "" ) {
               alert(errormsj);
               return false;
@@ -157,6 +161,7 @@ export default class MovementDialog extends Component {
             mov = DataConvert.toMovimientoEntity(
               this.props.IdPotrero,
               this.state.observaciones,
+              "",
               this.state.estadoPotreroDestino.map(e =>
                 DataConvert.toDefaultEntity(e.type, e.cantMov)
               ),
@@ -173,7 +178,23 @@ export default class MovementDialog extends Component {
           break;
   
         case "BAJA":
-       
+            errormsj = this.validatehasMovement();
+            if(errormsj != "" ) {
+              alert(errormsj);
+              return false;
+            }
+            mov = DataConvert.toMovimientoEntity(
+              this.props.IdPotrero,
+              this.state.observaciones,
+              this.state.motivoSelected.amount,
+              this.state.estadoPotreroOrigen.map(e =>
+                DataConvert.toDefaultEntity(e.type, e.cantMov)
+              ),
+              this.state.estadoPotreroOrigen.map(e =>
+                DataConvert.toDefaultEntity(e.type, e.total)
+              )
+            );
+
           break;
   
       

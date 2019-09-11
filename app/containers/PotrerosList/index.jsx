@@ -68,7 +68,7 @@ class PotrerosList extends Component {
               <Breadcrumb><BreadcrumbItem active>POTREROS</BreadcrumbItem></Breadcrumb>
                  <Row>
                   {this.state.potreros.map(potrero => (
-                     <Col md="3">
+                     <Col md="3"  key={potrero.IdPotrero}>
                     <PotreroCard key={potrero.IdPotrero}  potrero = {potrero} onClick={()=>{this.props.history.push('/potrero/'+potrero.IdPotrero)}}/>
                     </Col>
                   ))}  
