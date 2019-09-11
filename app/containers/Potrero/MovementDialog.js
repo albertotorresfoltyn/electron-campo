@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   Button,
   Modal,
@@ -7,19 +7,16 @@ import {
   ModalFooter,
   Row,
   Col,
-  Container,
-  Breadcrumb,
-  BreadcrumbItem,
-  CardTitle,
-  CardText,
+ 
+ 
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   Card,
-  Table,
+  
   CardHeader,
-  CardFooter,
+  
   CardBody,
   Alert,
   Input
@@ -37,14 +34,14 @@ export default class MovementDialog extends Component {
     this.changesValues = this.changesValues.bind(this);
     this.dropdownToggleCampo = this.dropdownToggleCampo.bind(this);
     this.changeValueCampo = this.changeValueCampo.bind(this);
+    this.changeValueMotivo = this.changeValueMotivo.bind(this);
     this.dropdownTogglePotrero = this.dropdownTogglePotrero.bind(this);
     this.changeValuePotrero = this.changeValuePotrero.bind(this);
     this.guardarMovimiento = this.guardarMovimiento.bind(this);
     this.cargarPotreros = this.cargarPotreros.bind(this);
     this.getCantTotalMov = this.getCantTotalMov.bind(this);
     this.loadProtreros = this.loadProtreros.bind(this);
-    
-    
+
     this.state = {
       campoSelected: "",
       openDropCampo: false,
@@ -55,22 +52,23 @@ export default class MovementDialog extends Component {
       estadoPotreroDestino: [], // recibirlo como prop, lo seteo desde prop aca
       observaciones: "",
       potreroSelected: {},
-      tipoMovimiento : "" 
+      tipoMovimiento: "",
+      motivos:[],
+      motivoSelected:[]
     };
   }
 
   componentDidMount() {
-    debugger;
-    // recupera todos los campos
-    const campos = DataService.getCampos();
-    
-    // setea el campo seleccionado como el primero de la lista (Tenemos solo uno )
-    this.setState({ campos});
-    this.setState({  campoSelected: campos[0].Nombre});
-    this.cargarPotreros(campos[0].IdCampo );
-    
+    const campos = DataService.getCampos(); // recupera todos los campos
+    const motivos = DataService.getMotivos(); // recupera todos los motivos de muerte
 
- 
+   
+    this.setState({ campos,  motivos });
+    this.setState({ campoSelected: campos[0].Nombre }); // setea el primer campo como el seleccionado
+   
+    this.cargarPotreros(campos[0].IdCampo); // cargar todos los potreros de un campo
+
+    this.setState({ motivoSelected: motivos[0] }); // Seleccionar motivo de muerte por defecto
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,17 +77,17 @@ export default class MovementDialog extends Component {
 
   // Cargar informacion de los dos potreros que intervienen en la operacion
   loadProtreros() {
-    // Cargo potrero Origen 
-     const potreroOrigen = DataService.getDetalleByPotrero(
+    // Cargo potrero Origen
+    const potreroOrigen = DataService.getDetalleByPotrero(
       this.state.potreroSelected.IdPotrero
     );
 
-    // Cargo potrero destino  
+    // Cargo potrero destino
     const potreroDestino = DataService.getDetalleByPotrero(
       this.props.IdPotrero
     );
 
-    // guardo en el estado 
+    // guardo en el estado
     this.setState({
       estadoPotreroOrigen: potreroOrigen,
       estadoPotreroDestino: potreroDestino
@@ -114,50 +112,99 @@ export default class MovementDialog extends Component {
     return list.map(o => o.cantMov).reduce((a, c) => a + c);
   }
 
-  // Guarda Moviemiento en Base de datos  
+  validatehasMovement(){
+
+  if(this.getCantTotalMov(this.state.estadoPotreroOrigen) == 0){
+    return "No existen movimientos";
+  }
+  return "";
+
+  }
+
+  // Guarda Moviemiento en Base de datos
   guardarMovimiento() {
-    
+
+    debugger
     // validaciones
-    if (this.getCantTotalMov(this.state.estadoPotreroOrigen) > 0) {
-        const mov = DataConvert.toMovimientoEntity(
-        this.props.IdPotrero,
-        this.state.observaciones,
-        this.state.estadoPotreroOrigen.map(e =>
-          DataConvert.toDefaultEntity(e.type, e.cantMov)
-        ),
-          this.state.estadoPotreroOrigen.map(e =>
-            DataConvert.toDefaultEntity(e.type, e.total)
-        )
-      );
-     
+    let errormsj ="";
+    let mov = {}; 
+
+      switch (this.props.tipoMovimiento) {
+        case "INGRESO":
+
+            errormsj = validatehasMovement();
+            if(errormsj != "" ) {
+              alert(errormsj);
+              return false;
+            }
+            mov = DataConvert.toMovimientoEntity(
+              this.props.IdPotrero,
+              this.state.observaciones,
+              this.state.estadoPotreroOrigen.map(e =>
+                DataConvert.toDefaultEntity(e.type, e.cantMov)
+              ),
+              this.state.estadoPotreroOrigen.map(e =>
+                DataConvert.toDefaultEntity(e.type, e.total)
+              )
+            );
+            break;
+        case "EGRESO":
+            errormsj = validatehasMovement();
+            if(errormsj != "" ) {
+              alert(errormsj);
+              return false;
+            }
+            mov = DataConvert.toMovimientoEntity(
+              this.props.IdPotrero,
+              this.state.observaciones,
+              this.state.estadoPotreroDestino.map(e =>
+                DataConvert.toDefaultEntity(e.type, e.cantMov)
+              ),
+              this.state.estadoPotreroDestino.map(e =>
+                DataConvert.toDefaultEntity(e.type, e.total)
+              )
+            );
+            break;
+          break;
+  
+        case "NACIMIENTO":
+
+         
+          break;
+  
+        case "BAJA":
+       
+          break;
+  
+      
+      }
+
       // guardar los movimientos
       DataService.guardarMovimiento(mov);
 
-      alert("Guardados correctamente")
+      alert("Guardados correctamente");
 
       // cerrar el modal
       this.props.toggle();
-    }
-    else{
-      alert(" No existen movimientos para guardar")
-    }
+    
   }
-
-  
 
   // Busca potreros de BD y guarda en estado
   cargarPotreros(idCampo) {
     const potreros = DataService.getPotreros(idCampo);
     const idPotreroDestino = this.props.IdPotrero;
-   
+
     // sacar de este listado el potrero destino.
     potreros.splice(
-      potreros.findIndex(i => i.IdPotrero === idPotreroDestino), 1 );
-   
-      // Guarda en el estado
-    this.setState({potreros: potreros,  potreroSelected: potreros[0]}, this.loadProtreros); // por defecto seteo el primero
-    
-   
+      potreros.findIndex(i => i.IdPotrero === idPotreroDestino),
+      1
+    );
+
+    // Guarda en el estado
+    this.setState(
+      { potreros: potreros, potreroSelected: potreros[0] },
+      this.loadProtreros
+    ); // por defecto seteo el primero
   }
 
   // se dispara cuando cambia el drop de campo
@@ -166,9 +213,18 @@ export default class MovementDialog extends Component {
     this.cargarPotreros(e.currentTarget.id);
   }
 
+  // se dispara cuando cambia el drop de motivo
+  changeValueMotivo(e, item) {
+    this.setState({ motivoSelected: item});
+  }
+
   // se dispara cuando cambia el drop de potreros
   changeValuePotrero(e) {
-    this.setState({ potreroSelected: this.state.potreros.find( x=> x.IdPotrero == e.currentTarget.id)  });
+    this.setState({
+      potreroSelected: this.state.potreros.find(
+        x => x.IdPotrero == e.currentTarget.id
+      )
+    });
     this.loadProtreros();
   }
 
@@ -231,6 +287,252 @@ export default class MovementDialog extends Component {
     }
   }
 
+  // INGRESO / EGRESO  
+  dibujarIngreso() {
+    return (
+      <Fragment>
+        <Card>
+          <CardHeader>
+            Origen - ¿Desde donde queres traer la hacienda?
+          </CardHeader>
+          <CardBody>
+           
+              <Row>
+                <Col>
+                  <label>Campo:</label>
+                  <Dropdown
+                    isOpen={this.state.openDropCampo}
+                    toggle={this.dropdownToggleCampo}
+                  >
+                    <DropdownToggle caret>
+                      {this.state.campoSelected}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {this.state.campos.map(e => (
+                        <DropdownItem
+                          id={e.IdCampo}
+                          key={e.IdCampo}
+                          onClick={this.changeValueCampo}
+                        >
+                          {e.Nombre}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                </Col>
+                <Col>
+                  <label>Potreros:</label>
+                  <Dropdown
+                    isOpen={this.state.openDropPotrero}
+                    toggle={this.dropdownTogglePotrero}
+                  >
+                    <DropdownToggle caret>
+                      {this.state.potreroSelected.Nombre}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {this.state.potreros.map(e => (
+                        <DropdownItem
+                          id={e.IdPotrero}
+                          key={e.IdPotrero}
+                          onClick={this.changeValuePotrero}
+                        >
+                          {e.Nombre}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                </Col>
+              </Row>
+          
+          </CardBody>
+        </Card>
+
+        <Alert className="mt-3" color="secondary">
+          ORIGEN
+        </Alert>
+
+        <MovementDiff
+          type="edit"
+          initialValues={this.state.estadoPotreroOrigen}
+          changesValues={this.changesValues}
+        />
+        <Alert color="secondary">DESTINO </Alert>
+        <span />
+
+        <MovementDiff
+          type="readonly"
+          initialValues={this.state.estadoPotreroDestino}
+          changesValues={this.changesValues}
+        />
+
+        <Input
+          type="text"
+          placeholder="Observaciones"
+          value={this.state.observaciones}
+          onChange={e => {
+            this.setState({
+              observaciones: e.target.value
+            });
+          }}
+        />
+      </Fragment>
+    );
+  }
+
+  //NACIEMIENTO
+  dibujarNacimiento() {
+    return (
+      <Fragment>
+        <Card>
+          <CardHeader>Nombre del potrero</CardHeader>
+          <CardBody>
+          
+              <Row>
+                <Col>
+                  <label>Categoria</label>
+                  <Dropdown
+                    isOpen={this.state.openDropCampo}
+                    toggle={this.dropdownToggleCampo}
+                  >
+                    <DropdownToggle caret>
+                      {this.state.campoSelected}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {this.state.campos.map(e => (
+                        <DropdownItem
+                          id={e.IdCampo}
+                          key={e.IdCampo}
+                          onClick={this.changeValueCampo}
+                        >
+                          {e.Nombre}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <label>Cantidad</label>
+                  <Input
+                    type="text"
+                    placeholder="Observaciones"
+                    value={this.state.observaciones}
+                    onChange={e => {
+                      this.setState({
+                        observaciones: e.target.value
+                      });
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <label>Descripción</label>
+                  <Input
+                    type="text"
+                    placeholder="Observaciones"
+                    value={this.state.observaciones}
+                    onChange={e => {
+                      this.setState({
+                        observaciones: e.target.value
+                      });
+                    }}
+                  />
+                </Col>
+              </Row>
+         
+          </CardBody>
+        </Card>
+      </Fragment>
+    );
+  }
+
+  //BAJA
+  dibujarBaja() {
+    return (
+      <Fragment>
+        <Card>
+          <CardHeader>Nombre del protrero</CardHeader>
+          <CardBody>
+           
+              <Row>
+                <Col>
+                  <MovementDiff
+                    type="edit"
+                    initialValues={this.state.estadoPotreroOrigen}
+                    changesValues={this.changesValues}
+                  />
+                </Col>
+              </Row>
+
+              <Row>
+                <Col>
+                  <label>Motivo</label>
+                  <Dropdown
+                    isOpen={this.state.openDropCampo}
+                    toggle={this.dropdownToggleCampo}
+                  >
+                    <DropdownToggle caret>
+                      {this.state.motivoSelected.amount}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {this.state.motivos.map(e => (
+                        <DropdownItem
+                          id={e.type}
+                          key={e.amount}
+                          onClick={(ev)=>{this.changeValueMotivo(ev, e)}}
+                        >
+                          {e.amount}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col>
+                  <label>Observaciones:</label>
+                  <Input
+                    type="text"
+                    placeholder="Ingresar Obervaciones"
+                    value={this.state.observaciones}
+                    onChange={e => {
+                      this.setState({
+                        observaciones: e.target.value
+                      });
+                    }}
+                  />
+                </Col>
+              </Row>
+           
+          </CardBody>
+        </Card>
+      </Fragment>
+    );
+  }
+
+  // Encargado de dibujar contenido del modal de movimientos
+  drawShit() {
+    switch (this.props.tipoMovimiento) {
+      case "INGRESO":
+      case "EGRESO":
+        return this.dibujarIngreso();
+        break;
+
+      case "NACIMIENTO":
+        return this.dibujarNacimiento();
+        break;
+
+      case "BAJA":
+        return this.dibujarBaja();
+        break;
+
+    
+    }
+  }
+
   render() {
     return (
       <Modal
@@ -242,90 +544,7 @@ export default class MovementDialog extends Component {
         <ModalHeader toggle={this.toggle}>
           Nuevo movimiento del tipo {this.props.tipoMovimiento}{" "}
         </ModalHeader>
-        <ModalBody>
-          <Card>
-            <CardHeader>
-              Origen - ¿Desde donde queres traer la hacienda?
-            </CardHeader>
-            <CardBody>
-              <CardText>
-                <Row>
-                  <Col>
-                    <label>Campo:</label>
-                    <Dropdown
-                      isOpen={this.state.openDropCampo}
-                      toggle={this.dropdownToggleCampo}
-                    >
-                      <DropdownToggle caret>
-                        {this.state.campoSelected}
-                      </DropdownToggle>
-                      <DropdownMenu>
-                        {this.state.campos.map(e => (
-                          <DropdownItem
-                            id={e.IdCampo}
-                            key={e.IdCampo}
-                            onClick={this.changeValueCampo}
-                          >
-                            {e.Nombre}
-                          </DropdownItem>
-                        ))}
-                      </DropdownMenu>
-                    </Dropdown>
-                  </Col>
-                  <Col>
-                    <label>Potreros:</label>
-                    <Dropdown
-                      isOpen={this.state.openDropPotrero}
-                      toggle={this.dropdownTogglePotrero}
-                    >
-                      <DropdownToggle caret>
-                        {this.state.potreroSelected.Nombre}
-                      </DropdownToggle>
-                      <DropdownMenu>
-                        {this.state.potreros.map(e => (
-                          <DropdownItem
-                            id={e.IdPotrero}
-                            key={e.IdPotrero}
-                            onClick={this.changeValuePotrero}
-                          >
-                            {e.Nombre}
-                          </DropdownItem>
-                        ))}
-                      </DropdownMenu>
-                    </Dropdown>
-                  </Col>
-                </Row>
-              </CardText>
-            </CardBody>
-          </Card>
-
-          <Alert className="mt-3" color="secondary">
-            ORIGEN
-          </Alert>
-
-          <MovementDiff
-            type="edit"
-            initialValues={this.state.estadoPotreroOrigen}
-            changesValues={this.changesValues}
-          />
-          <Alert color="secondary">DESTINO </Alert>
-          <span />
-
-          <MovementDiff
-            type="readonly"
-            initialValues={this.state.estadoPotreroDestino}
-            changesValues={this.changesValues}
-          />
-
-          <Input
-            type="text"
-            placeholder="Observaciones"
-            value={this.state.observaciones}
-            onChange ={e => {  this.setState({
-              observaciones:  e.target.value
-            })}}
-          />
-        </ModalBody>
+        <ModalBody>{this.drawShit()}</ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.guardarMovimiento}>
             Guardar Movimiento

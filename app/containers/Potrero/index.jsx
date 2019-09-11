@@ -10,7 +10,7 @@ import {
   BreadcrumbItem,
   Card,
   CardTitle,
-  CardText,
+ 
   CardHeader,
   CardBody,
   Table
@@ -126,69 +126,69 @@ class Potrero extends Component {
             <Card>
               <CardHeader>RESUMEN - {potrero.Nombre}</CardHeader>
               <CardBody>
-                <CardText>
-                  <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+              
+                  <ul className="list-group mb-3">
+                    <li className="list-group-item d-flex justify-content-between lh-condensed">
                       <Container>
                         <Row>
                           <Col>
-                            <small class="text-muted">Descripción</small>
-                            <h6 class="my-0">{potrero.Descripcion}</h6>
+                            <small className="text-muted">Descripción</small>
+                            <h6 className="my-0">{potrero.Descripcion}</h6>
                           </Col>
                         </Row>
                       </Container>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <li className="list-group-item d-flex justify-content-between lh-condensed">
                       <Container>
                         <Row>
                           <Col>
-                            <small class="text-muted">Calidad</small>
-                            <h6 class="my-0">{potrero.Calidad}</h6>
+                            <small className="text-muted">Calidad</small>
+                            <h6 className="my-0">{potrero.Calidad}</h6>
                           </Col>
                           <Col>
-                            <small class="text-muted">Superficie</small>
-                            <h6 class="my-0">{potrero.Superficie} ha</h6>
+                            <small className="text-muted">Superficie</small>
+                            <h6 className="my-0">{potrero.Superficie} ha</h6>
                           </Col>
                         </Row>
                       </Container>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <li className="list-group-item d-flex justify-content-between lh-condensed">
                       <Container>
                         <Row>
                           <Col>
-                            <small class="text-muted">Cantidad Saleros</small>
-                            <h6 class="my-0">{potrero.CantidadSaleros}</h6>
+                            <small className="text-muted">Cantidad Saleros</small>
+                            <h6 className="my-0">{potrero.CantidadSaleros}</h6>
                           </Col>
                           <Col>
-                            <small class="text-muted">Rendimiento</small>
-                            <h6 class="my-0">{potrero.Rendimiento}</h6>
+                            <small className="text-muted">Rendimiento</small>
+                            <h6 className="my-0">{potrero.Rendimiento}</h6>
                           </Col>
                         </Row>
                       </Container>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <li className="list-group-item d-flex justify-content-between lh-condensed">
                       <Container>
                         <Row>
                           <Col>
-                            <small class="text-muted">Cantidad Aguadas</small>
-                            <h6 class="my-0">{potrero.CantidadAguadas}</h6>
+                            <small className="text-muted">Cantidad Aguadas</small>
+                            <h6 className="my-0">{potrero.CantidadAguadas}</h6>
                           </Col>
                           <Col>
-                            <small class="text-muted">Carga Soportada</small>
-                            <h6 class="my-0">{potrero.CargaSoportada}</h6>
+                            <small className="text-muted">Carga Soportada</small>
+                            <h6 className="my-0">{potrero.CargaSoportada}</h6>
                           </Col>
                         </Row>
                       </Container>
                     </li>
                   </ul>
-                </CardText>
+              
               </CardBody>
             </Card>
 
             <Card className="mt-3">
               <CardHeader>Estado Actual</CardHeader>
               <CardBody>
-                <CardText>
+               
                   <Row>
                     <Col>
                       <Table size="md" bordered>
@@ -199,12 +199,13 @@ class Potrero extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {this.state.potreroDetalle.map(items => (
-                            <tr>
+                          {this.state.potreroDetalle.map((items, i) => (
+                            <tr  key={i}>
                               <th scope="row">
                                 {
                                   <div>
                                     <Button
+                                    
                                       style={{
                                         backgroundColor: this.state.coloresHacienda.find(
                                           e =>
@@ -230,17 +231,17 @@ class Potrero extends Component {
                           Gráfico del potrero {potrero.Nombre}
                         </CardHeader>
                         <CardBody>
-                          <CardText>
+                         
                             <Estado
                               key={potrero.Nombre}
                               potreroDetalle={this.state.potreroDetalle}
                             />
-                          </CardText>
+                         
                         </CardBody>
                       </Card>
                     </Col>
                   </Row>
-                </CardText>
+             
               </CardBody>
             </Card>
 

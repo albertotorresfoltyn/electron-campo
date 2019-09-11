@@ -92,7 +92,7 @@ export default class DataService {
 
       if (db) {
         const rows = db.exec(
-          `SELECT PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`
+          `SELECT IdMovimiento ,PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`
         );
 
         const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
@@ -117,6 +117,14 @@ export default class DataService {
 
 }
 
+//listado de motivos de muerte de Base de datos
+static getMotivos() {
+  var lmotivos = [{type: 0, amount: 'Enfermedad'}, {type: 0, amount: 'Desconocido'}];
+  return lmotivos;
+
+}
+
+// Guarda movimiento en Base de datos
   static guardarMovimiento(mov) {
     const db = SQL.connect();
     const values = Object.values(mov);

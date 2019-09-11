@@ -33,8 +33,7 @@ class PotrerosList extends Component {
   // Calcula el detalle resumen total 
   calcularTotalDetalle (list) {
 
-    console.log(list);
-    console.log("Proceso de REDUCE");
+  
     list.reduce((acc, i)=>{
       var isPresent = acc.find((e)=>{return e.type===i.type});
       if (!isPresent) {
@@ -70,7 +69,7 @@ class PotrerosList extends Component {
                  <Row>
                   {this.state.potreros.map(potrero => (
                      <Col md="3">
-                    <PotreroCard potrero = {potrero} onClick={()=>{this.props.history.push('/potrero/'+potrero.IdPotrero)}}/>
+                    <PotreroCard key={potrero.IdPotrero}  potrero = {potrero} onClick={()=>{this.props.history.push('/potrero/'+potrero.IdPotrero)}}/>
                     </Col>
                   ))}  
                   </Row>

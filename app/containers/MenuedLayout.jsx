@@ -25,9 +25,9 @@ class MenuedLayout extends React.Component {
             <i className="fas fa-home"> </i>
           </NavbarBrand>{" "}
           <NavbarBrand>
-            <a class="navbar-brand text-white  col-sm-3 col-md-2 mr-0" href="#">
+         
               Buenaventura Ñangarekohápe
-            </a>
+           
           </NavbarBrand>
           <NavbarBrand
             onClick={() => {

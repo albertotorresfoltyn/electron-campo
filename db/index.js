@@ -80,7 +80,7 @@ SQL.connect = function () {
     console.log('The file is an empty SQLite3 database.');
     createDb(`${dbPath}${dbName}`);
   } else {
-    console.log('The database has', tableCount, 'tables.');
+   // console.log('The database has', tableCount, 'tables.');
   }
   return db;
 };
