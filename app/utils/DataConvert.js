@@ -38,9 +38,12 @@ export default class DataConvert {
    // Convierte listado de detalle potrero a listado que necesito en modelo
   // name - value - indice - color
   static convertDetalleToModel(listDetalle, colores) {
+    console.log("colores");
+    console.log(colores);
     if(listDetalle != undefined){
       const result = [];
       listDetalle.map((item, i) => {
+        console.log(item);
         const elem = {
           name: item.type,
           value: item.total,

@@ -208,7 +208,7 @@ class Potrero extends Component {
                                     
                                       style={{
                                         backgroundColor: this.state.coloresHacienda.find(
-                                          e =>
+                                          e => 
                                             e.Nombre.toUpperCase() ==
                                             items.type.toUpperCase()
                                         ).Color
@@ -251,6 +251,7 @@ class Potrero extends Component {
               campos={this.state.campos}
               IdPotrero={this.state.potrero.IdPotrero}
               tipoMovimiento={this.state.tipoMovimiento}
+              categoriasHacienda = {this.state.coloresHacienda}
             />
           </Container>
         </div>

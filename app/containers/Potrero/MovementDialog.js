@@ -7,16 +7,12 @@ import {
   ModalFooter,
   Row,
   Col,
- 
- 
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   Card,
-  
   CardHeader,
-  
   CardBody,
   Alert,
   Input
@@ -31,24 +27,26 @@ export default class MovementDialog extends Component {
   constructor(props) {
     super(props);
 
+   
+    this.dropdownToggle = this.dropdownToggle.bind(this);
     this.changesValues = this.changesValues.bind(this);
-    this.dropdownToggleCampo = this.dropdownToggleCampo.bind(this);
-    this.changeValueCampo = this.changeValueCampo.bind(this);
-    this.changeValueMotivo = this.changeValueMotivo.bind(this);
-    this.dropdownTogglePotrero = this.dropdownTogglePotrero.bind(this);
-    this.changeValuePotrero = this.changeValuePotrero.bind(this);
+    this.changeDrop = this.changeDrop.bind(this);
     this.guardarMovimiento = this.guardarMovimiento.bind(this);
     this.cargarPotreros = this.cargarPotreros.bind(this);
     this.getCantTotalMov = this.getCantTotalMov.bind(this);
     this.loadProtreros = this.loadProtreros.bind(this);
     this.validatehasMovement = this.validatehasMovement.bind(this);
+    this.validatehasAlta = this.validatehasAlta.bind(this);
 
     
 
     this.state = {
-      campoSelected: "",
+     
       openDropCampo: false,
       openDropPotrero: false,
+      openDropMotivo: false,
+      openDropCategoria: false,
+      campoSelected: "",
       campos: [],
       potreros: [],
       estadoPotreroOrigen: [], // recibirlo como prop, lo seteo desde prop aca
@@ -56,8 +54,10 @@ export default class MovementDialog extends Component {
       observaciones: "",
       potreroSelected: {},
       tipoMovimiento: "",
-      motivos:[],
-      motivoSelected:[]
+      motivos: [],
+      motivoSelected: {},
+      categoriaHaciendaSeleccionada: {},
+      cantidadAlta: 0
     };
   }
 
@@ -65,12 +65,9 @@ export default class MovementDialog extends Component {
     const campos = DataService.getCampos(); // recupera todos los campos
     const motivos = DataService.getMotivos(); // recupera todos los motivos de muerte
 
-   
-    this.setState({ campos,  motivos });
-    this.setState({ campoSelected: campos[0].Nombre }); // setea el primer campo como el seleccionado
-   
+    this.setState({ campos, motivos });
+    this.setState({ campoSelected: campos[0] }); // setea el primer campo como el seleccionado
     this.cargarPotreros(campos[0].IdCampo); // cargar todos los potreros de un campo
-
     this.setState({ motivoSelected: motivos[0] }); // Seleccionar motivo de muerte por defecto
   }
 
@@ -97,17 +94,13 @@ export default class MovementDialog extends Component {
     });
   }
 
-  dropdownToggleCampo() {
-    this.setState({
-      openDropCampo: !this.state.openDropCampo
-    });
+  dropdownToggle(propertyState) {
+    const newState = {};
+    newState[propertyState] = !this.state[propertyState];
+    this.setState(newState); //drinkMate
   }
 
-  dropdownTogglePotrero() {
-    this.setState({
-      openDropPotrero: !this.state.openDropPotrero
-    });
-  }
+
 
   // devuelve cantidad de moviemientos que hizo el usuario en esa lista
   // Suma de campo cantMov del listado que se pasa como parametro
@@ -115,99 +108,156 @@ export default class MovementDialog extends Component {
     return list.map(o => o.cantMov).reduce((a, c) => a + c);
   }
 
-  validatehasMovement(){
-
-  if(this.getCantTotalMov(this.state.estadoPotreroOrigen) == 0){
-    return "No existen movimientos";
+  // valida si tiene movimientos la operacion
+  validatehasMovement() {
+    if (this.getCantTotalMov(this.state.estadoPotreroOrigen) == 0) {
+      return "No existen movimientos";
+    }
+    return "";
   }
-  return "";
 
+  // valida si tiene cantidad de hacienda para dar de alta
+  validatehasAlta() {
+    if (parseInt( this.state.cantidadAlta )== 0) {
+      return "Debes ingresar la cantidad de hacienda para dar de alta";
+    }
+    return "";
   }
 
   // Guarda Moviemiento en Base de datos
   guardarMovimiento() {
-
-    debugger
+    debugger;
     // validaciones
-    let errormsj ="";
-    let mov = {}; 
+    let errormsj = "";
+    let mov = {};
 
-      switch (this.props.tipoMovimiento) {
-        case "INGRESO":
+    switch (this.props.tipoMovimiento) {
+      case "INGRESO":
+        errormsj = this.validatehasMovement();
+        if (errormsj != "") {
+          alert(errormsj);
+          return false;
+        }
+        mov = DataConvert.toMovimientoEntity(
+          this.props.IdPotrero,
+          this.state.observaciones,
+          "",
+          this.state.estadoPotreroOrigen.map(e =>
+            DataConvert.toDefaultEntity(e.type, e.cantMov)
+          ),
+          this.state.estadoPotreroOrigen.map(e =>
+            DataConvert.toDefaultEntity(e.type, e.total)
+          )
+        );
+        break;
+      case "EGRESO":
+        errormsj = this.validatehasMovement();
+        if (errormsj != "") {
+          alert(errormsj);
+          return false;
+        }
+        mov = DataConvert.toMovimientoEntity(
+          this.props.IdPotrero,
+          this.state.observaciones,
+          "",
+          this.state.estadoPotreroDestino.map(e =>
+            DataConvert.toDefaultEntity(e.type, e.cantMov)
+          ),
+          this.state.estadoPotreroDestino.map(e =>
+            DataConvert.toDefaultEntity(e.type, e.total)
+          )
+        );
+        break;
+        break;
 
-            errormsj = this.validatehasMovement();
-            if(errormsj != "" ) {
-              alert(errormsj);
-              return false;
-            }
-            mov = DataConvert.toMovimientoEntity(
-              this.props.IdPotrero,
-              this.state.observaciones,
-              "",
-              this.state.estadoPotreroOrigen.map(e =>
-                DataConvert.toDefaultEntity(e.type, e.cantMov)
-              ),
-              this.state.estadoPotreroOrigen.map(e =>
-                DataConvert.toDefaultEntity(e.type, e.total)
-              )
-            );
-            break;
-        case "EGRESO":
-            errormsj =this.validatehasMovement();
-            if(errormsj != "" ) {
-              alert(errormsj);
-              return false;
-            }
-            mov = DataConvert.toMovimientoEntity(
-              this.props.IdPotrero,
-              this.state.observaciones,
-              "",
-              this.state.estadoPotreroDestino.map(e =>
-                DataConvert.toDefaultEntity(e.type, e.cantMov)
-              ),
-              this.state.estadoPotreroDestino.map(e =>
-                DataConvert.toDefaultEntity(e.type, e.total)
-              )
-            );
-            break;
-          break;
-  
-        case "NACIMIENTO":
+      case "NACIMIENTO":
+        errormsj = this.validatehasAlta();
+        if (errormsj != "") {
+          alert(errormsj);
+          return false;
+        }
 
-         
-          break;
-  
-        case "BAJA":
-            errormsj = this.validatehasMovement();
-            if(errormsj != "" ) {
-              alert(errormsj);
-              return false;
-            }
-            mov = DataConvert.toMovimientoEntity(
-              this.props.IdPotrero,
-              this.state.observaciones,
-              this.state.motivoSelected.amount,
-              this.state.estadoPotreroOrigen.map(e =>
-                DataConvert.toDefaultEntity(e.type, e.cantMov)
-              ),
-              this.state.estadoPotreroOrigen.map(e =>
-                DataConvert.toDefaultEntity(e.type, e.total)
-              )
-            );
+        // Movimiento de alta
+        let movimientos = this.state.estadoPotreroOrigen.map(e =>
+          DataConvert.toDefaultEntity(e.type, e.cantMov)
+        );
 
-          break;
-  
-      
-      }
+        // movimiento de detalle --> como quedo el potrero
+        let detalle = this.state.estadoPotreroOrigen.map(e =>
+          DataConvert.toDefaultEntity(e.type, e.total)
+        );
 
-      // guardar los movimientos
-      DataService.guardarMovimiento(mov);
+        let indexMov = movimientos.findIndex(
+          x =>
+            x.type.toUpperCase() ==
+            this.state.categoriaHaciendaSeleccionada.Nombre.toUpperCase()
+        );
+        let indexDet = detalle.findIndex(
+          x =>
+            x.type.toUpperCase() ==
+            this.state.categoriaHaciendaSeleccionada.Nombre.toUpperCase()
+        );
 
-      alert("Guardados correctamente");
+        if (indexMov == -1) {
+          // no se encontro el elemento
+          movimientos.push({
+            type: this.state.categoriaHaciendaSeleccionada.Nombre,
+            amount: this.state.cantidadAlta
+          });
+        } else {
+          movimientos[indexMov].amount = this.state.cantidadAlta;
+        }
 
-      // cerrar el modal
-      this.props.toggle();
-    
+        if (indexDet == -1) {
+          // no se encontro el elemento
+          detalle.push({
+            type: this.state.categoriaHaciendaSeleccionada.Nombre,
+            amount: this.state.cantidadAlta
+          });
+        } else {
+          // actualizo la cantidad que ya habia, con la cantidad nueva
+          detalle[indexDet].amount =
+            detalle[indexDet].amount + this.state.cantidadAlta ;
+        }
+
+        mov = DataConvert.toMovimientoEntity(
+          this.props.IdPotrero,
+          this.state.observaciones,
+          "",
+          movimientos,
+          detalle
+        );
+
+        break;
+
+      case "BAJA":
+        errormsj = this.validatehasMovement();
+        if (errormsj != "") {
+          alert(errormsj);
+          return false;
+        }
+        mov = DataConvert.toMovimientoEntity(
+          this.props.IdPotrero,
+          this.state.observaciones,
+          this.state.motivoSelected.amount,
+          this.state.estadoPotreroOrigen.map(e =>
+            DataConvert.toDefaultEntity(e.type, e.cantMov)
+          ),
+          this.state.estadoPotreroOrigen.map(e =>
+            DataConvert.toDefaultEntity(e.type, e.total)
+          )
+        );
+
+        break;
+    }
+
+    // guardar los movimientos
+    DataService.guardarMovimiento(mov);
+
+    alert("Guardados correctamente");
+
+    // cerrar el modal
+    this.props.toggle();
   }
 
   // Busca potreros de BD y guarda en estado
@@ -228,25 +278,13 @@ export default class MovementDialog extends Component {
     ); // por defecto seteo el primero
   }
 
-  // se dispara cuando cambia el drop de campo
-  changeValueCampo(e) {
-    this.setState({ campoSelected: e.currentTarget.textContent });
-    this.cargarPotreros(e.currentTarget.id);
-  }
-
-  // se dispara cuando cambia el drop de motivo
-  changeValueMotivo(e, item) {
-    this.setState({ motivoSelected: item});
-  }
-
-  // se dispara cuando cambia el drop de potreros
-  changeValuePotrero(e) {
-    this.setState({
-      potreroSelected: this.state.potreros.find(
-        x => x.IdPotrero == e.currentTarget.id
-      )
-    });
-    this.loadProtreros();
+  // se dispara cuando cambia un drop
+  changeDrop(e, state, item, fnc) {
+    debugger;
+    const newState = {};
+    newState[state] = item;
+    this.setState(newState); //drinkMate
+    fnc && fnc();
   }
 
   handleChange(evt) {
@@ -308,7 +346,7 @@ export default class MovementDialog extends Component {
     }
   }
 
-  // INGRESO / EGRESO  
+  // INGRESO / EGRESO
   dibujarIngreso() {
     return (
       <Fragment>
@@ -317,54 +355,63 @@ export default class MovementDialog extends Component {
             Origen - ¿Desde donde queres traer la hacienda?
           </CardHeader>
           <CardBody>
-           
-              <Row>
-                <Col>
-                  <label>Campo:</label>
-                  <Dropdown
-                    isOpen={this.state.openDropCampo}
-                    toggle={this.dropdownToggleCampo}
-                  >
-                    <DropdownToggle caret>
-                      {this.state.campoSelected}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {this.state.campos.map(e => (
-                        <DropdownItem
-                          id={e.IdCampo}
-                          key={e.IdCampo}
-                          onClick={this.changeValueCampo}
-                        >
-                          {e.Nombre}
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </Dropdown>
-                </Col>
-                <Col>
-                  <label>Potreros:</label>
-                  <Dropdown
-                    isOpen={this.state.openDropPotrero}
-                    toggle={this.dropdownTogglePotrero}
-                  >
-                    <DropdownToggle caret>
-                      {this.state.potreroSelected.Nombre}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {this.state.potreros.map(e => (
-                        <DropdownItem
-                          id={e.IdPotrero}
-                          key={e.IdPotrero}
-                          onClick={this.changeValuePotrero}
-                        >
-                          {e.Nombre}
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </Dropdown>
-                </Col>
-              </Row>
-          
+            <Row>
+              <Col>
+                <label>Campo:</label>
+                <Dropdown
+                  isOpen={this.state.openDropCampo}
+                  toggle={()=> {this.dropdownToggle("openDropCampo")}}
+                >
+                  <DropdownToggle caret>
+                    {this.state.campoSelected.Nombre}
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {this.state.campos.map(item => (
+                      <DropdownItem
+                        id={item.IdCampo}
+                        key={item.IdCampo}
+                        onClick={ev => {
+                          this.changeDrop(ev, "campoSelected", item, () => {
+                            this.cargarPotreros(item.IdCampo);
+                          });
+                        }}
+                      >
+                        {item.Nombre}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </Col>
+              <Col>
+                <label>Potreros:</label>
+                <Dropdown
+                  isOpen={this.state.openDropPotrero}
+                  toggle={()=> {this.dropdownToggle("openDropPotrero")}}
+                >
+                  <DropdownToggle caret>
+                    {this.state.potreroSelected.Nombre}
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {this.state.potreros.map(item => (
+                      <DropdownItem
+                        id={item.IdPotrero}
+                        key={item.IdPotrero}
+                        onClick={ev => {
+                          this.changeDrop(
+                            ev,
+                            "potreroSelected",
+                            item,
+                            this.loadProtreros
+                          );
+                        }}
+                      >
+                        {item.Nombre}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </Col>
+            </Row>
           </CardBody>
         </Card>
 
@@ -407,62 +454,66 @@ export default class MovementDialog extends Component {
         <Card>
           <CardHeader>Nombre del potrero</CardHeader>
           <CardBody>
-          
-              <Row>
-                <Col>
-                  <label>Categoria</label>
-                  <Dropdown
-                    isOpen={this.state.openDropCampo}
-                    toggle={this.dropdownToggleCampo}
-                  >
-                    <DropdownToggle caret>
-                      {this.state.campoSelected}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {this.state.campos.map(e => (
-                        <DropdownItem
-                          id={e.IdCampo}
-                          key={e.IdCampo}
-                          onClick={this.changeValueCampo}
-                        >
-                          {e.Nombre}
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </Dropdown>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label>Cantidad</label>
-                  <Input
-                    type="text"
-                    placeholder="Observaciones"
-                    value={this.state.observaciones}
-                    onChange={e => {
-                      this.setState({
-                        observaciones: e.target.value
-                      });
-                    }}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label>Descripción</label>
-                  <Input
-                    type="text"
-                    placeholder="Observaciones"
-                    value={this.state.observaciones}
-                    onChange={e => {
-                      this.setState({
-                        observaciones: e.target.value
-                      });
-                    }}
-                  />
-                </Col>
-              </Row>
-         
+            <Row>
+              <Col>
+                <label>Categoria</label>
+                <Dropdown
+                  isOpen={this.state.openDropCategoria}
+                  toggle={()=> {this.dropdownToggle("openDropCategoria")}}
+                >
+                  <DropdownToggle caret>
+                    {this.state.categoriaHaciendaSeleccionada.Nombre}
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {this.props.categoriasHacienda.map(item => (
+                      <DropdownItem
+                        id={item.Nombre}
+                        key={item.Nombre}
+                        onClick={ev => {
+                          this.changeDrop(
+                            ev,
+                            "categoriaHaciendaSeleccionada",
+                            item
+                          );
+                        }}
+                      >
+                        {item.Nombre}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <label>Cantidad</label>
+                <Input
+                  type="number"
+                  placeholder="Cantidad"
+                  value={this.state.cantidadAlta}
+                  onChange={e => {
+                    this.setState({
+                      cantidadAlta: parseInt(e.target.value)
+                    });
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <label>Descripción</label>
+                <Input
+                  type="text"
+                  placeholder="Descripción"
+                  value={this.state.observaciones}
+                  onChange={e => {
+                    this.setState({
+                      observaciones: e.target.value
+                    });
+                  }}
+                />
+              </Col>
+            </Row>
           </CardBody>
         </Card>
       </Fragment>
@@ -476,58 +527,58 @@ export default class MovementDialog extends Component {
         <Card>
           <CardHeader>Nombre del protrero</CardHeader>
           <CardBody>
-           
-              <Row>
-                <Col>
-                  <MovementDiff
-                    type="edit"
-                    initialValues={this.state.estadoPotreroOrigen}
-                    changesValues={this.changesValues}
-                  />
-                </Col>
-              </Row>
+            <Row>
+              <Col>
+                <MovementDiff
+                  type="edit"
+                  initialValues={this.state.estadoPotreroOrigen}
+                  changesValues={this.changesValues}
+                />
+              </Col>
+            </Row>
 
-              <Row>
-                <Col>
-                  <label>Motivo</label>
-                  <Dropdown
-                    isOpen={this.state.openDropCampo}
-                    toggle={this.dropdownToggleCampo}
-                  >
-                    <DropdownToggle caret>
-                      {this.state.motivoSelected.amount}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {this.state.motivos.map(e => (
-                        <DropdownItem
-                          id={e.type}
-                          key={e.amount}
-                          onClick={(ev)=>{this.changeValueMotivo(ev, e)}}
-                        >
-                          {e.amount}
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </Dropdown>
-                </Col>
-              </Row>
+            <Row>
+              <Col>
+                <label>Motivo</label>
+                <Dropdown
+                  isOpen={this.state.openDropMotivo}
+                  toggle={()=> {this.dropdownToggle("openDropMotivo")}}
+                >
+                  <DropdownToggle caret>
+                    {this.state.motivoSelected.amount}
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {this.state.motivos.map(item => (
+                      <DropdownItem
+                        id={item.type}
+                        key={item.amount}
+                        onClick={ev => {
+                          this.changeDrop(ev, "motivoSelected", item);
+                        }}
+                      >
+                        {item.amount}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </Col>
+            </Row>
 
-              <Row>
-                <Col>
-                  <label>Observaciones:</label>
-                  <Input
-                    type="text"
-                    placeholder="Ingresar Obervaciones"
-                    value={this.state.observaciones}
-                    onChange={e => {
-                      this.setState({
-                        observaciones: e.target.value
-                      });
-                    }}
-                  />
-                </Col>
-              </Row>
-           
+            <Row>
+              <Col>
+                <label>Observaciones:</label>
+                <Input
+                  type="text"
+                  placeholder="Ingresar Obervaciones"
+                  value={this.state.observaciones}
+                  onChange={e => {
+                    this.setState({
+                      observaciones: e.target.value
+                    });
+                  }}
+                />
+              </Col>
+            </Row>
           </CardBody>
         </Card>
       </Fragment>
@@ -549,8 +600,6 @@ export default class MovementDialog extends Component {
       case "BAJA":
         return this.dibujarBaja();
         break;
-
-    
     }
   }
 
