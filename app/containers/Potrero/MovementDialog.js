@@ -27,7 +27,6 @@ export default class MovementDialog extends Component {
   constructor(props) {
     super(props);
 
-   
     this.dropdownToggle = this.dropdownToggle.bind(this);
     this.changesValues = this.changesValues.bind(this);
     this.changeDrop = this.changeDrop.bind(this);
@@ -37,11 +36,10 @@ export default class MovementDialog extends Component {
     this.loadProtreros = this.loadProtreros.bind(this);
     this.validatehasMovement = this.validatehasMovement.bind(this);
     this.validatehasAlta = this.validatehasAlta.bind(this);
-
-    
+    this.validatehasCategoria = this.validatehasCategoria.bind(this);
+    this.validacionOperaciones = this.validacionOperaciones.bind(this);
 
     this.state = {
-     
       openDropCampo: false,
       openDropPotrero: false,
       openDropMotivo: false,
@@ -56,7 +54,7 @@ export default class MovementDialog extends Component {
       tipoMovimiento: "",
       motivos: [],
       motivoSelected: {},
-      categoriaHaciendaSeleccionada: {},
+      categoriaHaciendaSeleccionada: null,
       cantidadAlta: 0
     };
   }
@@ -100,8 +98,6 @@ export default class MovementDialog extends Component {
     this.setState(newState); //drinkMate
   }
 
-
-
   // devuelve cantidad de moviemientos que hizo el usuario en esa lista
   // Suma de campo cantMov del listado que se pasa como parametro
   getCantTotalMov(list) {
@@ -118,72 +114,73 @@ export default class MovementDialog extends Component {
 
   // valida si tiene cantidad de hacienda para dar de alta
   validatehasAlta() {
-    if (parseInt( this.state.cantidadAlta )== 0) {
-      return "Debes ingresar la cantidad de hacienda para dar de alta";
+    if (parseInt(this.state.cantidadAlta) == 0) {
+      return " Debes ingresar la cantidad de hacienda para dar de alta. ";
     }
     return "";
   }
 
-  // Guarda Moviemiento en Base de datos
-  guardarMovimiento() {
-    debugger;
-    // validaciones
-    let errormsj = "";
-    let mov = {};
+  validatehasCategoria() {
+    if (this.state.categoriaHaciendaSeleccionada == null) {
+      return " Debe seleccionar una categoría. ";
+    }
+    return "";
+  }
 
+  // se encarga de las validaciones de todos los moviemientos
+  validacionOperaciones() {
+    let errormsj = "";
     switch (this.props.tipoMovimiento) {
       case "INGRESO":
-        errormsj = this.validatehasMovement();
-        if (errormsj != "") {
-          alert(errormsj);
-          return false;
-        }
-        mov = DataConvert.toMovimientoEntity(
-          this.props.IdPotrero,
-          this.state.observaciones,
-          "",
-          this.state.estadoPotreroOrigen.map(e =>
-            DataConvert.toDefaultEntity(e.type, e.cantMov)
-          ),
-          this.state.estadoPotreroOrigen.map(e =>
-            DataConvert.toDefaultEntity(e.type, e.total)
-          )
-        );
-        break;
       case "EGRESO":
         errormsj = this.validatehasMovement();
-        if (errormsj != "") {
-          alert(errormsj);
-          return false;
-        }
-        mov = DataConvert.toMovimientoEntity(
-          this.props.IdPotrero,
-          this.state.observaciones,
-          "",
-          this.state.estadoPotreroDestino.map(e =>
-            DataConvert.toDefaultEntity(e.type, e.cantMov)
-          ),
-          this.state.estadoPotreroDestino.map(e =>
-            DataConvert.toDefaultEntity(e.type, e.total)
-          )
-        );
-        break;
         break;
 
       case "NACIMIENTO":
-        errormsj = this.validatehasAlta();
-        if (errormsj != "") {
-          alert(errormsj);
-          return false;
-        }
+        errormsj += this.validatehasAlta();
+        errormsj += this.validatehasCategoria();
+        break;
 
+      case "BAJA":
+        errormsj = this.validatehasMovement();
+        break;
+    }
+
+    if (errormsj != "") {
+      alert(errormsj);
+      return false;
+    }
+    return true;
+  }
+
+  // Guarda Moviemiento en Base de datos
+  guardarMovimiento() {
+    if (!this.validacionOperaciones()) return false; //validaciones
+
+    let mov = {};
+    let movimientos = [];
+    let detalle = [];
+
+    switch (this.props.tipoMovimiento) {
+      case "INGRESO":
+      case "EGRESO":
+      case "BAJA":
+        movimientos = this.state.estadoPotreroOrigen.map(e =>
+          DataConvert.toDefaultEntity(e.type, e.cantMov)
+        );
+        detalle = this.state.estadoPotreroOrigen.map(e =>
+          DataConvert.toDefaultEntity(e.type, e.total)
+        );
+        break;
+
+      case "NACIMIENTO":
         // Movimiento de alta
-        let movimientos = this.state.estadoPotreroOrigen.map(e =>
+        movimientos = this.state.estadoPotreroOrigen.map(e =>
           DataConvert.toDefaultEntity(e.type, e.cantMov)
         );
 
         // movimiento de detalle --> como quedo el potrero
-        let detalle = this.state.estadoPotreroOrigen.map(e =>
+        detalle = this.state.estadoPotreroOrigen.map(e =>
           DataConvert.toDefaultEntity(e.type, e.total)
         );
 
@@ -217,41 +214,24 @@ export default class MovementDialog extends Component {
         } else {
           // actualizo la cantidad que ya habia, con la cantidad nueva
           detalle[indexDet].amount =
-            detalle[indexDet].amount + this.state.cantidadAlta ;
+            detalle[indexDet].amount + this.state.cantidadAlta;
         }
-
-        mov = DataConvert.toMovimientoEntity(
-          this.props.IdPotrero,
-          this.state.observaciones,
-          "",
-          movimientos,
-          detalle
-        );
-
-        break;
-
-      case "BAJA":
-        errormsj = this.validatehasMovement();
-        if (errormsj != "") {
-          alert(errormsj);
-          return false;
-        }
-        mov = DataConvert.toMovimientoEntity(
-          this.props.IdPotrero,
-          this.state.observaciones,
-          this.state.motivoSelected.amount,
-          this.state.estadoPotreroOrigen.map(e =>
-            DataConvert.toDefaultEntity(e.type, e.cantMov)
-          ),
-          this.state.estadoPotreroOrigen.map(e =>
-            DataConvert.toDefaultEntity(e.type, e.total)
-          )
-        );
 
         break;
     }
 
-    // guardar los movimientos
+    // Creo objeto para dar de alta en BD 
+    mov = DataConvert.toMovimientoEntity(
+      this.props.IdPotrero,
+      this.state.observaciones,
+      this.props.tipoMovimiento == "BAJA"
+        ? this.state.motivoSelected.amount
+        : "",
+      movimientos,
+      detalle
+    );
+
+    // guardar los movimientos en BD
     DataService.guardarMovimiento(mov);
 
     alert("Guardados correctamente");
@@ -360,7 +340,9 @@ export default class MovementDialog extends Component {
                 <label>Campo:</label>
                 <Dropdown
                   isOpen={this.state.openDropCampo}
-                  toggle={()=> {this.dropdownToggle("openDropCampo")}}
+                  toggle={() => {
+                    this.dropdownToggle("openDropCampo");
+                  }}
                 >
                   <DropdownToggle caret>
                     {this.state.campoSelected.Nombre}
@@ -386,7 +368,9 @@ export default class MovementDialog extends Component {
                 <label>Potreros:</label>
                 <Dropdown
                   isOpen={this.state.openDropPotrero}
-                  toggle={()=> {this.dropdownToggle("openDropPotrero")}}
+                  toggle={() => {
+                    this.dropdownToggle("openDropPotrero");
+                  }}
                 >
                   <DropdownToggle caret>
                     {this.state.potreroSelected.Nombre}
@@ -459,27 +443,37 @@ export default class MovementDialog extends Component {
                 <label>Categoria</label>
                 <Dropdown
                   isOpen={this.state.openDropCategoria}
-                  toggle={()=> {this.dropdownToggle("openDropCategoria")}}
+                  toggle={() => {
+                    this.dropdownToggle("openDropCategoria");
+                  }}
                 >
                   <DropdownToggle caret>
-                    {this.state.categoriaHaciendaSeleccionada.Nombre}
+                    {this.state.categoriaHaciendaSeleccionada
+                      ? this.state.categoriaHaciendaSeleccionada.Nombre
+                      : "Seleccionar categoría Hacienda"}
                   </DropdownToggle>
                   <DropdownMenu>
-                    {this.props.categoriasHacienda.map(item => (
-                      <DropdownItem
-                        id={item.Nombre}
-                        key={item.Nombre}
-                        onClick={ev => {
-                          this.changeDrop(
-                            ev,
-                            "categoriaHaciendaSeleccionada",
-                            item
-                          );
-                        }}
-                      >
-                        {item.Nombre}
-                      </DropdownItem>
-                    ))}
+                    {this.props.categoriasHacienda
+                      .filter(
+                        x =>
+                          x.Nombre.toUpperCase() == "TERNERO" ||
+                          x.Nombre.toUpperCase() == "TERNERA"
+                      )
+                      .map(item => (
+                        <DropdownItem
+                          id={item.Nombre}
+                          key={item.Nombre}
+                          onClick={ev => {
+                            this.changeDrop(
+                              ev,
+                              "categoriaHaciendaSeleccionada",
+                              item
+                            );
+                          }}
+                        >
+                          {item.Nombre}
+                        </DropdownItem>
+                      ))}
                   </DropdownMenu>
                 </Dropdown>
               </Col>
@@ -542,7 +536,9 @@ export default class MovementDialog extends Component {
                 <label>Motivo</label>
                 <Dropdown
                   isOpen={this.state.openDropMotivo}
-                  toggle={()=> {this.dropdownToggle("openDropMotivo")}}
+                  toggle={() => {
+                    this.dropdownToggle("openDropMotivo");
+                  }}
                 >
                   <DropdownToggle caret>
                     {this.state.motivoSelected.amount}
