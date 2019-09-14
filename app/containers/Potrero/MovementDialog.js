@@ -76,12 +76,12 @@ export default class MovementDialog extends Component {
   // Cargar informacion de los dos potreros que intervienen en la operacion
   loadProtreros() {
     // Cargo potrero Origen
-    const potreroOrigen = DataService.getDetalleByPotrero(
+    const potreroOrigen = DataService.getLastDetalleByPotrero(
       this.state.potreroSelected.IdPotrero
     );
 
     // Cargo potrero destino
-    const potreroDestino = DataService.getDetalleByPotrero(
+    const potreroDestino = DataService.getLastDetalleByPotrero(
       this.props.IdPotrero
     );
 
@@ -160,6 +160,8 @@ export default class MovementDialog extends Component {
     let mov = {};
     let movimientos = [];
     let detalle = [];
+
+    // falta tener en cuenta que los movimientos de ingreso o egreso, generan dos moviemientos por detras 
 
     switch (this.props.tipoMovimiento) {
       case "INGRESO":

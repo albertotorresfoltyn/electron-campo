@@ -84,8 +84,8 @@ export default class DataService {
   }
 
   // POTRERO
-
-  static getDetalleByPotrero(idPotrero) {
+ // recupera el ultimo movimiento de UN potrero
+  static getLastDetalleByPotrero(idPotrero) {
   
    
       const db = SQL.connect();
@@ -101,6 +101,24 @@ export default class DataService {
       }
   
   }
+
+   // recupera TODOS los movimientos de UN potrero
+   static getAllDetalleByPotrero(idPotrero) {
+     console.log("llamo a getall con " + idPotrero);
+  
+    const db = SQL.connect();
+
+    if (db) {
+      const rows = db.exec(
+        `SELECT * FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc`
+      );
+
+      const objects = rowsToMagic(rows);
+
+      return objects;
+    }
+
+}
 // Recupera de BD el ultimo movimientos de todos los potreros
   static getDetallePotreros() {
     const db = SQL.connect();
