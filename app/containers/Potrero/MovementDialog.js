@@ -230,7 +230,10 @@ export default class MovementDialog extends Component {
         ? this.state.motivoSelected.amount
         : "",
       movimientos,
-      detalle
+      detalle,
+      this.potreroOrigen.IdPotrero,
+      this.potreroDestino.IdPotrero,
+      this.props.tipoMovimiento
     );
 
     // guardar los movimientos en BD

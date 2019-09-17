@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import DataService from '../../services/DataService';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { withRouter } from 'react-router-dom';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 
 class Historial extends Component {
@@ -19,7 +20,9 @@ class Historial extends Component {
 
   componentWillMount() {
     // ALBERT
-    this.setState({ historialList: DataService.getAllDetalleByPotrero(2038) });
+    const result  = DataService.getAllDetalleByPotrero(2038);
+    this.setState({ historialList: result });
+    console.log(result)
   }
 
 
@@ -27,37 +30,84 @@ class Historial extends Component {
   }
 
   render() {
-    const columns = [{
-      dataField: 'id',
-      text: 'Product ID',
+
+    function priceFormatter(cell, row, rowIndex) {
+      console.log("cell -------------------------------");
+
+          console.log(cell);
+         
+            cell.map((item) => {
+              return (
+              <span>
+              <strong style={ { color: 'red' } }>$ { item.type } </strong>
+              <strong style={ { color: 'red' } }>$ { item.amount } </strong>
+            </span>
+              )
+            }
+          
+          );
+      
+      
+    }
+     
+
+    const columns = [
+      {
+        dataField: 'IdMovimiento',
+        text: 'IdMovimiento',
+        sort: true,
+      },{
+      dataField: 'Fecha',
+      text: 'Fecha',
       sort: true,
     }, {
-      dataField: 'name',
-      text: 'Product Name',
+      dataField: 'TipoMovimiento',
+      text: 'Tipo Movimiento',
       sort: true,
     }, {
-      dataField: 'price',
-      text: 'Product Price',
+      dataField: 'Motivo',
+      text: 'Motivo',
       sort: true,
+    }, {
+      dataField: 'Observaciones',
+      text: 'Observaciones',
+      sort: false,
+    }, {
+      dataField: 'PotreroOrigen',
+      text: 'Potrero Origen',
+      sort: true,
+    },
+    , {
+      dataField: 'PotreroDestino',
+      text: 'Potrero Destino',
+      sort: true,
+    }
+    ,{
+      dataField: 'MovimientoDetalle',
+      text: 'Movimientos',
+      sort: false,
+      formatter:priceFormatter   
+    },{
+      dataField: 'PotreroDetalle1',
+      text: 'Detalle',
+      sort: false,
     }];
 
     const defaultSorted = [{
-      dataField: 'name',
+      dataField: 'Fecha',
       order: 'desc',
     }];
 
-    const products = [
-      { id: 4, name: 'Item name', productPrice: 2104 },
-      { id: 5, name: 'Item name', productPrice: 2104 },
-      { id: 3, name: 'Item name', productPrice: 2103 },
-    ];
+
 
     return (<BootstrapTable
+   
       bootstrap4
-      keyField="id"
-      data={products}
+      keyField="IdMovimiento"
+      data={this.state.historialList}
       columns={columns}
       defaultSorted={defaultSorted}
+      pagination={ paginationFactory() }
     />);
   }
 }

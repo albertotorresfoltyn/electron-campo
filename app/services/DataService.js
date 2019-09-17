@@ -110,9 +110,9 @@ export default class DataService {
 
     if (db) {
       const rows = db.exec(
-        `SELECT * FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc`
+        `SELECT Movimiento.*, Potrero.Nombre FROM  Movimiento  INNER JOIN Potrero ON Movimiento.IdPotrero=Potrero.IdPotrero  where Movimiento.IdPotrero = ${idPotrero}  order by IdMovimiento desc`
       );
-
+    
       const objects = rowsToMagic(rows);
 
       return objects;

@@ -56,6 +56,7 @@ class PotrerosList extends Component {
   }
 
   render() {
+    const { history } = this.props;
     return (
       <div>
         
@@ -65,6 +66,9 @@ class PotrerosList extends Component {
           <Container fluid className="text-center">
             <Row>
               <Col md="7">
+                <button  onClick={() => {
+              history.push("/CambioCategoria/");
+            }}> Cambio de categoria </button>
               <Breadcrumb><BreadcrumbItem active>POTREROS</BreadcrumbItem></Breadcrumb>
                  <Row>
                   {this.state.potreros.map(potrero => (
