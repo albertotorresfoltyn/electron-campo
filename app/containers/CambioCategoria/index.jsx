@@ -1,4 +1,5 @@
 // @flow
+<<<<<<< HEAD
 import React, { Component } from "react";
 import DataService from "../../services/DataService";
 import { withRouter } from "react-router-dom";
@@ -18,10 +19,18 @@ import {
   CardHeader,
   CardText
 } from "reactstrap";
+=======
+import React, { Component } from 'react';
+import DataService from '../../services/DataService';
+import BootstrapTable from 'react-bootstrap-table-next';
+import { withRouter } from 'react-router-dom';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+>>>>>>> 20326ea9d665b020df149c418cedddf3b02cde72
 
 class CambioCategoria extends Component {
   constructor(props) {
     super(props);
+<<<<<<< HEAD
 
     this.changeDrop = this.changeDrop.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
@@ -30,6 +39,9 @@ class CambioCategoria extends Component {
 
     
 
+=======
+    // this.calcularTotalDetalle = this.calcularTotalDetalle.bind(this);
+>>>>>>> 20326ea9d665b020df149c418cedddf3b02cde72
     this.state = {
       openCatOrigen: false,
       openCatDestino: false,
@@ -42,6 +54,7 @@ class CambioCategoria extends Component {
   }
 
   componentWillMount() {
+<<<<<<< HEAD
     const result = DataService.getCategoriaHacienda();
     console.log(result);
     this.setState({
@@ -160,6 +173,15 @@ class CambioCategoria extends Component {
           </Container>
         </div>
       </div>
+=======
+    const result  = DataService.getAllDetalleByPotrero(2038);
+    this.setState({ historialList: result });
+  }
+
+  render() {
+    return (
+      <button>LPM </button>
+>>>>>>> 20326ea9d665b020df149c418cedddf3b02cde72
     );
   }
 }
