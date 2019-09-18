@@ -52,17 +52,12 @@ export default class DataConvert {
         return hex;
     }
     console.log("colores");
-<<<<<<< HEAD
     console.log(colores);
     console.log(listDetalle);
-=======
-    console.log(colores, listDetalle);
->>>>>>> 360f1df3c7da0242450609b0552be5aaac3aa537
     if(listDetalle != undefined){
       const result = [];
 
       listDetalle.map((item, i) => {
-<<<<<<< HEAD
         debugger
 
         const detalle = item.PotreroDetalle;
@@ -90,16 +85,6 @@ export default class DataConvert {
        
        
       
-=======
-        console.log(item);
-        const elem = {
-          name: item.type,
-          value: item.total,
-          indice: i,
-          color: `#${decimalToHex(Math.floor(Math.random()*255),2)}${decimalToHex(Math.floor(Math.random()*255),2)}${decimalToHex(Math.floor(Math.random()*255),2)}`//colores.find(e=> e.Nombre.toUpperCase() == item.type.toUpperCase()).Color
-        };
-        result.push(elem);
->>>>>>> 360f1df3c7da0242450609b0552be5aaac3aa537
       });
       return result;
 
