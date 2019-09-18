@@ -133,13 +133,14 @@ export default class DataService {
 // Recupera de BD el ultimo movimientos de todos los potreros
   static getDetallePotreros() {
     const db = SQL.connect();
-
+    
     if (db) {
       const rows = db.exec(
-        `SELECT PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` order by IdMovimiento`
+        `SELECT IdPotrero,PotreroDetalle FROM  \`Movimiento\` GROUP BY IdPotrero ORDER BY MAX(Fecha) ASC`
       );
 
-      const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
+      const objects = (rowsToMagic(rows));
+      debugger
 
       return objects;
     }

@@ -27,10 +27,13 @@ class CambioCategoria extends Component {
     this.changeDrop = this.changeDrop.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
     this.changesValues = this.changesValues.bind(this);
-    this.filterListCategoriesOrigen = this.filterListCategoriesOrigen.bind(this);
-    this.filterListCategoriesDestino = this.filterListCategoriesDestino.bind(this);
-    
-    
+    this.filterListCategoriesOrigen = this.filterListCategoriesOrigen.bind(
+      this
+    );
+    this.filterListCategoriesDestino = this.filterListCategoriesDestino.bind(
+      this
+    );
+    this.managerSeleccionarOrigen = this.managerSeleccionarOrigen.bind(this);
 
     this.state = {
       openCatOrigen: false,
@@ -38,6 +41,7 @@ class CambioCategoria extends Component {
       categoriasOrigen: [],
       categoriasDestino: [],
       listadoExistencia: [],
+      detalles: [],
       relaciones: [],
       categoriaOrSeleccionada: {},
       categoriaDesSeleccionada: {}
@@ -45,15 +49,18 @@ class CambioCategoria extends Component {
   }
 
   componentWillMount() {
-    const resultCat = this.filterListCategoriesOrigen(DataService.getCategoriaHacienda());
-    const resultRel = DataService.getCategoriaHaciendaRelaciones();
+    const resultCat = this.filterListCategoriesOrigen(
+      DataService.getCategoriaHacienda()
+    ); // Listado de categorias Origen que acepten cambios
+    const resultRel = DataService.getCategoriaHaciendaRelaciones(); // Relaciones entre categorias Origen y Destino
+    const detalles = DataService.getDetallePotreros(); // Todos los detalles de los potreros
 
-    
     this.setState({
       categoriasOrigen: resultCat,
       relaciones: resultRel,
       categoriaOrSeleccionada: "Seleccionar",
-      categoriaDesSeleccionada:  "Seleccionar"
+      categoriaDesSeleccionada: "Seleccionar",
+      detalles: detalles
     });
   }
 
@@ -65,21 +72,53 @@ class CambioCategoria extends Component {
 
   // Filtar categorias de hacienda que estan habilitadas para el cambio
   filterListCategoriesOrigen(list) {
-    
-   return list.filter(item=> item.HabilitarCambio == 1);
-    
+    return list.filter(item => item.HabilitarCambio == 1);
   }
-// Filtrar categorias hacienda que esten relacionadas con la categoria Origen seleccionada
-  filterListCategoriesDestino(categoria) {
 
-    const result = this.state.relaciones.filter(item=> item.NombreOrigen == categoria);
-   debugger;
-    this.setState({categoriasDestino:result, categoriaDesSeleccionada:"Seleccionar"}); 
+  // Maneja la logica despues de seleccionar categoria origen
+  managerSeleccionarOrigen(categoriaOrigen) {
+    this.filterListCategoriesDestino(categoriaOrigen); // cargar categorias destino
+    // Filtrar por los potreros que contengan la categoria de hacienda que necesito.
+
+    let resultList = [];
+    this.state.detalles.map(function(potrero) {
+     
+      potrero.PotreroDetalle.map(function(det) {
+        if (det.type.toUpperCase() == categoriaOrigen.toUpperCase()) {
+       
+          const elem = {
+            type: potrero.IdPotrero,
+            qtty: det.amount,
+            cantMov: 0,
+            total: det.amount
+          };
+          resultList.push(elem);
+
+        }
+       
+      });
+     
+    });
+   
+    this.setState({
+      listadoExistencia: resultList
+      
+    });
+  }
+  // Filtrar categorias hacienda que esten relacionadas con la categoria Origen seleccionada
+  filterListCategoriesDestino(categoriaOrigen) {
+    const result = this.state.relaciones.filter(
+      item => item.NombreOrigen == categoriaOrigen
+    );
+
+    this.setState({
+      categoriasDestino: result,
+      categoriaDesSeleccionada: "Seleccionar"
+    });
   }
 
   // se dispara cuando cambia un drop
   changeDrop(e, state, item, fnc) {
-    
     const newState = {};
     newState[state] = item;
     this.setState(newState); //drinkMate
@@ -87,10 +126,7 @@ class CambioCategoria extends Component {
     fnc && fnc();
   }
 
-  changesValues(type, value) {
-   
-    
-  }
+  changesValues(type, value) {}
 
   render() {
     return (
@@ -104,79 +140,85 @@ class CambioCategoria extends Component {
             <Card>
               <CardBody>
                 {/* Cambio de categoria */}
-            <Row className="text-canter">
-              <Col className="text-canter" md="2">
-                <label>De Categoria</label>
-                <Dropdown
-                  isOpen={this.state.openCatOrigen}
-                  toggle={() => {
-                    this.dropdownToggle("openCatOrigen");
-                  }}
-                >
-                  <DropdownToggle caret>
-                    {this.state.categoriaOrSeleccionada}
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    {this.state.categoriasOrigen.map(item => (
-                      <DropdownItem
-                        id={item.Nombre}
-                        key={item.Nombre}
-                        onClick={ev => {
-                          this.changeDrop(ev, "categoriaOrSeleccionada", item.Nombre,  () => {
-                            this.filterListCategoriesDestino( item.Nombre) ;
-                            });
-                          }}
-                      >
-                        {item.Nombre}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </Dropdown>
-           
-            
-                <label>A Categoria:</label>
-                <Dropdown
-                  isOpen={this.state.openCatDestino}
-                  toggle={() => {
-                    this.dropdownToggle("openCatDestino");
-                  }}
-                >
-                  <DropdownToggle caret>
-                    {this.state.categoriaDesSeleccionada}
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    {this.state.categoriasDestino.map(item => (
-                      <DropdownItem
-                        id={item.NombreDestino}
-                        key={item.NombreDestino}
-                        onClick={ev => {
-                          this.changeDrop(ev, "categoriaDesSeleccionada", item.NombreDestino);
-                        }}
-                      >
-                        {item.NombreDestino}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </Dropdown>
-              </Col>
-              <Col>
+                <Row className="text-canter">
+                  <Col className="text-canter" md="2">
+                    <label>De Categoria</label>
+                    <Dropdown
+                      isOpen={this.state.openCatOrigen}
+                      toggle={() => {
+                        this.dropdownToggle("openCatOrigen");
+                      }}
+                    >
+                      <DropdownToggle caret>
+                        {this.state.categoriaOrSeleccionada}
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        {this.state.categoriasOrigen.map(item => (
+                          <DropdownItem
+                            id={item.Nombre}
+                            key={item.Nombre}
+                            onClick={ev => {
+                              this.changeDrop(
+                                ev,
+                                "categoriaOrSeleccionada",
+                                item.Nombre,
+                                () => {
+                                  this.managerSeleccionarOrigen(item.Nombre);
+                                }
+                              );
+                            }}
+                          >
+                            {item.Nombre}
+                          </DropdownItem>
+                        ))}
+                      </DropdownMenu>
+                    </Dropdown>
 
-              <MovementDiff
-                  type="edit"
-                  initialValues={this.state.listadoExistencia}
-                  changesValues={this.changesValues}
-                />
-
-              
-              </Col>
-            </Row>
-
+                    <label>A Categoria:</label>
+                    <Dropdown
+                      isOpen={this.state.openCatDestino}
+                      toggle={() => {
+                        this.dropdownToggle("openCatDestino");
+                      }}
+                    >
+                      <DropdownToggle caret>
+                        {this.state.categoriaDesSeleccionada}
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        {this.state.categoriasDestino.map(item => (
+                          <DropdownItem
+                            id={item.NombreDestino}
+                            key={item.NombreDestino}
+                            onClick={ev => {
+                              this.changeDrop(
+                                ev,
+                                "categoriaDesSeleccionada",
+                                item.NombreDestino
+                              );
+                            }}
+                          >
+                            {item.NombreDestino}
+                          </DropdownItem>
+                        ))}
+                      </DropdownMenu>
+                    </Dropdown>
+                  </Col>
+                  <Col>
+                    <MovementDiff
+                      mode="edit"
+                      initialValues={this.state.listadoExistencia}
+                      changesValues={this.changesValues}
+                    />
+                  </Col>
+                </Row>
               </CardBody>
             </Card>
-            
+
             <Row className="text-center mt-3">
-              <Col> <Button> Guardar Cambios</Button></Col>
-           
+              <Col>
+                {" "}
+                <Button> Guardar Cambios</Button>
+              </Col>
             </Row>
           </Container>
         </div>
