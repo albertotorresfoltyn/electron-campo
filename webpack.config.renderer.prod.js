@@ -51,11 +51,11 @@ export default merge.smart(baseConfig, {
           use: {
             loader: 'css-loader',
             options: {
-              modules : {
+              modules: {
                 localIdentName: '[name]__[local]___[hash:base64:5]',
               },
               minimize: true,
-              importLoaders: 1
+              importLoaders: 1,
             },
           },
         }),
@@ -86,11 +86,11 @@ export default merge.smart(baseConfig, {
             {
               loader: 'css-loader',
               options: {
-                modules : {
+                modules: {
                   localIdentName: '[name]__[local]___[hash:base64:5]',
                 },
                 minimize: true,
-                importLoaders: 1
+                importLoaders: 1,
               },
             },
             {
