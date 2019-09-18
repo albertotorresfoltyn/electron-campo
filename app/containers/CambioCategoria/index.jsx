@@ -1,5 +1,4 @@
 // @flow
-<<<<<<< HEAD
 import React, { Component } from "react";
 import DataService from "../../services/DataService";
 import { withRouter } from "react-router-dom";
@@ -17,51 +16,44 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardText
+  CardText,
+  Button
 } from "reactstrap";
-=======
-import React, { Component } from 'react';
-import DataService from '../../services/DataService';
-import BootstrapTable from 'react-bootstrap-table-next';
-import { withRouter } from 'react-router-dom';
-import paginationFactory from 'react-bootstrap-table2-paginator';
->>>>>>> 20326ea9d665b020df149c418cedddf3b02cde72
 
 class CambioCategoria extends Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
 
     this.changeDrop = this.changeDrop.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
     this.changesValues = this.changesValues.bind(this);
-
-
+    this.filterListCategoriesOrigen = this.filterListCategoriesOrigen.bind(this);
+    this.filterListCategoriesDestino = this.filterListCategoriesDestino.bind(this);
+    
     
 
-=======
-    // this.calcularTotalDetalle = this.calcularTotalDetalle.bind(this);
->>>>>>> 20326ea9d665b020df149c418cedddf3b02cde72
     this.state = {
       openCatOrigen: false,
       openCatDestino: false,
       categoriasOrigen: [],
       categoriasDestino: [],
       listadoExistencia: [],
+      relaciones: [],
       categoriaOrSeleccionada: {},
       categoriaDesSeleccionada: {}
     };
   }
 
   componentWillMount() {
-<<<<<<< HEAD
-    const result = DataService.getCategoriaHacienda();
-    console.log(result);
+    const resultCat = this.filterListCategoriesOrigen(DataService.getCategoriaHacienda());
+    const resultRel = DataService.getCategoriaHaciendaRelaciones();
+
+    
     this.setState({
-      categoriasOrigen: result,
-      categoriasDestino: result,
-      categoriaOrSeleccionada: result[0],
-      categoriaDesSeleccionada: result[0]
+      categoriasOrigen: resultCat,
+      relaciones: resultRel,
+      categoriaOrSeleccionada: "Seleccionar",
+      categoriaDesSeleccionada:  "Seleccionar"
     });
   }
 
@@ -71,9 +63,23 @@ class CambioCategoria extends Component {
     this.setState(newState); //drinkMate
   }
 
+  // Filtar categorias de hacienda que estan habilitadas para el cambio
+  filterListCategoriesOrigen(list) {
+    
+   return list.filter(item=> item.HabilitarCambio == 1);
+    
+  }
+// Filtrar categorias hacienda que esten relacionadas con la categoria Origen seleccionada
+  filterListCategoriesDestino(categoria) {
+
+    const result = this.state.relaciones.filter(item=> item.NombreOrigen == categoria);
+   debugger;
+    this.setState({categoriasDestino:result, categoriaDesSeleccionada:"Seleccionar"}); 
+  }
+
   // se dispara cuando cambia un drop
   changeDrop(e, state, item, fnc) {
-    debugger;
+    
     const newState = {};
     newState[state] = item;
     this.setState(newState); //drinkMate
@@ -99,7 +105,7 @@ class CambioCategoria extends Component {
               <CardBody>
                 {/* Cambio de categoria */}
             <Row className="text-canter">
-              <Col className="text-canter">
+              <Col className="text-canter" md="2">
                 <label>De Categoria</label>
                 <Dropdown
                   isOpen={this.state.openCatOrigen}
@@ -108,7 +114,7 @@ class CambioCategoria extends Component {
                   }}
                 >
                   <DropdownToggle caret>
-                    {this.state.categoriaOrSeleccionada.Nombre}
+                    {this.state.categoriaOrSeleccionada}
                   </DropdownToggle>
                   <DropdownMenu>
                     {this.state.categoriasOrigen.map(item => (
@@ -116,8 +122,10 @@ class CambioCategoria extends Component {
                         id={item.Nombre}
                         key={item.Nombre}
                         onClick={ev => {
-                          this.changeDrop(ev, "categoriaOrSeleccionada", item);
-                        }}
+                          this.changeDrop(ev, "categoriaOrSeleccionada", item.Nombre,  () => {
+                            this.filterListCategoriesDestino( item.Nombre) ;
+                            });
+                          }}
                       >
                         {item.Nombre}
                       </DropdownItem>
@@ -134,18 +142,18 @@ class CambioCategoria extends Component {
                   }}
                 >
                   <DropdownToggle caret>
-                    {this.state.categoriaDesSeleccionada.Nombre}
+                    {this.state.categoriaDesSeleccionada}
                   </DropdownToggle>
                   <DropdownMenu>
                     {this.state.categoriasDestino.map(item => (
                       <DropdownItem
-                        id={item.Nombre}
-                        key={item.Nombre}
+                        id={item.NombreDestino}
+                        key={item.NombreDestino}
                         onClick={ev => {
-                          this.changeDrop(ev, "categoriaDesSeleccionada", item);
+                          this.changeDrop(ev, "categoriaDesSeleccionada", item.NombreDestino);
                         }}
                       >
-                        {item.Nombre}
+                        {item.NombreDestino}
                       </DropdownItem>
                     ))}
                   </DropdownMenu>
@@ -166,22 +174,13 @@ class CambioCategoria extends Component {
               </CardBody>
             </Card>
             
-            <Row>
-              <Col></Col>
-              <Col></Col>
+            <Row className="text-center mt-3">
+              <Col> <Button> Guardar Cambios</Button></Col>
+           
             </Row>
           </Container>
         </div>
       </div>
-=======
-    const result  = DataService.getAllDetalleByPotrero(2038);
-    this.setState({ historialList: result });
-  }
-
-  render() {
-    return (
-      <button>LPM </button>
->>>>>>> 20326ea9d665b020df149c418cedddf3b02cde72
     );
   }
 }

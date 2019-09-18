@@ -83,6 +83,17 @@ export default class DataService {
     }
   }
 
+    // Devuelve listado de relaciones de  categoria hacienda
+    static getCategoriaHaciendaRelaciones() {
+      const db = SQL.connect();
+      if (db) {
+        const rows = db.exec("SELECT * FROM `CategoriaHaciendaRelaciones`");
+  
+        const objects = rowsToMagic(rows);
+        return objects;
+      }
+    }
+
   // POTRERO
  // recupera el ultimo movimiento de UN potrero
   static getLastDetalleByPotrero(idPotrero) {
