@@ -1,12 +1,12 @@
 
 // Encargado de las conversiones de estructuras
-// terminacion entity significa entidades de BD 
+// terminacion entity significa entidades de BD
 // terminaciones Model significa modelo necesario para el front
 
 export default class DataConvert {
 
-  
-  // Crear entidad para tabla MOVIMIENTO 
+
+  // Crear entidad para tabla MOVIMIENTO
   // idPotrero - Fecha - Observaciones -  Motivo - movimientoDetalle - potreroDetalle
   static toMovimientoEntity(idPotrero, obs, motivo,movDetalle, potDetalle, potOrigen, potDestino, tipoMovimiento) {
     const mov = {
@@ -28,7 +28,7 @@ export default class DataConvert {
     return mov;
   }
 
-  // Crea entidad por defecto type/amount para guardar en Base de datos 
+  // Crea entidad por defecto type/amount para guardar en Base de datos
   // type - amount
   static toDefaultEntity(type, amount) {
     const mov = {
@@ -41,8 +41,18 @@ export default class DataConvert {
    // Convierte listado de detalle potrero a listado que necesito en modelo
   // name - value - indice - color
   static convertDetalleToModel(listDetalle, colores) {
+    function decimalToHex(d, padding) {
+        var hex = Number(d).toString(16);
+        padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
+
+        while (hex.length < padding) {
+            hex = "0" + hex;
+        }
+
+        return hex;
+    }
     console.log("colores");
-    console.log(colores);
+    console.log(colores, listDetalle);
     if(listDetalle != undefined){
       const result = [];
       listDetalle.map((item, i) => {
@@ -51,16 +61,16 @@ export default class DataConvert {
           name: item.type,
           value: item.total,
           indice: i,
-          color: colores.find(e=> e.Nombre.toUpperCase() == item.type.toUpperCase()).Color
+          color: `#${decimalToHex(Math.floor(Math.random()*255),2)}${decimalToHex(Math.floor(Math.random()*255),2)}${decimalToHex(Math.floor(Math.random()*255),2)}`//colores.find(e=> e.Nombre.toUpperCase() == item.type.toUpperCase()).Color
         };
         result.push(elem);
       });
       return result;
-  
+
     }
   }
 
- 
+
 
 
 }
