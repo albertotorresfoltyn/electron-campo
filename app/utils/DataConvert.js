@@ -43,17 +43,38 @@ export default class DataConvert {
   static convertDetalleToModel(listDetalle, colores) {
     console.log("colores");
     console.log(colores);
+    console.log(listDetalle);
     if(listDetalle != undefined){
       const result = [];
+
       listDetalle.map((item, i) => {
-        console.log(item);
-        const elem = {
-          name: item.type,
-          value: item.total,
-          indice: i,
-          color: colores.find(e=> e.Nombre.toUpperCase() == item.type.toUpperCase()).Color
-        };
-        result.push(elem);
+        debugger
+
+        const detalle = item.PotreroDetalle;
+        detalle.map((detalle, j) => {
+
+         const resIndex = result.findIndex(e=> e.name.toUpperCase() == detalle.type.toUpperCase())
+         if(resIndex > -1){
+        
+          result[resIndex].value = result[resIndex].value +  parseInt(detalle.amount);
+          
+         }
+         else{
+          result.push(
+           {
+              name: detalle.type,
+              value: parseInt(detalle.amount),
+              indice: "1",
+              color: colores.find(e=> e.Nombre.toUpperCase() == detalle.type.toUpperCase()).Color
+            }
+          )
+         }
+        
+
+        });
+       
+       
+      
       });
       return result;
   
