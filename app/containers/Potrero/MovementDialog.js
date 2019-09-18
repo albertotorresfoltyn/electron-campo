@@ -409,15 +409,19 @@ export default class MovementDialog extends Component {
         </Alert>
 
         <MovementDiff
-          type="edit"
+          mode="edit"
+          type="potrero"
           initialValues={this.state.estadoPotreroOrigen}
           changesValues={this.changesValues}
+
+
         />
         <Alert color="secondary">DESTINO </Alert>
         <span />
 
         <MovementDiff
-          type="readonly"
+          mode="readonly"
+          type="potrero"
           initialValues={this.state.estadoPotreroDestino}
           changesValues={this.changesValues}
         />

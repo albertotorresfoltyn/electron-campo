@@ -5,6 +5,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { withRouter } from 'react-router-dom';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
+
 class Historial extends Component {
   constructor(props) {
     super(props);

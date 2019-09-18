@@ -10,7 +10,10 @@ export default class MovementDiff extends Component {
         <Table bordered>
           <thead>
             <tr>
-              <th>Tipo Ganado</th>
+              {
+                 (this.props.type == "potrero"? <th>Tipo Ganado</th>: <th>Categoria Hacienda</th> )
+              }
+             
               <th>Cant. Original</th>
               <th>Cant. Movimiento</th>
               <th>Total Final</th>
@@ -25,7 +28,7 @@ export default class MovementDiff extends Component {
                   <td>{element.qtty}</td>
 
                   <td className="">
-                    {this.props.type === "edit" ? (
+                    {this.props.mode === "edit" ? (
                       <Input
                         type="number"
                         placeholder="Cant. ganado a mover"
