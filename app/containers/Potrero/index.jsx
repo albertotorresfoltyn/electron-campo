@@ -252,6 +252,7 @@ class Potrero extends Component {
                     <Estado
                       key={potrero.Nombre}
                       potreroDetalle={this.state.potreroDetalle}
+                      type ="potrero"
                     />
                   </CardBody>
                 </Card>

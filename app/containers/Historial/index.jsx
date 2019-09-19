@@ -33,7 +33,7 @@ class Historial extends Component {
       console.log(cell);
 
       const res = cell.map((item) => {
-        debugger;
+      
         return (
           <div>
             <strong style={{ color: 'green' }}>+ {`${item.amount} ${item.type}`} </strong>
