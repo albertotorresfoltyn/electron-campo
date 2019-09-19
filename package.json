@@ -47,7 +47,7 @@
     "files": [
       "dist/",
       "node_modules/",
-      "db/**",
+      "db/",
       "app.html",
       "main.prod.js",
       "main.prod.js.map",

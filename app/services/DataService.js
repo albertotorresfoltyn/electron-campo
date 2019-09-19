@@ -44,8 +44,10 @@ export default class DataService {
         "SELECT Campo.*, COUNT() as Total FROM  `Campo` LEFT JOIN Potrero ON Campo.IdCampo = Potrero.IdCampo"
       );
       const objects = rowsToMagic(rows);
+      db.close();
       return objects;
     }
+    return [];
   }
 
   // Devuelve todos los potreros correspondientes a un campo
@@ -56,8 +58,10 @@ export default class DataService {
         `SELECT * FROM \`Potrero\` where idCampo = ${campoId}`
       );
       const objects = rowsToMagic(rows);
+      db.close();
       return objects;
     }
+    return [];
   }
 
   // Devuelve un potrero por IdPotrero
@@ -68,8 +72,10 @@ export default class DataService {
         `SELECT * FROM \`Potrero\` where IdPotrero = ${potreroId}`
       );
       const objects = rowsToMagic(rows);
+      db.close();
       return objects[0];
     }
+    return [];
   }
 
   // Devuelve listado de categoria hacienda
@@ -77,10 +83,11 @@ export default class DataService {
     const db = SQL.connect();
     if (db) {
       const rows = db.exec("SELECT * FROM `CategoriaHacienda`");
-
+      db.close();
       const objects = rowsToMagic(rows);
       return objects;
     }
+    return [];
   }
 
   // Devuelve listado de relaciones de  categoria hacienda
@@ -88,63 +95,54 @@ export default class DataService {
     const db = SQL.connect();
     if (db) {
       const rows = db.exec("SELECT * FROM `CategoriaHaciendaRelaciones`");
-
+      db.close();
       const objects = rowsToMagic(rows);
       return objects;
     }
+    return [];
   }
 
   // POTRERO
   // recupera el ultimo movimiento de UN potrero
   static getLastDetalleByPotrero(idPotrero) {
-
-
     const db = SQL.connect();
-
     if (db) {
       const rows = db.exec(
         `SELECT IdMovimiento ,PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`
       );
-
       const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
-
+      db.close();
       return objects;
     }
-
+    return [];
   }
 
   // recupera TODOS los movimientos de UN potrero
   static getAllDetalleByPotrero(idPotrero) {
     console.log("llamo a getall con " + idPotrero);
-
     const db = SQL.connect();
-
     if (db) {
       const rows = db.exec(
         `SELECT Movimiento.*, Potrero.Nombre FROM  Movimiento  INNER JOIN Potrero ON Movimiento.IdPotrero=Potrero.IdPotrero  where Movimiento.IdPotrero = ${idPotrero}  order by IdMovimiento desc`
       );
-
+      db.close();
       const objects = rowsToMagic(rows);
-
       return objects;
     }
-
+    return [];
   }
   // Recupera de BD el ultimo movimientos de todos los potreros
   static getDetallePotreros() {
     const db = SQL.connect();
-
     if (db) {
       const rows = db.exec(
         `SELECT IdPotrero,PotreroDetalle FROM  \`Movimiento\` GROUP BY IdPotrero ORDER BY MAX(Fecha) ASC`
       );
-
       const objects = (rowsToMagic(rows));
-      debugger
-
+      db.close();
       return objects;
     }
-
+    return [];
   }
 
   //listado de motivos de muerte de Base de datos
@@ -168,5 +166,6 @@ export default class DataService {
         console.log(error);
       }
     }
+    return [];
   }
 }
