@@ -61,7 +61,7 @@ export default class DataConvert {
 
         const detalle = item.PotreroDetalle;
         detalle.map((detalle, j) => {
-
+          const colorE = colores.find(e=> e.Nombre.toUpperCase() == detalle.type.toUpperCase());
          const resIndex = result.findIndex(e=> e.name.toUpperCase() == detalle.type.toUpperCase())
          if(resIndex > -1){
         
@@ -74,7 +74,7 @@ export default class DataConvert {
               name: detalle.type,
               value: parseInt(detalle.amount),
               indice: "1",
-              color: colores.find(e=> e.Nombre.toUpperCase() == detalle.type.toUpperCase()).Color
+              color: colorE? colorE.Color: "#ffff80"
             }
           )
          }
@@ -97,12 +97,14 @@ export default class DataConvert {
     if(listDetalle != undefined){
       const result = [];
       listDetalle.map((item, i) => {
+
+        const colorE = colores.find(e=> e.Nombre.toUpperCase() == item.type.toUpperCase());
         console.log(item);
         const elem = {
           name: item.type,
           value: item.total,
           indice: i,
-          color: colores.find(e=> e.Nombre.toUpperCase() == item.type.toUpperCase()).Color
+          color: colorE ? colorE.Color: "#ffff80"
         };
         result.push(elem);
       });
