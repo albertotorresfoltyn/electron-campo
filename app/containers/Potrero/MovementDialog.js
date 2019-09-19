@@ -265,7 +265,7 @@ export default class MovementDialog extends Component {
 
   // se dispara cuando cambia un drop
   changeDrop(e, state, item, fnc) {
-    debugger;
+   
     const newState = {};
     newState[state] = item;
     this.setState(newState); //drinkMate

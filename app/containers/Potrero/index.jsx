@@ -76,203 +76,281 @@ class Potrero extends Component {
 
     return (
       <div>
-        <div data-tid="container">
-          <Breadcrumb className="blueColor">
-            <BreadcrumbItem active>
-              POTRERO {potrero.Nombre} - {potrero.Codigo}
-            </BreadcrumbItem>{" "}
-          </Breadcrumb>
+        <Breadcrumb className="blueColor">
+          <BreadcrumbItem active className="mr-4">
+            POTRERO {potrero.Nombre} - {potrero.Codigo}
+          </BreadcrumbItem>{" "}
+         
+        </Breadcrumb>
+       
 
-          <Container>
-            {/* MENU */}
-            <div className="mb-3">
-              <Button
-                className="mr-1"
-                color="success"
-                onClick={() => {
-                  this.abrirModalMovimiento(TiposMov.INGRESO);
-                }}
-              >
-                Ingreso
-              </Button>{" "}
-              <Button
-                className="mr-1"
-                color="success"
-                onClick={() => {
-                  this.abrirModalMovimiento(TiposMov.EGRESO);
-                }}
-              >
-                Egreso
-              </Button>{" "}
-              <Button
-                className="mr-1"
-                color="success"
-                onClick={() => {
-                  this.abrirModalMovimiento(TiposMov.BAJA);
-                }}
-              >
-                Baja
-              </Button>{" "}
-              <Button
-                className="mr-1"
-                color="success"
-                onClick={() => {
-                  this.abrirModalMovimiento(TiposMov.NACIMIENTO);
-                }}
-              >
-                Nacimiento
-              </Button>{" "}
-            </div>
-            {/* RESUMEN y ESTADO */}
-            <Row>
-              <Col md="4">
-                <Card>
-                  <CardHeader>RESUMEN - {potrero.Nombre}</CardHeader>
-                  <CardBody>
-                    <ul className="list-group mb-3">
-                      <li className="list-group-item d-flex justify-content-between lh-condensed">
-                        <Container>
-                          <Row>
-                            <Col>
-                              <small className="text-muted">Descripción</small>
-                              <h6 className="my-0">{potrero.Descripcion}</h6>
-                            </Col>
-                          </Row>
-                        </Container>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between lh-condensed">
-                        <Container>
-                          <Row>
-                            <Col>
-                              <small className="text-muted">Calidad</small>
-                              <h6 className="my-0">{potrero.Calidad}</h6>
-                            </Col>
-                            <Col>
-                              <small className="text-muted">Superficie</small>
-                              <h6 className="my-0">{potrero.Superficie} ha</h6>
-                            </Col>
-                          </Row>
-                        </Container>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between lh-condensed">
-                        <Container>
-                          <Row>
-                            <Col>
-                              <small className="text-muted">
-                                Cantidad Saleros
-                              </small>
-                              <h6 className="my-0">
-                                {potrero.CantidadSaleros}
-                              </h6>
-                            </Col>
-                            <Col>
-                              <small className="text-muted">Rendimiento</small>
-                              <h6 className="my-0">{potrero.Rendimiento}</h6>
-                            </Col>
-                          </Row>
-                        </Container>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between lh-condensed">
-                        <Container>
-                          <Row>
-                            <Col>
-                              <small className="text-muted">
-                                Cantidad Aguadas
-                              </small>
-                              <h6 className="my-0">
-                                {potrero.CantidadAguadas}
-                              </h6>
-                            </Col>
-                            <Col>
-                              <small className="text-muted">
-                                Carga Soportada
-                              </small>
-                              <h6 className="my-0">{potrero.CargaSoportada}</h6>
-                            </Col>
-                          </Row>
-                        </Container>
-                      </li>
-                    </ul>
-                  </CardBody>
-                </Card>
-              </Col>
-
-              <Col md="4">
-                <Card>
-                  <CardHeader>Estado Actual</CardHeader>
-                  <CardBody>
-                    <Row>
-                      <Col>
-                        <Table size="md" bordered>
-                          <thead>
-                            <tr>
-                              <th>Tipo Hacienda</th>
-                              <th>Cantidad</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.state.potreroDetalle.map((items, i) => (
-                              <tr key={i}>
-                                <th scope="row">
-                                  {
-                                    <div>
-                                      <Button
-                                        style={{
-                                          backgroundColor: this.state.coloresHacienda.find(
-                                            e =>
-                                              e.Nombre.toUpperCase() ==
-                                              items.type.toUpperCase()
-                                          ).Color
-                                        }}
-                                        size="lg"
-                                      ></Button>{" "}
-                                      {items.type}
-                                    </div>
-                                  }
-                                </th>
-                                <th>{items.total}</th>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </Col>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-          
-             <Col md="4">
-             <Card>
-                  <CardHeader>Gráfico del potrero {potrero.Nombre}</CardHeader>
-                  <CardBody>
-                    <Estado
-                      key={potrero.Nombre}
-                      potreroDetalle={this.state.potreroDetalle}
-                      type ="potrero"
-                    />
-                  </CardBody>
-                </Card>
-             </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Historial key={this.state.potrero.IdPotrero} IdPotrero={this.state.potrero.IdPotrero}></Historial>
-              </Col>
-             
-            </Row>
-
-            {/* ESTADO ACTUAL */}
-
-            <MovementDialog
-              isOpen={this.state.modalVisible}
-              toggle={this.toggle}
-              campos={this.state.campos}
-              IdPotrero={this.state.potrero.IdPotrero}
-              tipoMovimiento={this.state.tipoMovimiento}
-              categoriasHacienda={this.state.coloresHacienda}
-            />
-          </Container>
+        <Container fluid>
+          {/* <!-- Page Heading --> */}
+          <div className="mb-3">
+        <a
+            className="btn btn-primary btn-icon-split mr-4"
+            onClick={() => {
+              this.abrirModalMovimiento(TiposMov.INGRESO);
+            }}
+          >
+            <span className="icon text-white-50">
+              <i className="fas fa-arrow-down"></i>
+            </span>
+            <span className="text">INGRESO</span>
+          </a>
+          <a
+            className="btn btn-primary btn-icon-split mr-4"
+            onClick={() => {
+              this.abrirModalMovimiento(TiposMov.EGRESO);
+            }}
+          >
+            <span className="icon text-white-50">
+              <i className="fas fa-arrow-up"></i>
+            </span>
+            <span className="text">EGRESO</span>
+          </a>
+          <a
+            className="btn btn-danger btn-icon-split mr-4"
+            onClick={() => {
+              this.abrirModalMovimiento(TiposMov.BAJA);
+            }}
+          >
+            <span className="icon text-white-50">
+              <i className="fas fa-trash"></i>
+            </span>
+            <span className="text">BAJA</span>
+          </a>
+          <a
+            className="btn btn-success btn-icon-split mr-4"
+            onClick={() => {
+              this.abrirModalMovimiento(TiposMov.NACIMIENTO);
+            }}
+          >
+            <span className="icon text-white-50">
+              <i className="fas fa-check"></i>
+            </span>
+            <span className="text">NACIMIENTO</span>
+          </a>
         </div>
+          {/* <!-- Content Row --> */}
+          <div className="row">
+            {/* <!-- Earnings (Monthly) Card Example --> */}
+            <div className="col-xl-2 col-md-6 mb-4">
+              <div className="card border-left-info shadow h-100 py-2">
+                <div className="card-body">
+                  <div className="row no-gutters align-items-center">
+                    <div className="col mr-2">
+                      <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        Descripción
+                      </div>
+                      <div className=" mb-0 font-weight-bold text-gray-800">
+                        {potrero.Descripcion}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* <!-- Earnings (Monthly) Card Example --> */}
+            <div className="col-xl-2 col-md-6 mb-4">
+              <div className="card border-left-info shadow h-100 py-2">
+                <div className="card-body">
+                  <div className="row no-gutters align-items-center">
+                    <div className="col mr-2">
+                      <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        Calidad
+                      </div>
+                      <div className="h5 mb-0 font-weight-bold text-gray-800">
+                        {potrero.Calidad}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* <!-- Earnings (Monthly) Card Example --> */}
+            <div className="col-xl-2 col-md-6 mb-4">
+              <div className="card border-left-info shadow h-100 py-2">
+                <div className="card-body">
+                  <div className="row no-gutters align-items-center">
+                    <div className="col mr-2">
+                      <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        Superficie
+                      </div>
+                      <div className="row no-gutters align-items-center">
+                        <div className="col-auto">
+                          <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                            {potrero.Superficie} ha
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* <!-- Pending Requests Card Example --> */}
+            <div className="col-xl-2 col-md-6 mb-4">
+              <div className="card border-left-info shadow h-100 py-2">
+                <div className="card-body">
+                  <div className="row no-gutters align-items-center">
+                    <div className="col mr-2">
+                      <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        Cantidad Saleros
+                      </div>
+                      <div className="h5 mb-0 font-weight-bold text-gray-800">
+                        {potrero.CantidadSaleros}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* <!-- Pending Requests Card Example --> */}
+            <div className="col-xl-2 col-md-6 mb-4">
+              <div className="card border-left-info shadow h-100 py-2">
+                <div className="card-body">
+                  <div className="row no-gutters align-items-center">
+                    <div className="col mr-2">
+                      <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        Cantidad Aguadas
+                      </div>
+                      <div className="h5 mb-0 font-weight-bold text-gray-800">
+                        {potrero.CantidadAguadas}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* <!-- Pending Requests Card Example --> */}
+            <div className="col-xl-2 col-md-6 mb-4">
+              <div className="card border-left-info shadow h-100 py-2">
+                <div className="card-body">
+                  <div className="row no-gutters align-items-center">
+                    <div className="col mr-2">
+                      <div className="text-xs font-weight-bold text-info  text-uppercase mb-1">
+                        Carga Soportada
+                      </div>
+                      <div className="h5 mb-0 font-weight-bold text-gray-800">
+                        {potrero.CargaSoportada}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* <!-- Content Row --> */}
+
+          <div className="row">
+            {/* <!-- Area Chart --> */}
+            <div className="col-xl-8 col-lg-7">
+              <div className="card shadow mb-4">
+                {/* <!-- Card Header - Dropdown --> */}
+                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 className="m-0 font-weight-bold text-primary">
+                    Movimientos
+                  </h6>
+                </div>
+                {/* <!-- Card Body --> */}
+                <div className="card-body">
+                  <Historial
+                    key={this.state.potrero.IdPotrero}
+                    IdPotrero={this.state.potrero.IdPotrero}
+                  ></Historial>
+                </div>
+              </div>
+            </div>
+
+            {/* <!-- Pie Chart --> */}
+            <div className="col-xl-4 col-lg-5">
+              <div className="card shadow mb-4">
+                {/* <!-- Card Header - Dropdown --> */}
+                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 className="m-0 font-weight-bold text-primary">
+                    Estado Actual
+                  </h6>
+                </div>
+                {/* <!-- Card Body --> */}
+                <div className="card-body">
+                  <Table size="md" bordered>
+                    <thead>
+                      <tr>
+                        <th>Tipo Hacienda</th>
+                        <th>Cantidad</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.potreroDetalle.map((items, i) => (
+                        <tr key={i}>
+                          <th scope="row">
+                            {
+                              <div>
+                                <span className="mr-2">
+                                  <i
+                                    className="fas fa-circle"
+                                    style={{
+                                      color: this.state.coloresHacienda.find(
+                                        e =>
+                                          e.Nombre.toUpperCase() ==
+                                          items.type.toUpperCase()
+                                      ).Color
+                                    }}
+                                  ></i>{" "}
+                                </span>
+
+                                {items.type}
+                              </div>
+                            }
+                          </th>
+                          <th>{items.total}</th>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              </div>
+
+              <div className="">
+                <div className="card shadow mb-4">
+                  {/* <!-- Card Header - Dropdown --> */}
+                  <div className="card-header">
+                    <h6 className="m-0 font-weight-bold text-primary">
+                      Gráfico
+                    </h6>
+                  </div>
+                  <CardBody>
+                    <div>
+                      <Estado
+                        key={potrero.Nombre}
+                        potreroDetalle={this.state.potreroDetalle}
+                        type="potrero"
+                      />
+                    </div>
+                  </CardBody>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ESTADO ACTUAL */}
+
+          <MovementDialog
+            isOpen={this.state.modalVisible}
+            toggle={this.toggle}
+            campos={this.state.campos}
+            IdPotrero={this.state.potrero.IdPotrero}
+            tipoMovimiento={this.state.tipoMovimiento}
+            categoriasHacienda={this.state.coloresHacienda}
+          />
+        </Container>
       </div>
     );
   }
