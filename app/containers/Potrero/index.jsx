@@ -83,7 +83,7 @@ class Potrero extends Component {
             </BreadcrumbItem>{" "}
           </Breadcrumb>
 
-          <Container fluid>
+          <Container>
             {/* MENU */}
             <div className="mb-3">
               <Button
@@ -125,7 +125,7 @@ class Potrero extends Component {
             </div>
             {/* RESUMEN y ESTADO */}
             <Row>
-              <Col>
+              <Col md="4">
                 <Card>
                   <CardHeader>RESUMEN - {potrero.Nombre}</CardHeader>
                   <CardBody>
@@ -197,7 +197,7 @@ class Potrero extends Component {
                 </Card>
               </Col>
 
-              <Col>
+              <Col md="4">
                 <Card>
                   <CardHeader>Estado Actual</CardHeader>
                   <CardBody>
@@ -240,13 +240,9 @@ class Potrero extends Component {
                   </CardBody>
                 </Card>
               </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Historial key={this.state.potrero.IdPotrero} IdPotrero={this.state.potrero.IdPotrero}></Historial>
-              </Col>
-              <Col>
-                <Card>
+          
+             <Col md="4">
+             <Card>
                   <CardHeader>Gráfico del potrero {potrero.Nombre}</CardHeader>
                   <CardBody>
                     <Estado
@@ -256,7 +252,13 @@ class Potrero extends Component {
                     />
                   </CardBody>
                 </Card>
+             </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Historial key={this.state.potrero.IdPotrero} IdPotrero={this.state.potrero.IdPotrero}></Historial>
               </Col>
+             
             </Row>
 
             {/* ESTADO ACTUAL */}

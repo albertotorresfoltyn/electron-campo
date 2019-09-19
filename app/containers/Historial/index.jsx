@@ -21,16 +21,14 @@ class Historial extends Component {
     // ALBERT
     const result = DataService.getAllDetalleByPotrero(2038);
     this.setState({ historialList: result });
-    console.log(result);
+  
   }
 
   calcularTotalDetalle() {}
 
   render() {
     const priceFormatter = (cell) => {
-      console.log('cell -------------------------------');
-
-      console.log(cell);
+    
 
       const res = cell.map((item) => {
       
