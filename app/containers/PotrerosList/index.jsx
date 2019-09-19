@@ -86,7 +86,7 @@ class PotrerosList extends Component {
                 
                 <Breadcrumb><BreadcrumbItem active>ESTADO</BreadcrumbItem></Breadcrumb>
                 <Row>
-                   <Estado key={this.props.match.params.campoId} potreroDetalle={this.state.potrerosResumen} />
+                   <Estado key={this.props.match.params.campoId} potreroDetalle={this.state.potrerosResumen}  type ="potreros"/>
                 </Row>
 
                 

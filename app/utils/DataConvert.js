@@ -40,25 +40,24 @@ export default class DataConvert {
 
    // Convierte listado de detalle potrero a listado que necesito en modelo
   // name - value - indice - color
-  static convertDetalleToModel(listDetalle, colores) {
-    function decimalToHex(d, padding) {
-        var hex = Number(d).toString(16);
-        padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
+  static convertDetallesToModel(listDetalle, colores) {
+    // function decimalToHex(d, padding) {
+    //     var hex = Number(d).toString(16);
+    //     padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
 
-        while (hex.length < padding) {
-            hex = "0" + hex;
-        }
+    //     while (hex.length < padding) {
+    //         hex = "0" + hex;
+    //     }
 
-        return hex;
-    }
-    console.log("colores");
-    console.log(colores);
-    console.log(listDetalle);
+    //     return hex;
+    // }
+ 
     if(listDetalle != undefined){
       const result = [];
 
       listDetalle.map((item, i) => {
-        debugger
+        
+
 
         const detalle = item.PotreroDetalle;
         detalle.map((detalle, j) => {
@@ -90,8 +89,26 @@ export default class DataConvert {
 
     }
   }
+  
 
-
-
+  static convertDetalleToModel(listDetalle, colores) {
+    console.log("colores");
+    console.log(colores);
+    if(listDetalle != undefined){
+      const result = [];
+      listDetalle.map((item, i) => {
+        console.log(item);
+        const elem = {
+          name: item.type,
+          value: item.total,
+          indice: i,
+          color: colores.find(e=> e.Nombre.toUpperCase() == item.type.toUpperCase()).Color
+        };
+        result.push(elem);
+      });
+      return result;
+  
+    }
+  }
 
 }
