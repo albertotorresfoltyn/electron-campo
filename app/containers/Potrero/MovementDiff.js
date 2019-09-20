@@ -35,7 +35,8 @@ export default class MovementDiff extends Component {
                         onChange={e => {
                           this.props.changesValues(
                             element.type,
-                            e.target.value
+                            e.target.value,
+                            element
                           );
                         }}
                       />
