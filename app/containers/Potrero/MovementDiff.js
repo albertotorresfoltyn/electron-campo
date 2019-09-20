@@ -4,16 +4,16 @@ import { Table, FormGroup, Label, Input } from "reactstrap";
 export default class MovementDiff extends Component {
 
   render() {
- 
+
     return (
       <div>
         <Table bordered>
           <thead>
             <tr>
               {
-                 (this.props.type == "potrero"? <th>Tipo Ganado</th>: <th>Categoria Hacienda</th> )
+                 (this.props.type == "potrero"? <th>Potrero</th>: <th>Categoria Hacienda</th> )
               }
-             
+
               <th>Cant. Original</th>
               <th>Cant. Movimiento</th>
               <th>Total Final</th>
@@ -21,12 +21,11 @@ export default class MovementDiff extends Component {
           </thead>
           <tbody>
             {this.props.initialValues && this.props.initialValues.map((element, index) => {
-            
+
               return (
                 <tr key={index}>
                   <th scope="row">{element.type}</th>
                   <td>{element.qtty}</td>
-
                   <td className="">
                     {this.props.mode === "edit" ? (
                       <Input

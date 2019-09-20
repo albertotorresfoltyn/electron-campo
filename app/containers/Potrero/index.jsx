@@ -73,9 +73,9 @@ class Potrero extends Component {
     debugger
     switch (tipoMovimiento) {
       case "INGRESO":
-      case "NACIMIENTO":
         return null;
-      default:
+
+      default: //NACIMIENTO BAJA EGRESO EL ORIGEN ES EL POTRERO ACTUAL
         return  DataService.getLastDetalleByPotrero(
           this.state.potrero.IdPotrero
         );
@@ -86,11 +86,10 @@ class Potrero extends Component {
     debugger
     switch (tipoMovimiento) {
       case "INGRESO":
-      case "NACIMIENTO":
         return DataService.getLastDetalleByPotrero(
           this.state.potrero.IdPotrero
         );
-      default:
+      default://NACIMIENTO BAJA EGRESO EL DESTINO ES NULL 
         return null;
     }
   }
