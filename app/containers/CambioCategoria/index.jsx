@@ -79,15 +79,15 @@ class CambioCategoria extends Component {
   managerSeleccionarOrigen(categoriaOrigen) {
     this.filterListCategoriesDestino(categoriaOrigen); // cargar categorias destino
     // Filtrar por los potreros que contengan la categoria de hacienda que necesito.
-
     let resultList = [];
     this.state.detalles.map(function(potrero) {
-     
+      const p = DataService.getPotrero(potrero.IdPotrero);
       potrero.PotreroDetalle.map(function(det) {
         if (det.type.toUpperCase() == categoriaOrigen.toUpperCase()) {
-       
+          debugger;
           const elem = {
-            type: potrero.IdPotrero,
+            id: potrero.IdPotrero,
+            type: p.Nombre,
             qtty: det.amount,
             cantMov: 0,
             total: det.amount
@@ -95,14 +95,14 @@ class CambioCategoria extends Component {
           resultList.push(elem);
 
         }
-       
+
       });
-     
+
     });
-   
+
     this.setState({
       listadoExistencia: resultList
-      
+
     });
   }
   // Filtrar categorias hacienda que esten relacionadas con la categoria Origen seleccionada
@@ -206,6 +206,7 @@ class CambioCategoria extends Component {
                   <Col>
                     <MovementDiff
                       mode="edit"
+                      type="potrero"
                       initialValues={this.state.listadoExistencia}
                       changesValues={this.changesValues}
                     />
