@@ -20,7 +20,7 @@ class Estado extends Component {
 
     const colores = DataService.getCategoriaHacienda();
     const data =  this.props.type == "potreros" ? DataConvert.convertDetallesToModel(this.props.potreroDetalle, colores) : DataConvert.convertDetalleToModel(this.props.potreroDetalle, colores);
-   debugger
+   
     this.setState({ data:data });
    
   }

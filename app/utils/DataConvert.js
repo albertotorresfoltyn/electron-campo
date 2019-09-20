@@ -9,8 +9,10 @@ export default class DataConvert {
   // Crear entidad para tabla MOVIMIENTO
   // idPotrero - Fecha - Observaciones -  Motivo - movimientoDetalle - potreroDetalle
   static toMovimientoEntity(idPotrero, obs, motivo,movDetalle, potDetalle, potOrigen, potDestino, tipoMovimiento) {
+
+
     const mov = {
-      idPotrero: idPotrero,
+      IdPotrero: idPotrero,
       Fecha: new Date()
         .toJSON()
         .slice(0, 10)
@@ -19,8 +21,8 @@ export default class DataConvert {
         .join("/"),
       Observaciones: obs,
       Motivo: motivo,
-      MovimientoDetalle: JSON.stringify(movDetalle),
-      PotreroDetalle: JSON.stringify(potDetalle),
+      MovimientoDetalle: JSON.stringify(movDetalle.filter(x=> x.amount != 0)),
+      PotreroDetalle: JSON.stringify(potDetalle.filter(x=> x.amount != 0)),
       PotreroOrigen:potOrigen,
       PotreroDestino:potDestino,
       TipoMovimiento: tipoMovimiento
@@ -37,6 +39,7 @@ export default class DataConvert {
     };
     return mov;
   }
+
 
    // Convierte listado de detalle potrero a listado que necesito en modelo
   // name - value - indice - color
@@ -112,5 +115,8 @@ export default class DataConvert {
   
     }
   }
+
+
+
 
 }

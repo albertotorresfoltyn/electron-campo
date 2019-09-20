@@ -39,24 +39,73 @@ class Potrero extends Component {
       potreroDetalle: DataService.getLastDetalleByPotrero(
         this.props.match.params.potreroId
       ),
+      potreroHistorial: DataService.getAllDetalleByPotrero(this.props.match.params.potreroId),
       coloresHacienda: DataService.getCategoriaHacienda(),
       modalVisible: false,
-      tipoMovimiento: ""
+      tipoMovimiento: "",
+      potreroOrigen :{},
+      potreroDestino :{}
     };
-
+    this.saveHookHandler=this.saveHookHandler.bind(this);
     this.toggle = this.toggle.bind(this);
     this.abrirModalMovimiento = this.abrirModalMovimiento.bind(this);
+    this.setPotreroDestino = this.setPotreroDestino.bind(this);
+    this.setPotreroOrigen = this.setPotreroOrigen.bind(this);
+
+    
   }
 
   toggle() {
-    this.setState({ modalVisible: !this.state.modalVisible });
+    this.setState({ modalVisible: !this.state.modalVisible,
+      potrero: DataService.getPotrero(this.props.match.params.potreroId),
+      potreroDetalle: DataService.getLastDetalleByPotrero(
+        this.props.match.params.potreroId
+      ),
+      potreroHistorial: DataService.getAllDetalleByPotrero(this.props.match.params.potreroId)
+     }, ()=>{this.forceUpdate()});
   }
 
+  saveHookHandler() {
+    this.forceUpdate();
+  }
+
+  setPotreroOrigen(tipoMovimiento){
+    debugger
+    switch (tipoMovimiento) {
+      case "INGRESO":
+      case "NACIMIENTO":
+        return null;
+      default:
+        return  DataService.getLastDetalleByPotrero(
+          this.state.potrero.IdPotrero
+        );
+    }
+  }
+
+  setPotreroDestino(tipoMovimiento){
+    debugger
+    switch (tipoMovimiento) {
+      case "INGRESO":
+      case "NACIMIENTO":
+        return DataService.getLastDetalleByPotrero(
+          this.state.potrero.IdPotrero
+        );
+      default:
+        return null;
+    }
+  }
+
+
   abrirModalMovimiento(tipoMovimiento) {
+
+   
     this.setState({
+      potreroOrigen: this.setPotreroOrigen(tipoMovimiento),
+      potreroDestino: this.setPotreroDestino(tipoMovimiento),
       tipoMovimiento: tipoMovimiento,
       modalVisible: !this.state.modalVisible
     });
+    
   }
 
   render() {
@@ -262,6 +311,7 @@ class Potrero extends Component {
                 {/* <!-- Card Body --> */}
                 <div className="card-body">
                   <Historial
+                    historial={this.state.potreroHistorial}
                     key={this.state.potrero.IdPotrero}
                     IdPotrero={this.state.potrero.IdPotrero}
                   ></Historial>
@@ -349,6 +399,9 @@ class Potrero extends Component {
             IdPotrero={this.state.potrero.IdPotrero}
             tipoMovimiento={this.state.tipoMovimiento}
             categoriasHacienda={this.state.coloresHacienda}
+            potreroOrigen ={this.state.potreroOrigen}
+            potreroDestino ={this.state.potreroDestino}
+            onSaveHook={this.saveHookHandler}
           />
         </Container>
       </div>

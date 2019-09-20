@@ -21,7 +21,6 @@ import ModernDatepicker from "react-modern-datepicker";
 import MovementDiff from "./MovementDiff";
 import DataService from "../../services/DataService";
 import DataConvert from "../../utils/DataConvert";
-import { debug } from "util";
 
 export default class MovementDialog extends Component {
   constructor(props) {
@@ -44,13 +43,13 @@ export default class MovementDialog extends Component {
       openDropPotrero: false,
       openDropMotivo: false,
       openDropCategoria: false,
-      campoSelected: "",
-      campos: [],
+      // campoSelected: "",
+      // campos: [],
       potreros: [],
-      estadoPotreroOrigen: [], // recibirlo como prop, lo seteo desde prop aca
-      estadoPotreroDestino: [], // recibirlo como prop, lo seteo desde prop aca
+      estadoPotreroOrigen: this.props.potreroOrigen, // recibirlo como prop, lo seteo desde prop aca
+      estadoPotreroDestino: this.props.potreroDestino, // recibirlo como prop, lo seteo desde prop aca
       observaciones: "",
-      potreroSelected: {},
+      potreroSelected: null,
       tipoMovimiento: "",
       motivos: [],
       motivoSelected: {},
@@ -60,36 +59,45 @@ export default class MovementDialog extends Component {
   }
 
   componentDidMount() {
-    const campos = DataService.getCampos(); // recupera todos los campos
+    //const campos = DataService.getCampos(); // recupera todos los campos
     const motivos = DataService.getMotivos(); // recupera todos los motivos de muerte
-
-    this.setState({ campos, motivos });
-    this.setState({ campoSelected: campos[0] }); // setea el primer campo como el seleccionado
-    this.cargarPotreros(campos[0].IdCampo); // cargar todos los potreros de un campo
-    this.setState({ motivoSelected: motivos[0] }); // Seleccionar motivo de muerte por defecto
+    this.cargarPotreros(); // cargar todos los potreros de un campo
+    this.setState({ motivos: motivos, motivoSelected: motivos[0] }); // Seleccionar motivo de muerte por defecto
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ tipoMovimiento: nextProps.tipoMovimiento });
+    debugger;
+    this.setState({
+      tipoMovimiento: nextProps.tipoMovimiento,
+      estadoPotreroOrigen: nextProps.potreroOrigen,
+      estadoPotreroDestino: nextProps.potreroDestino
+    });
   }
 
   // Cargar informacion de los dos potreros que intervienen en la operacion
-  loadProtreros() {
-    // Cargo potrero Origen
-    const potreroOrigen = DataService.getLastDetalleByPotrero(
-      this.state.potreroSelected.IdPotrero
-    );
-
-    // Cargo potrero destino
-    const potreroDestino = DataService.getLastDetalleByPotrero(
-      this.props.IdPotrero
-    );
-
-    // guardo en el estado
-    this.setState({
-      estadoPotreroOrigen: potreroOrigen,
-      estadoPotreroDestino: potreroDestino
-    });
+  loadProtreros(item) {
+    switch (this.state.tipoMovimiento) {
+      case "INGRESO":
+      case "NACIMIENTO":
+        // Cargo potrero Origen
+        const potreroOrigen = DataService.getLastDetalleByPotrero(
+          item.IdPotrero
+        );
+        this.setState({
+          estadoPotreroOrigen: potreroOrigen
+        });
+        break;
+      case "EGRESO":
+      case "BAJA":
+        // Cargo potrero destino
+        const potreroDestino = DataService.getLastDetalleByPotrero(
+          this.props.IdPotrero
+        );
+        this.setState({
+          estadoPotreroDestino: potreroDestino
+        });
+        break;
+    }
   }
 
   dropdownToggle(propertyState) {
@@ -161,7 +169,7 @@ export default class MovementDialog extends Component {
     let movimientos = [];
     let detalle = [];
 
-    // falta tener en cuenta que los movimientos de ingreso o egreso, generan dos moviemientos por detras 
+    // falta tener en cuenta que los movimientos de ingreso o egreso, generan dos moviemientos por detras
 
     switch (this.props.tipoMovimiento) {
       case "INGRESO":
@@ -222,7 +230,9 @@ export default class MovementDialog extends Component {
         break;
     }
 
-    // Creo objeto para dar de alta en BD 
+    const idOrigen = this.state.estadoPotreroOrigen && this.state.estadoPotreroOrigen.IdPotrero;
+    const idDestino = this.state.estadoPotreroDestino && this.state.estadoPotreroDestino.IdPotrero;
+    // Creo objeto para dar de alta en BD
     mov = DataConvert.toMovimientoEntity(
       this.props.IdPotrero,
       this.state.observaciones,
@@ -230,44 +240,38 @@ export default class MovementDialog extends Component {
         ? this.state.motivoSelected.amount
         : "",
       movimientos,
-      detalle,
-      this.potreroOrigen.IdPotrero,
-      this.potreroDestino.IdPotrero,
+      detalle, 
+      idOrigen,
+      idDestino,
       this.props.tipoMovimiento
     );
 
     // guardar los movimientos en BD
     DataService.guardarMovimiento(mov);
 
-    alert("Guardados correctamente");
+   // alert("Guardados correctamente");
 
     // cerrar el modal
     this.props.toggle();
   }
 
-  // Busca potreros de BD y guarda en estado
-  cargarPotreros(idCampo) {
-    const potreros = DataService.getPotreros(idCampo);
-    const idPotreroDestino = this.props.IdPotrero;
-
+  // Busca potreros de BD y guarda en estado para cargar el dropdown
+  cargarPotreros() {
+    const potreros = DataService.getAllPotreros();
     // sacar de este listado el potrero destino.
     potreros.splice(
-      potreros.findIndex(i => i.IdPotrero === idPotreroDestino),
+      potreros.findIndex(i => i.IdPotrero === this.props.IdPotrero),
       1
     );
-
     // Guarda en el estado
-    this.setState(
-      { potreros: potreros, potreroSelected: potreros[0] },
-      this.loadProtreros
-    ); // por defecto seteo el primero
+    this.setState({ potreros: potreros }); // por defecto seteo el primero
   }
 
   // se dispara cuando cambia un drop
   changeDrop(e, state, item, fnc) {
-   
     const newState = {};
     newState[state] = item;
+    debugger;
     this.setState(newState); //drinkMate
     fnc && fnc();
   }
@@ -281,52 +285,80 @@ export default class MovementDialog extends Component {
 
   // se cambia algun valor en los input para mover hacienda
   changesValues(type, value) {
-    const recordO = this.state.estadoPotreroOrigen.find(v => v.type === type);
-    if (recordO) {
-      if (value > recordO.qtty) {
+    let estadoPotreroEditable = {};
+    let estadoPotreroReadOnly = {};
+
+    switch (this.state.tipoMovimiento) {
+      case "INGRESO":
+      case "NACIMIENTO":
+        // Cargo potrero Origen
+        estadoPotreroEditable = this.state.estadoPotreroDestino;
+        estadoPotreroReadOnly = this.state.estadoPotreroOrigen;
+        break;
+      case "EGRESO":
+      case "BAJA":
+        // Cargo potrero Origen
+        estadoPotreroEditable = this.state.estadoPotreroOrigen;
+        estadoPotreroReadOnly = this.state.estadoPotreroDestino;
+        break;
+    }
+
+    const recordEditable = estadoPotreroEditable.find(v => v.type === type);
+
+    if (recordEditable) {
+      if (value > recordEditable.qtty) {
         return;
       }
       // Modificando el origen
-      recordO.total = recordO.qtty - value;
-      recordO.cantMov = value;
-      const arrayPotrero = this.state.estadoPotreroOrigen;
-      const indexPotrero = this.state.estadoPotreroOrigen.findIndex(
+      recordEditable.total = recordEditable.qtty - value;
+      recordEditable.cantMov = value;
+      const indexPotrero = estadoPotreroEditable.findIndex(
         v => v.type === type
       );
-      arrayPotrero[indexPotrero] = recordO;
+      estadoPotreroEditable[indexPotrero] = recordEditable;
 
-      // modificar el destino
-      const recordD = this.state.estadoPotreroDestino.find(
-        v => v.type === type
-      );
-      if (recordD) {
-        // el tipo de hacienda existe en el destino
-        const res = recordD.qtty + parseInt(value);
-        recordD.total = isNaN(res) ? recordD.qtty : res;
-        recordD.cantMov = isNaN(parseInt(value)) ? 0 : value;
-        const arrayPotreroD = this.state.estadoPotreroDestino;
-        const indexPotreroD = this.state.estadoPotreroDestino.findIndex(
-          v => v.type === type
-        );
-        arrayPotreroD[indexPotreroD] = recordD;
-        this.setState({
-          estadoPotreroOrigen: arrayPotrero,
-          estadoPotreroDestino: arrayPotreroD
-        });
-      } else {
-        // el tipo de hacienda no existe en el destino y tengo que agregarla
-        const regNuevo = {
-          type,
-          qtty: 0,
-          cantMov: parseInt(value),
-          total: parseInt(value)
-        };
-        const arrayPotreroD = this.state.estadoPotreroDestino;
-        arrayPotreroD.push(regNuevo);
-        this.setState({
-          estadoPotreroOrigen: arrayPotrero,
-          estadoPotreroDestino: arrayPotreroD
-        });
+      if (estadoPotreroReadOnly != null) {
+        // modificar el potrero en donde repercute los movimientos
+        const recordRO = estadoPotreroReadOnly.find(v => v.type === type);
+        if (recordRO) {
+          // el tipo de hacienda existe en el destino
+          const res = recordRO.qtty + parseInt(value);
+          recordRO.total = isNaN(res) ? recordRO.qtty : res;
+          recordRO.cantMov = isNaN(parseInt(value)) ? 0 : value;
+          const indexPotreroD = estadoPotreroReadOnly.findIndex(
+            v => v.type === type
+          );
+
+          estadoPotreroReadOnly[indexPotreroD] = recordRO;
+        } else {
+          // el tipo de hacienda no existe en el destino y tengo que agregarla
+          const regNuevo = {
+            type,
+            qtty: 0,
+            cantMov: parseInt(value),
+            total: parseInt(value)
+          };
+
+          estadoPotreroReadOnly.push(regNuevo);
+        }
+      }
+
+      switch (this.state.tipoMovimiento) {
+        case "INGRESO":
+        case "NACIMIENTO":
+          this.setState({
+            estadoPotreroOrigen: estadoPotreroReadOnly,
+            estadoPotreroDestino: estadoPotreroEditable
+          });
+
+          break;
+        case "EGRESO":
+        case "BAJA":
+          this.setState({
+            estadoPotreroOrigen: estadoPotreroEditable,
+            estadoPotreroDestino: estadoPotreroReadOnly
+          });
+          break;
       }
     }
   }
@@ -337,38 +369,10 @@ export default class MovementDialog extends Component {
       <Fragment>
         <Card>
           <CardHeader>
-            Origen - ¿Desde donde queres traer la hacienda?
+            {this.state.tipoMovimiento == "INGRESO" ? "ORIGEN" : "DESTINO"}
           </CardHeader>
           <CardBody>
             <Row>
-              <Col>
-                <label>Campo:</label>
-                <Dropdown
-                  isOpen={this.state.openDropCampo}
-                  toggle={() => {
-                    this.dropdownToggle("openDropCampo");
-                  }}
-                >
-                  <DropdownToggle caret>
-                    {this.state.campoSelected.Nombre}
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    {this.state.campos.map(item => (
-                      <DropdownItem
-                        id={item.IdCampo}
-                        key={item.IdCampo}
-                        onClick={ev => {
-                          this.changeDrop(ev, "campoSelected", item, () => {
-                            this.cargarPotreros(item.IdCampo);
-                          });
-                        }}
-                      >
-                        {item.Nombre}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </Dropdown>
-              </Col>
               <Col>
                 <label>Potreros:</label>
                 <Dropdown
@@ -378,7 +382,9 @@ export default class MovementDialog extends Component {
                   }}
                 >
                   <DropdownToggle caret>
-                    {this.state.potreroSelected.Nombre}
+                    {this.state.potreroSelected
+                      ? this.state.potreroSelected.Nombre
+                      : "Seleccionar Potrero "}
                   </DropdownToggle>
                   <DropdownMenu>
                     {this.state.potreros.map(item => (
@@ -386,12 +392,9 @@ export default class MovementDialog extends Component {
                         id={item.IdPotrero}
                         key={item.IdPotrero}
                         onClick={ev => {
-                          this.changeDrop(
-                            ev,
-                            "potreroSelected",
-                            item,
-                            this.loadProtreros
-                          );
+                          this.changeDrop(ev, "potreroSelected", item, () => {
+                            this.loadProtreros(item);
+                          });
                         }}
                       >
                         {item.Nombre}
@@ -404,28 +407,34 @@ export default class MovementDialog extends Component {
           </CardBody>
         </Card>
 
+        <Row>
+          <Col>
+            <Alert className="mt-3" color="secondary">
+              ORIGEN
+            </Alert>
+            <MovementDiff
+              mode="edit"
+              type="potrero"
+              initialValues={this.state.estadoPotreroOrigen}
+              changesValues={this.changesValues}
+            />
+          </Col>
+          <Col>
+            <Alert className="mt-3" color="secondary">
+              DESTINO
+            </Alert>
+            <MovementDiff
+              mode="readonly"
+              type="potrero"
+              initialValues={this.state.estadoPotreroDestino}
+              changesValues={this.changesValues}
+            />
+          </Col>
+        </Row>
+
         <Alert className="mt-3" color="secondary">
-          ORIGEN
+          OBSERVACIONES
         </Alert>
-
-        <MovementDiff
-          mode="edit"
-          type="potrero"
-          initialValues={this.state.estadoPotreroOrigen}
-          changesValues={this.changesValues}
-
-
-        />
-        <Alert color="secondary">DESTINO </Alert>
-        <span />
-
-        <MovementDiff
-          mode="readonly"
-          type="potrero"
-          initialValues={this.state.estadoPotreroDestino}
-          changesValues={this.changesValues}
-        />
-
         <Input
           type="text"
           placeholder="Observaciones"
@@ -533,7 +542,8 @@ export default class MovementDialog extends Component {
             <Row>
               <Col>
                 <MovementDiff
-                  type="edit"
+                  type="potrero"
+                  mode="edit"
                   initialValues={this.state.estadoPotreroOrigen}
                   changesValues={this.changesValues}
                 />
@@ -596,15 +606,10 @@ export default class MovementDialog extends Component {
       case "INGRESO":
       case "EGRESO":
         return this.dibujarIngreso();
-        break;
-
       case "NACIMIENTO":
         return this.dibujarNacimiento();
-        break;
-
       case "BAJA":
         return this.dibujarBaja();
-        break;
     }
   }
 
@@ -617,7 +622,7 @@ export default class MovementDialog extends Component {
         size="lg"
       >
         <ModalHeader toggle={this.toggle}>
-          Nuevo movimiento del tipo {this.props.tipoMovimiento}{" "}
+          Movimiento {this.props.tipoMovimiento}
         </ModalHeader>
         <ModalBody>{this.drawShit()}</ModalBody>
         <ModalFooter>

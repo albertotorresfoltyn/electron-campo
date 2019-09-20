@@ -64,6 +64,20 @@ export default class DataService {
     return [];
   }
 
+    // Devuelve todos los potreros
+    static getAllPotreros() {
+      const db = SQL.connect();
+      if (db) {
+        const rows = db.exec(
+          `SELECT * FROM \`Potrero\``
+        );
+        const objects = rowsToMagic(rows);
+        db.close();
+        return objects;
+      }
+      return [];
+    }
+
   // Devuelve un potrero por IdPotrero
   static getPotrero(potreroId) {
     const db = SQL.connect();
@@ -108,8 +122,10 @@ export default class DataService {
     const db = SQL.connect();
     if (db) {
       const rows = db.exec(
-        `SELECT IdMovimiento ,PotreroDetalle, MovimientoDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento desc LIMIT 1`
+        `SELECT IdMovimiento ,PotreroDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento DESC LIMIT 1`
       );
+      console.log("rowsToMagic(rows)[0]");
+      console.log(rowsToMagic(rows)[0]);
       const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
       db.close();
       return objects;
@@ -158,7 +174,7 @@ export default class DataService {
     if (db) {
       try {
         const rows = db.run(
-          "INSERT INTO `Movimiento` (IdPotrero, Fecha, Motivo, Observaciones, MovimientoDetalle, PotreroDetalle) VALUES (?, ?,?,?,?,?)",
+          "INSERT INTO `Movimiento` (IdPotrero, Fecha, Motivo, Observaciones, MovimientoDetalle, PotreroDetalle, PotreroOrigen, PotreroDestino,TipoMovimiento) VALUES (?, ?,?,?,?,?,?,?,?)",
           values
         );
         SQL.close(db);

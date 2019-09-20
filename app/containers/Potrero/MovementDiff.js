@@ -20,7 +20,7 @@ export default class MovementDiff extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.initialValues.map((element, index) => {
+            {this.props.initialValues && this.props.initialValues.map((element, index) => {
             
               return (
                 <tr key={index}>
