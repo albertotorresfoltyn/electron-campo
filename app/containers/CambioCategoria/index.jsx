@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from "react";
-import DataService from "../../services/DataService";
-import { withRouter } from "react-router-dom";
-import MovementDiff from "../../containers/Potrero/MovementDiff";
+import React, { Component } from 'react';
+import DataService from '../../services/DataService';
+import { withRouter } from 'react-router-dom';
+import MovementDiff from '../../containers/Potrero/MovementDiff';
 import {
   DropdownMenu,
   DropdownItem,
@@ -17,8 +17,8 @@ import {
   CardBody,
   CardHeader,
   CardText,
-  Button
-} from "reactstrap";
+  Button,
+} from 'reactstrap';
 
 class CambioCategoria extends Component {
   constructor(props) {
@@ -27,12 +27,8 @@ class CambioCategoria extends Component {
     this.changeDrop = this.changeDrop.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
     this.changesValues = this.changesValues.bind(this);
-    this.filterListCategoriesOrigen = this.filterListCategoriesOrigen.bind(
-      this
-    );
-    this.filterListCategoriesDestino = this.filterListCategoriesDestino.bind(
-      this
-    );
+    this.filterListCategoriesOrigen = this.filterListCategoriesOrigen.bind(this);
+    this.filterListCategoriesDestino = this.filterListCategoriesDestino.bind(this);
     this.managerSeleccionarOrigen = this.managerSeleccionarOrigen.bind(this);
 
     this.state = {
@@ -44,30 +40,28 @@ class CambioCategoria extends Component {
       detalles: [],
       relaciones: [],
       categoriaOrSeleccionada: {},
-      categoriaDesSeleccionada: {}
+      categoriaDesSeleccionada: {},
     };
   }
 
   componentWillMount() {
-    const resultCat = this.filterListCategoriesOrigen(
-      DataService.getCategoriaHacienda()
-    ); // Listado de categorias Origen que acepten cambios
+    const resultCat = this.filterListCategoriesOrigen(DataService.getCategoriaHacienda()); // Listado de categorias Origen que acepten cambios
     const resultRel = DataService.getCategoriaHaciendaRelaciones(); // Relaciones entre categorias Origen y Destino
     const detalles = DataService.getDetallePotreros(); // Todos los detalles de los potreros
 
     this.setState({
       categoriasOrigen: resultCat,
       relaciones: resultRel,
-      categoriaOrSeleccionada: "Seleccionar",
-      categoriaDesSeleccionada: "Seleccionar",
-      detalles: detalles
+      categoriaOrSeleccionada: 'Seleccionar',
+      categoriaDesSeleccionada: 'Seleccionar',
+      detalles,
     });
   }
 
   dropdownToggle(propertyState) {
     const newState = {};
     newState[propertyState] = !this.state[propertyState];
-    this.setState(newState); //drinkMate
+    this.setState(newState); // drinkMate
   }
 
   // Filtar categorias de hacienda que estan habilitadas para el cambio
@@ -79,41 +73,34 @@ class CambioCategoria extends Component {
   managerSeleccionarOrigen(categoriaOrigen) {
     this.filterListCategoriesDestino(categoriaOrigen); // cargar categorias destino
     // Filtrar por los potreros que contengan la categoria de hacienda que necesito.
-    let resultList = [];
-    this.state.detalles.map(function(potrero) {
+    const resultList = [];
+    this.state.detalles.map((potrero) => {
       const p = DataService.getPotrero(potrero.IdPotrero);
-      potrero.PotreroDetalle.map(function(det) {
-        if (det.type.toUpperCase() == categoriaOrigen.toUpperCase()) {
-          debugger;
+      potrero.PotreroDetalle.map((det) => {
+        if (det.type.toUpperCase() === categoriaOrigen.toUpperCase()) {
           const elem = {
             id: potrero.IdPotrero,
             type: p.Nombre,
             qtty: det.amount,
             cantMov: 0,
-            total: det.amount
+            total: det.amount,
           };
           resultList.push(elem);
-
         }
-
       });
-
     });
 
     this.setState({
-      listadoExistencia: resultList
+      listadoExistencia: resultList,
 
     });
   }
   // Filtrar categorias hacienda que esten relacionadas con la categoria Origen seleccionada
   filterListCategoriesDestino(categoriaOrigen) {
-    const result = this.state.relaciones.filter(
-      item => item.NombreOrigen == categoriaOrigen
-    );
-
+    const result = this.state.relaciones.filter(item => item.NombreOrigen === categoriaOrigen);
     this.setState({
       categoriasDestino: result,
-      categoriaDesSeleccionada: "Seleccionar"
+      categoriaDesSeleccionada: 'Seleccionar',
     });
   }
 
@@ -121,21 +108,26 @@ class CambioCategoria extends Component {
   changeDrop(e, state, item, fnc) {
     const newState = {};
     newState[state] = item;
-    this.setState(newState); //drinkMate
+    this.setState(newState); // drinkMate
     console.log(newState);
     fnc && fnc();
   }
 
-  changesValues(type, value) {}
+  changesValues(type, value, element) {
+    debugger
+  }
+
+  recategorize(e) {
+    debugger;
+  }
 
   render() {
     return (
       <div>
         <div data-tid="container">
           <Breadcrumb className="blueColor">
-            <BreadcrumbItem active>Cambio de Categoría</BreadcrumbItem>{" "}
+            <BreadcrumbItem active>Cambio de Categoría</BreadcrumbItem>{' '}
           </Breadcrumb>
-
           <Container>
             <Card>
               <CardBody>
@@ -146,7 +138,7 @@ class CambioCategoria extends Component {
                     <Dropdown
                       isOpen={this.state.openCatOrigen}
                       toggle={() => {
-                        this.dropdownToggle("openCatOrigen");
+                        this.dropdownToggle('openCatOrigen');
                       }}
                     >
                       <DropdownToggle caret>
@@ -157,14 +149,14 @@ class CambioCategoria extends Component {
                           <DropdownItem
                             id={item.Nombre}
                             key={item.Nombre}
-                            onClick={ev => {
+                            onClick={(ev) => {
                               this.changeDrop(
                                 ev,
-                                "categoriaOrSeleccionada",
+                                'categoriaOrSeleccionada',
                                 item.Nombre,
                                 () => {
                                   this.managerSeleccionarOrigen(item.Nombre);
-                                }
+                                },
                               );
                             }}
                           >
@@ -173,12 +165,11 @@ class CambioCategoria extends Component {
                         ))}
                       </DropdownMenu>
                     </Dropdown>
-
                     <label>A Categoria:</label>
                     <Dropdown
                       isOpen={this.state.openCatDestino}
                       toggle={() => {
-                        this.dropdownToggle("openCatDestino");
+                        this.dropdownToggle('openCatDestino');
                       }}
                     >
                       <DropdownToggle caret>
@@ -189,11 +180,11 @@ class CambioCategoria extends Component {
                           <DropdownItem
                             id={item.NombreDestino}
                             key={item.NombreDestino}
-                            onClick={ev => {
+                            onClick={(ev) => {
                               this.changeDrop(
                                 ev,
-                                "categoriaDesSeleccionada",
-                                item.NombreDestino
+                                'categoriaDesSeleccionada',
+                                item.NombreDestino,
                               );
                             }}
                           >
@@ -214,11 +205,10 @@ class CambioCategoria extends Component {
                 </Row>
               </CardBody>
             </Card>
-
             <Row className="text-center mt-3">
               <Col>
-                {" "}
-                <Button> Guardar Cambios</Button>
+                {' '}
+                <Button onClick={this.recategorize}>Guardar Cambios</Button>
               </Col>
             </Row>
           </Container>
