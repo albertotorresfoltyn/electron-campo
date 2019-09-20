@@ -43,8 +43,6 @@ export default class MovementDialog extends Component {
       openDropPotrero: false,
       openDropMotivo: false,
       openDropCategoria: false,
-      // campoSelected: "",
-      // campos: [],
       potreros: [],
       estadoPotreroOrigen: this.props.potreroOrigen, // recibirlo como prop, lo seteo desde prop aca
       estadoPotreroDestino: this.props.potreroDestino, // recibirlo como prop, lo seteo desde prop aca
@@ -59,14 +57,12 @@ export default class MovementDialog extends Component {
   }
 
   componentDidMount() {
-    //const campos = DataService.getCampos(); // recupera todos los campos
     const motivos = DataService.getMotivos(); // recupera todos los motivos de muerte
     this.cargarPotreros(); // cargar todos los potreros de un campo
     this.setState({ motivos: motivos, motivoSelected: motivos[0] }); // Seleccionar motivo de muerte por defecto
   }
 
   componentWillReceiveProps(nextProps) {
-    debugger;
     this.setState({
       tipoMovimiento: nextProps.tipoMovimiento,
       estadoPotreroOrigen: nextProps.potreroOrigen,
@@ -170,7 +166,6 @@ export default class MovementDialog extends Component {
     let detalle = [];
 
     // falta tener en cuenta que los movimientos de ingreso o egreso, generan dos moviemientos por detras
-
     switch (this.props.tipoMovimiento) {
       case "INGRESO":
       case "EGRESO":
@@ -182,18 +177,15 @@ export default class MovementDialog extends Component {
           DataConvert.toDefaultEntity(e.type, e.total)
         );
         break;
-
       case "NACIMIENTO":
         // Movimiento de alta
         movimientos = this.state.estadoPotreroOrigen.map(e =>
           DataConvert.toDefaultEntity(e.type, e.cantMov)
         );
-
         // movimiento de detalle --> como quedo el potrero
         detalle = this.state.estadoPotreroOrigen.map(e =>
           DataConvert.toDefaultEntity(e.type, e.total)
         );
-
         let indexMov = movimientos.findIndex(
           x =>
             x.type.toUpperCase() ==
@@ -204,7 +196,6 @@ export default class MovementDialog extends Component {
             x.type.toUpperCase() ==
             this.state.categoriaHaciendaSeleccionada.Nombre.toUpperCase()
         );
-
         if (indexMov == -1) {
           // no se encontro el elemento
           movimientos.push({
@@ -248,8 +239,7 @@ export default class MovementDialog extends Component {
 
     // guardar los movimientos en BD
     DataService.guardarMovimiento(mov);
-
-   // alert("Guardados correctamente");
+    alert("Guardados correctamente");
 
     // cerrar el modal
     this.props.toggle();

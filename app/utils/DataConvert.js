@@ -21,8 +21,8 @@ export default class DataConvert {
         .join("/"),
       Observaciones: obs,
       Motivo: motivo,
-      MovimientoDetalle: JSON.stringify(movDetalle.filter(x=> x.amount != 0)),
-      PotreroDetalle: JSON.stringify(potDetalle.filter(x=> x.amount != 0)),
+      MovimientoDetalle: JSON.stringify(this.cleanList(movDetalle)),
+      PotreroDetalle: JSON.stringify(this.cleanList(potDetalle)),
       PotreroOrigen:potOrigen,
       PotreroDestino:potDestino,
       TipoMovimiento: tipoMovimiento
@@ -38,6 +38,17 @@ export default class DataConvert {
       amount: amount
     };
     return mov;
+  }
+
+  
+  static cleanList(list) {
+
+    return (list.map( item => {
+
+      
+      const result = ({"type": item.type, "amount": parseInt(item.amount)})
+      return result;
+   }).filter(x=> x.amount != 0 ));
   }
 
 
