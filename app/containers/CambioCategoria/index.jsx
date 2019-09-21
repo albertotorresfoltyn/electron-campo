@@ -27,6 +27,7 @@ class CambioCategoria extends Component {
     this.changeDrop = this.changeDrop.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
     this.changesValues = this.changesValues.bind(this);
+    this.recategorize = this.recategorize.bind(this);
     this.filterListCategoriesOrigen = this.filterListCategoriesOrigen.bind(this);
     this.filterListCategoriesDestino = this.filterListCategoriesDestino.bind(this);
     this.managerSeleccionarOrigen = this.managerSeleccionarOrigen.bind(this);
@@ -114,11 +115,15 @@ class CambioCategoria extends Component {
   }
 
   changesValues(type, value, element) {
-    debugger
+    const e = element;
+    const listado = this.state.listadoExistencia;
+    e.cantMov = Number(value);
+    listado[listado.indexOf(element)] = e;
+    this.setState({ listadoExistencia: listado });
   }
 
   recategorize(e) {
-    debugger;
+    DataService.saveMovements(this.state.listadoExistencia, this.state.categoriaOrSeleccionada);
   }
 
   render() {

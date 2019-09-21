@@ -37,14 +37,14 @@ export default class MovementDialog extends Component {
     this.validatehasAlta = this.validatehasAlta.bind(this);
     this.validatehasCategoria = this.validatehasCategoria.bind(this);
     this.validacionOperaciones = this.validacionOperaciones.bind(this);
+    this.altaNacimiento = this.altaNacimiento.bind(this);
+    this.GuardarMovimientoBD = this.GuardarMovimientoBD.bind(this);
 
     this.state = {
       openDropCampo: false,
       openDropPotrero: false,
       openDropMotivo: false,
       openDropCategoria: false,
-      // campoSelected: "",
-      // campos: [],
       potreros: [],
       estadoPotreroOrigen: this.props.potreroOrigen, // recibirlo como prop, lo seteo desde prop aca
       estadoPotreroDestino: this.props.potreroDestino, // recibirlo como prop, lo seteo desde prop aca
@@ -59,14 +59,12 @@ export default class MovementDialog extends Component {
   }
 
   componentDidMount() {
-    //const campos = DataService.getCampos(); // recupera todos los campos
     const motivos = DataService.getMotivos(); // recupera todos los motivos de muerte
     this.cargarPotreros(); // cargar todos los potreros de un campo
     this.setState({ motivos: motivos, motivoSelected: motivos[0] }); // Seleccionar motivo de muerte por defecto
   }
 
   componentWillReceiveProps(nextProps) {
-    debugger;
     this.setState({
       tipoMovimiento: nextProps.tipoMovimiento,
       estadoPotreroOrigen: nextProps.potreroOrigen,
@@ -78,7 +76,6 @@ export default class MovementDialog extends Component {
   loadProtreros(item) {
     switch (this.state.tipoMovimiento) {
       case "INGRESO":
-      case "NACIMIENTO":
         // Cargo potrero Origen
         const potreroOrigen = DataService.getLastDetalleByPotrero(
           item.IdPotrero
@@ -88,10 +85,9 @@ export default class MovementDialog extends Component {
         });
         break;
       case "EGRESO":
-      case "BAJA":
         // Cargo potrero destino
         const potreroDestino = DataService.getLastDetalleByPotrero(
-          this.props.IdPotrero
+          item.IdPotrero
         );
         this.setState({
           estadoPotreroDestino: potreroDestino
@@ -123,7 +119,7 @@ export default class MovementDialog extends Component {
   // valida si tiene cantidad de hacienda para dar de alta
   validatehasAlta() {
     if (parseInt(this.state.cantidadAlta) == 0) {
-      return " Debes ingresar la cantidad de hacienda para dar de alta. ";
+      return "Debes ingresar la cantidad de hacienda para dar de alta. ";
     }
     return "";
   }
@@ -161,96 +157,109 @@ export default class MovementDialog extends Component {
     return true;
   }
 
+  altaNacimiento(movimientos, detalle) {
+    let indexMov = movimientos.findIndex(
+      x => x.type == this.state.categoriaHaciendaSeleccionada.Nombre
+    );
+    let indexDet = detalle.findIndex(
+      x => x.type == this.state.categoriaHaciendaSeleccionada.Nombre
+    );
+    if (indexMov == -1) {
+      // no se encontro el elemento
+      movimientos.push({
+        type: this.state.categoriaHaciendaSeleccionada.Nombre,
+        amount: this.state.cantidadAlta
+      });
+    } else {
+      movimientos[indexMov].amount = this.state.cantidadAlta;
+    }
+
+    if (indexDet == -1) {
+      // no se encontro el elemento
+      detalle.push({
+        type: this.state.categoriaHaciendaSeleccionada.Nombre,
+        amount: this.state.cantidadAlta
+      });
+    } else {
+      // actualizo la cantidad que ya habia, con la cantidad nueva
+      detalle[indexDet].amount =
+        detalle[indexDet].amount + this.state.cantidadAlta;
+    }
+  }
+
+  GuardarMovimientoBD(tipoMov, estado,origen, destino, motivo,idPotrero ) {
+
+    let movimientos = estado.map(e =>
+      DataConvert.toDefaultEntity(e.type, e.cantMov)
+    );
+    let detalle = estado.map(e =>
+      DataConvert.toDefaultEntity(e.type, e.total)
+    );
+    if (tipoMov == "NACIMIENTO") {
+     this.altaNacimiento(movimientos, detalle);
+    }
+
+    let mov = DataConvert.toMovimientoEntity(
+      idPotrero,
+      this.state.observaciones,
+      motivo,
+      movimientos,
+      detalle,
+      origen,
+      destino,
+      tipoMov
+    );
+    // guardar los movimientos en BD
+    DataService.guardarMovimiento(mov);
+  }
   // Guarda Moviemiento en Base de datos
   guardarMovimiento() {
     if (!this.validacionOperaciones()) return false; //validaciones
 
-    let mov = {};
-    let movimientos = [];
-    let detalle = [];
-
-    // falta tener en cuenta que los movimientos de ingreso o egreso, generan dos moviemientos por detras
+    let idOrigen = null;
+    let idDestino = null;
+    let motivo = null;
+    let estado = this.state.estadoPotreroOrigen;
+    let segundoEstado = this.state.estadoPotreroDestino;
+    
+    const dobleMovimiento = this.state.tipoMovimiento == "INGRESO" || this.state.tipoMovimiento == "EGRESO"; // en los casos de ingreso o egreso hay que hacer un doble movimiento. 
 
     switch (this.props.tipoMovimiento) {
       case "INGRESO":
+          idOrigen = this.state.potreroSelected.IdPotrero;
+          idDestino= this.props.IdPotrero;
+          estado = this.state.estadoPotreroDestino;
+          segundoEstado = this.state.estadoPotreroOrigen;
+          break;
       case "EGRESO":
+          idOrigen = this.props.IdPotrero;
+          idDestino = this.state.potreroSelected.IdPotrero;
+          break;
       case "BAJA":
-        movimientos = this.state.estadoPotreroOrigen.map(e =>
-          DataConvert.toDefaultEntity(e.type, e.cantMov)
-        );
-        detalle = this.state.estadoPotreroOrigen.map(e =>
-          DataConvert.toDefaultEntity(e.type, e.total)
-        );
+        motivo = this.state.motivoSelected.amount;
         break;
-
       case "NACIMIENTO":
-        // Movimiento de alta
-        movimientos = this.state.estadoPotreroOrigen.map(e =>
-          DataConvert.toDefaultEntity(e.type, e.cantMov)
-        );
-
-        // movimiento de detalle --> como quedo el potrero
-        detalle = this.state.estadoPotreroOrigen.map(e =>
-          DataConvert.toDefaultEntity(e.type, e.total)
-        );
-
-        let indexMov = movimientos.findIndex(
-          x =>
-            x.type.toUpperCase() ==
-            this.state.categoriaHaciendaSeleccionada.Nombre.toUpperCase()
-        );
-        let indexDet = detalle.findIndex(
-          x =>
-            x.type.toUpperCase() ==
-            this.state.categoriaHaciendaSeleccionada.Nombre.toUpperCase()
-        );
-
-        if (indexMov == -1) {
-          // no se encontro el elemento
-          movimientos.push({
-            type: this.state.categoriaHaciendaSeleccionada.Nombre,
-            amount: this.state.cantidadAlta
-          });
-        } else {
-          movimientos[indexMov].amount = this.state.cantidadAlta;
-        }
-
-        if (indexDet == -1) {
-          // no se encontro el elemento
-          detalle.push({
-            type: this.state.categoriaHaciendaSeleccionada.Nombre,
-            amount: this.state.cantidadAlta
-          });
-        } else {
-          // actualizo la cantidad que ya habia, con la cantidad nueva
-          detalle[indexDet].amount =
-            detalle[indexDet].amount + this.state.cantidadAlta;
-        }
-
         break;
     }
 
-    const idOrigen = this.state.estadoPotreroOrigen && this.state.estadoPotreroOrigen.IdPotrero;
-    const idDestino = this.state.estadoPotreroDestino && this.state.estadoPotreroDestino.IdPotrero;
-    // Creo objeto para dar de alta en BD
-    mov = DataConvert.toMovimientoEntity(
-      this.props.IdPotrero,
-      this.state.observaciones,
-      this.props.tipoMovimiento == "BAJA"
-        ? this.state.motivoSelected.amount
-        : "",
-      movimientos,
-      detalle, 
-      idOrigen,
-      idDestino,
-      this.props.tipoMovimiento
-    );
+    // Guarda el movimiento principal
+      this.GuardarMovimientoBD(this.state.tipoMovimiento,
+         estado,
+         idOrigen ,
+         idDestino,
+         motivo,
+         this.props.IdPotrero);
 
-    // guardar los movimientos en BD
-    DataService.guardarMovimiento(mov);
-
-   // alert("Guardados correctamente");
-
+      if(dobleMovimiento){
+        // el segundo movimiento siempre es el opuesto del primero 
+        this.GuardarMovimientoBD(this.state.tipoMovimiento == "INGRESO" ? "EGRESO":"INGRESO",
+        segundoEstado,
+          idOrigen ,
+          idDestino,
+          motivo,
+          this.state.potreroSelected.IdPotrero);
+      }
+    alert("Guardados correctamente");
     // cerrar el modal
     this.props.toggle();
   }
@@ -285,32 +294,18 @@ export default class MovementDialog extends Component {
 
   // se cambia algun valor en los input para mover hacienda
   changesValues(type, value) {
-    let estadoPotreroEditable = {};
-    let estadoPotreroReadOnly = {};
-
-    switch (this.state.tipoMovimiento) {
-      case "INGRESO":
-      case "NACIMIENTO":
-        // Cargo potrero Origen
-        estadoPotreroEditable = this.state.estadoPotreroDestino;
-        estadoPotreroReadOnly = this.state.estadoPotreroOrigen;
-        break;
-      case "EGRESO":
-      case "BAJA":
-        // Cargo potrero Origen
-        estadoPotreroEditable = this.state.estadoPotreroOrigen;
-        estadoPotreroReadOnly = this.state.estadoPotreroDestino;
-        break;
-    }
-
+  
+    let estadoPotreroEditable =this.state.estadoPotreroOrigen;
+    let estadoPotreroReadOnly = this.state.estadoPotreroDestino;
     const recordEditable = estadoPotreroEditable.find(v => v.type === type);
 
     if (recordEditable) {
       if (value > recordEditable.qtty) {
         return;
       }
+      value =  parseInt(value) ;
       // Modificando el origen
-      recordEditable.total = recordEditable.qtty - value;
+      recordEditable.total =  recordEditable.qtty - value;
       recordEditable.cantMov = value;
       const indexPotrero = estadoPotreroEditable.findIndex(
         v => v.type === type
@@ -342,24 +337,24 @@ export default class MovementDialog extends Component {
           estadoPotreroReadOnly.push(regNuevo);
         }
       }
+      this.setState({
+        estadoPotreroOrigen: estadoPotreroEditable,
+        estadoPotreroDestino: estadoPotreroReadOnly
+      });
+      // switch (this.state.tipoMovimiento) {
+      //   case "EGRESO":
+      //   case "NACIMIENTO":
+        
 
-      switch (this.state.tipoMovimiento) {
-        case "INGRESO":
-        case "NACIMIENTO":
-          this.setState({
-            estadoPotreroOrigen: estadoPotreroReadOnly,
-            estadoPotreroDestino: estadoPotreroEditable
-          });
-
-          break;
-        case "EGRESO":
-        case "BAJA":
-          this.setState({
-            estadoPotreroOrigen: estadoPotreroEditable,
-            estadoPotreroDestino: estadoPotreroReadOnly
-          });
-          break;
-      }
+      //     break;
+      //   case "INGRESO":
+      //   case "BAJA":
+      //     this.setState({
+      //       estadoPotreroOrigen: estadoPotreroEditable,
+      //       estadoPotreroDestino: estadoPotreroReadOnly
+      //     });
+      //     break;
+      // }
     }
   }
 
