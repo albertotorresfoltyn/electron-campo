@@ -25,9 +25,15 @@ class Home extends Component {
     return (
       <div>
         <div data-tid="container ">
-        <Jumbotron  className="withoutborder bg-dark text-white text-center" >
-           <strong><h1 className="display-4">Buenaventura Ñangarekohápe</h1></strong>
-       </Jumbotron>
+        <div className="jumbotron jb">
+        <div className="container text-center  text-white">
+          <h2 className="display-3">Buenaventura Ñangarekohápe</h2>
+          <p>Sistema Administración Ganadera</p>
+         
+        </div>
+      </div>
+
+      
           <Container>
             {
               this.state.campos.map((campo) => 

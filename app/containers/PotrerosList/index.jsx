@@ -71,11 +71,21 @@ class PotrerosList extends Component {
       <div>
         <Breadcrumb className="text-white bg-dark">
           <BreadcrumbItem active>LA EUGENIA</BreadcrumbItem>
+
+          <Button
+                  className=""
+                  color="success"
+                  onClick={() => {
+                    history.push("/CambioCategoria/");
+                  }}
+                >
+                  Cambio de categoria
+                </Button>{" "}
         </Breadcrumb>
 
         <div className={styles.container} data-tid="container">
           <Container fluid className="text-center">
-            <Row className="mb-3 text-left">
+            {/* <Row className="mb-3 text-left">
               <Col md="12">
                 <Button
                   className=""
@@ -87,50 +97,69 @@ class PotrerosList extends Component {
                   Cambio de categoria
                 </Button>{" "}
               </Col>
-            </Row>
+            </Row> */}
             <Row>
               <Col md="8">
-                <Breadcrumb>
-                  <BreadcrumbItem active>POTREROS</BreadcrumbItem>
-                </Breadcrumb>
-                <Row>
-                  {this.state.potreros.map(potrero => (
-                    <Col md="3" key={potrero.IdPotrero}>
-                      <PotreroCard
-                        key={potrero.IdPotrero}
-                        potrero={potrero}
-                        onClick={() => {
-                          this.props.history.push(
-                            "/potrero/" + potrero.IdPotrero
-                          );
-                        }}
-                      />
-                    </Col>
-                  ))}
-                </Row>
+                {/* <div className="card shadow mb-4">
+                  <div className="card-header py-3">
+                    <h6 className="m-0 font-weight-bold text-primary">POTREROS</h6>
+                  </div> */}
+                  <div className="card-body pt-0">
+                    <Row>
+                      {this.state.potreros.map(potrero => (
+                        <Col md="3" key={potrero.IdPotrero}>
+                          <PotreroCard
+                            key={potrero.IdPotrero}
+                            potrero={potrero}
+                            onClick={() => {
+                              this.props.history.push(
+                                "/potrero/" + potrero.IdPotrero
+                              );
+                            }}
+                          />
+                        </Col>
+                      ))}
+                    </Row>
+                
+                </div>
+
+              
               </Col>
 
               <Col md="4">
-                <Breadcrumb>
-                  <BreadcrumbItem active>MAPA</BreadcrumbItem>
-                </Breadcrumb>
-                <img
-                  className="mx-auto img-fluid"
-                  width="600"
-                  height="280"
-                  src="../app/assets/img/mapa.png"
-                ></img>
 
-                <Breadcrumb>
-                  <BreadcrumbItem active>ESTADO</BreadcrumbItem>
-                </Breadcrumb>
-                <Row>
-                  <Estado
+              
+                <div className="card shadow mb-4 allWidth">
+                  <div className="card-header py-3">
+                    <h6 className="m-0 font-weight-bold text-primary">MAPA</h6>
+                  </div>
+                  <div className="card-body">
+                    <img
+                      className="mx-auto img-fluid"
+                      width="400"
+                      height="180"
+                      src="../app/assets/img/mapa.png"
+                    ></img>
+                  </div>
+                </div>
+             
+             
+              
+             
+
+                <div className="card shadow mb-4 allWidth" >
+                <div className="card-header py-3">
+                  <h6 className="m-0 font-weight-bold text-primary">ESTADO</h6>
+                </div>
+                <div className="card-body">
+                <Estado
                     key={this.props.match.params.campoId}
                     potreroDetalle={this.state.potrerosResumen}
                     type="potreros"
-                  />
-                </Row>
+                  />       </div>
+              </div>
+                
+               
               </Col>
             </Row>
           </Container>

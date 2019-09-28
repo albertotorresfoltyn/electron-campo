@@ -35,15 +35,15 @@ class Historial extends Component {
     const formatoDetalle = cell => {
       const res = cell.map(item => {
         return (
-          <div>
-            <strong style={{ color: "gray" }}>
+          <div className="small">
+            <strong style={{ color: "gray"  }}>
               {" "}
               {`${item.amount} ${item.type}`}{" "}
             </strong>
           </div>
         );
       });
-      return <Fragment>{res}</Fragment>;
+      return <Fragment >{res}</Fragment>;
     };
 
     const formatoMov = (cell, row) => {
@@ -51,7 +51,7 @@ class Historial extends Component {
         const isBajaOrEgreso =
           row.TipoMovimiento == "BAJA" || row.TipoMovimiento == "EGRESO";
         return (
-          <div>
+          <div className="small">
             <strong
               style={isBajaOrEgreso ? { color: "red" } : { color: "green" }}
             >
@@ -61,13 +61,13 @@ class Historial extends Component {
           </div>
         );
       });
-      return <Fragment>{res}</Fragment>;
+      return <Fragment >{res}</Fragment>;
     };
 
     const formatoPotrero = cell => {
     if(cell){
       const res = this.state.potreros.filter(x => x.IdPotrero == cell)[0].Nombre;
-      return <Fragment>{res}</Fragment>;
+      return <Fragment >{res}</Fragment>;
     }
    
     };
@@ -84,51 +84,76 @@ class Historial extends Component {
       {
         dataField: "IdMovimiento",
         text: "IdMovimiento",
-        sort: true
+        sort: true,
+        hidden: true
       },
       {
         dataField: "Fecha",
         text: "Fecha",
-        sort: true
+        sort: true,
+        headerStyle: {
+          backgroundColor: 'lightgoldenrodyellow'
+        }
       },
       {
         dataField: "TipoMovimiento",
         text: "Tipo Movimiento",
         sort: true,
-        formatter: formatoTipoMov
+        formatter: formatoTipoMov,
+        headerStyle: {
+          backgroundColor: 'lightgoldenrodyellow'
+        }
       },
       {
         dataField: "Motivo",
         text: "Motivo",
-        sort: true
+        sort: true,
+        headerStyle: {
+          backgroundColor: 'lightgoldenrodyellow'
+        }
       },
       {
         dataField: "Observaciones",
         text: "Observaciones",
-        sort: false
+        sort: false,
+        headerStyle: {
+          backgroundColor: 'lightgoldenrodyellow'
+        }
       },
       {
         dataField: "PotreroOrigen",
         text: "Potrero Origen",
-        formatter: formatoPotrero
+        formatter: formatoPotrero,
+        headerStyle: {
+          backgroundColor: 'lightgoldenrodyellow'
+        }
       },
       ,
       {
         dataField: "PotreroDestino",
         text: "Potrero Destino",
-        formatter: formatoPotrero
+        formatter: formatoPotrero,
+        headerStyle: {
+          backgroundColor: 'lightgoldenrodyellow'
+        }
       },
       {
         dataField: "MovimientoDetalle",
         text: "Movimientos",
         sort: false,
-        formatter: formatoMov
+        formatter: formatoMov,
+        headerStyle: {
+          backgroundColor: 'lightgoldenrodyellow'
+        }
       },
       {
         dataField: "PotreroDetalle",
         text: "Detalle",
         sort: false,
-        formatter: formatoDetalle
+        formatter: formatoDetalle,
+        headerStyle: {
+          backgroundColor: 'lightgoldenrodyellow'
+        }
       }
     ];
 

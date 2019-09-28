@@ -341,20 +341,7 @@ export default class MovementDialog extends Component {
         estadoPotreroOrigen: estadoPotreroEditable,
         estadoPotreroDestino: estadoPotreroReadOnly
       });
-      // switch (this.state.tipoMovimiento) {
-      //   case "EGRESO":
-      //   case "NACIMIENTO":
-        
-
-      //     break;
-      //   case "INGRESO":
-      //   case "BAJA":
-      //     this.setState({
-      //       estadoPotreroOrigen: estadoPotreroEditable,
-      //       estadoPotreroDestino: estadoPotreroReadOnly
-      //     });
-      //     break;
-      // }
+    
     }
   }
 

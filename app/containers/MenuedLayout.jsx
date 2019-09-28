@@ -15,7 +15,31 @@ class MenuedLayout extends React.Component {
     const { history } = this.props;
     return (
       <div>
-        <Navbar className="bg-fulldark text-white shadow" expand="md">
+<nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div className="container ml-0">
+
+
+    <a className="navbar-brand" href="#">
+    <img src="../app/assets/img/Cow_1-128.png" width="40" height="40" alt="" className="logo"/>
+     <span className="ml-5">Administración Ganadera</span> </a>
+    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+    <div className="collapse navbar-collapse" id="navbarResponsive">
+      <ul className="navbar-nav ml-4">
+        <li className="nav-item active">
+          <a className="nav-link" href="#"  onClick={() => {
+              history.push("/");
+            }}>Home 
+              </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+        {/* <Navbar className="bg-fulldark text-white shadow" expand="md">
           <NavbarBrand
             onClick={() => {
               history.push("/");
@@ -37,7 +61,7 @@ class MenuedLayout extends React.Component {
             {" "}
             <i className="fas fa-arrow-left"> </i>
           </NavbarBrand>{" "}
-        </Navbar>
+        </Navbar> */}
 
         {this.props.children}
       </div>
