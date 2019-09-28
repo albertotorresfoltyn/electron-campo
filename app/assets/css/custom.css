@@ -19,6 +19,10 @@
   border-left: .25rem solid #36b9cc!important;
 }
 
+.border-left-primary {
+  border-left: .25rem solid #007bff!important;
+}
+
 .shadow {
   box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
 }
@@ -77,5 +81,18 @@
   display: inline-block;
   padding: .375rem .75rem;
   color: white
+}
+
+.allWidth{
+  width: 100%
+}
+
+.logo{
+  position: absolute;
+  top: 0
+}
+
+.jb{
+  background-color: grey
 }
 

@@ -8,15 +8,20 @@ const Example = ({campo, ...props }) => {
   const { IdCampo, Nombre, Descripcion, Superficie, Total } = campo
 
   return (
-   
-   <Card {...props}>
-      <Card.Header  className="bg-primary text-white"> <h4 className="text-uppercase">{Nombre}</h4></Card.Header>
-      <Card.Body className="text">
-        <p> {Superficie}<strong> ha</strong></p>
-        <p> {Total}<strong> potreros</strong></p>
-         
-      </Card.Body>
-    </Card>
+
+    <div {...props} className="mb-4">
+              <div className="card border-left-primary shadow h-100 py-2 ">
+                <div className="card-body p-0">
+                  <div className="row no-gutters align-items-center">
+                    <div className="col mr-2">
+                      <div className="display-4 font-weight-bold text-primary text-uppercase mb-1">{Nombre}</div>
+                      <div className=" mb-0"><span className=" h5 font-weight-bold text-gray-800" >{Total}</span>  <span >potreros</span> </div>
+                      <div className=" mb-0  "> <span className=" font-weight-bold text-gray-800"> {Superficie}</span> ha</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
   )
 }
 
