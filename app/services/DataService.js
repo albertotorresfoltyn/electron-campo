@@ -1,4 +1,4 @@
-import SQL from '../../db';
+import SQL from '../db';
 import DataConvert from '../utils/DataConvert';
 
 const fs = require('fs');

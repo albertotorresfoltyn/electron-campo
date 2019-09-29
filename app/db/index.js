@@ -36,10 +36,12 @@ SQL.dbClose = function (databaseHandle, databaseFileName) {
 };
 
 SQL.connect = function () {
-  const dbPath = (isDev) ? '/../db' : `${electron.remote.app.getPath('userData')}/`;
+  const exePath = electron.remote.app.getPath('exe');
+  const dirname = exePath.match(/(.*)[\/\\]/)[1] || '';
+  const dbPath = (isDev) ? `${__dirname}/db` : `${dirname}/resources/db`;
   console.log('estoy en desa?', isDev);
   const dbName = '/sagDB.db';
-  const dbFilePath = `${__dirname}${dbPath}${dbName}`;
+  const dbFilePath = `${dbPath}${dbName}`;
   const createDb = function () {
     // Create a database.
     const db = new SQL.Database();

@@ -53,6 +53,18 @@
       "main.prod.js.map",
       "package.json"
     ],
+    "extraResources": [
+      {
+        "from": "app/db",
+        "to": "db",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "app/assets",
+        "to": "app/assets",
+        "filter": ["**/*"]
+      }
+    ],
     "dmg": {
       "icon": "app/assets/icons/mac/1024.png.icns",
       "contents": [
