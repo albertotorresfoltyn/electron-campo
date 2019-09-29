@@ -68,7 +68,7 @@ class PotrerosList extends Component {
   render() {
     const { history } = this.props;
     return (
-      <div>
+      <div style={{paddingTop: '50px'}}>
         <Breadcrumb className="text-white bg-dark">
           <BreadcrumbItem active>LA EUGENIA</BreadcrumbItem>
 
@@ -120,15 +120,15 @@ class PotrerosList extends Component {
                         </Col>
                       ))}
                     </Row>
-                
+
                 </div>
 
-              
+
               </Col>
 
               <Col md="4">
 
-              
+
                 <div className="card shadow mb-4 allWidth">
                   <div className="card-header py-3">
                     <h6 className="m-0 font-weight-bold text-primary">MAPA</h6>
@@ -142,10 +142,10 @@ class PotrerosList extends Component {
                     ></img>
                   </div>
                 </div>
-             
-             
-              
-             
+
+
+
+
 
                 <div className="card shadow mb-4 allWidth" >
                 <div className="card-header py-3">
@@ -158,8 +158,8 @@ class PotrerosList extends Component {
                     type="potreros"
                   />       </div>
               </div>
-                
-               
+
+
               </Col>
             </Row>
           </Container>

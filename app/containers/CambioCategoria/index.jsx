@@ -123,7 +123,12 @@ class CambioCategoria extends Component {
   }
 
   recategorize(e) {
-    DataService.saveMovements(this.state.listadoExistencia, this.state.categoriaOrSeleccionada);
+    ((this.state.categoriaOrSeleccionada !== 'Seleccionar') && (this.state.categoriaDesSeleccionada !== 'Seleccionar'))?
+    DataService.saveMovements(
+      this.state.listadoExistencia,
+      this.state.categoriaOrSeleccionada,
+      this.state.categoriaDesSeleccionada,
+    ):alert('selecciona las dos categorias, palurdo')
   }
 
   render() {

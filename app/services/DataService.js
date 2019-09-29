@@ -1,4 +1,5 @@
 import SQL from '../../db';
+import DataConvert from '../utils/DataConvert';
 
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +12,7 @@ const rowsToMagic = (rows) => {
     const elem = {};
     columns.map((colName, index) => {
       elem[colName] =
-        colName == 'MovimientoDetalle' || colName == 'PotreroDetalle'
+        colName === 'MovimientoDetalle' || colName === 'PotreroDetalle'
           ? JSON.parse(val[index])
           : val[index];
     });
@@ -50,39 +51,41 @@ export default class DataService {
 
   // guarda una lista masiva de movimientos, mas que nada recategorizaciones
 
-  static saveMovements(list, vacaKind) {
-    const result = list.map((r) => {
-      const mov = {
-        id: r.idPotrero,
-        fecha: new Date(),
-        motivo: 'RECATEGORIZACION',
-        movimientodetalle: {},
-        PotreroDetalle: {},
-      };
-      // idmovimiento, idpotrero, fecha, motivo, observaciones, movimientodetalle, potrerodetalle
-      return mov;
-    });
+  static saveMovements(list, originVacaKind, vacaKind) {
     const potreros = this.getDetallePotreros();
-    debugger;
-    const db = SQL.connect();
-    if (db) {
-      for (let i = 0; i < result.length; i += 1) {
-
-      }
-      db.close();
-    }
-    // for each result
-    // get last movimiento
-    // update last movimiento
-    // insert
-    /* const db = SQL.connect();
-    if (db) {
-      const rows = db.exec('SELECT * FROM `Potrero`',);
-      const objects = rowsToMagic(rows);
-      db.close();
-      return objects;
-    }
-    return []; */
+    const result = list.map((r) => {
+      const potrero = potreros.find(p => p.id === r.idPotrero);
+      const potrerodetalle = potrero.PotreroDetalle;
+      const detalleTipoVaca = potrerodetalle.find(d => d.type === originVacaKind);
+      // sacar vacas de potrero detalle, originVacaKind
+      const mov1 = { type: originVacaKind, amount: -r.cantMov };
+      const mov2 = { type: vacaKind, amount: r.cantMov }; // agregar vacas en potrero detalle, vacakind
+      const unify = (array) => {
+        const res = array.reduce((acc, i) => {
+          const isPresent = acc.find(e => e.type === i.type);
+          if (!isPresent) {
+            acc.push(i); // primer valor en la sumarizacion
+          } else {
+            isPresent.amount += i.amount; // sumo
+            // reemplazo en el arreglo
+            const index = acc.findIndex(e => e.type === i.type);
+            if (index !== -1) {
+              acc[index] = isPresent;
+            }
+          }
+          return acc;
+        }, []);
+        console.log(res);
+        return res;
+      };
+      const unifiedList = unify([...potrerodetalle, mov1, mov2]);
+      const mov = DataConvert.toMovimientoEntity(r.id, '', 'RECATEGORIZACION', [mov1, mov2], unifiedList, r.id, r.id, 'RECATEGORIZACION');
+      return mov;
+    }).filter(mov => JSON.parse(mov.MovimientoDetalle).length > 0);
+    // now we save result in the db, result is the list of movements
+    result.forEach((element) => {
+      this.guardarMovimiento(element);
+    });
   }
 
   // Devuelve todos los potreros correspondientes a un campo
