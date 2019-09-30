@@ -45,6 +45,7 @@
     "artifactName": "SAG-Setup-${version}.${ext}",
     "appId": "com.epa.sag",
     "files": [
+      "assets",
       "dist/",
       "node_modules/",
       "db/",
@@ -81,7 +82,6 @@
       ]
     },
     "win": {
-      "asar": true,
       "publisherName": "EPA",
       "target": [
         "nsis"
