@@ -61,7 +61,7 @@ class PotrerosList extends Component {
       }
       return acc;
     }, []);
-    console.log(list);
+  
     return list;
   }
 
@@ -70,9 +70,8 @@ class PotrerosList extends Component {
     return (
       <div style={{paddingTop: '50px'}}>
         <Breadcrumb className="text-white bg-dark">
-          <BreadcrumbItem active>LA EUGENIA</BreadcrumbItem>
-
-          <Button
+          <BreadcrumbItem  className="text-white" active> <span className="vertAli">LA EUGENIA</span></BreadcrumbItem>
+          <BreadcrumbItem  className="text-white" active> <Button
                   className=""
                   color="success"
                   onClick={() => {
@@ -80,7 +79,7 @@ class PotrerosList extends Component {
                   }}
                 >
                   Cambio de categoria
-                </Button>{" "}
+                </Button>{" "}</BreadcrumbItem>
         </Breadcrumb>
 
         <div className={styles.container} data-tid="container">

@@ -127,11 +127,8 @@ class Potrero extends Component {
         <Breadcrumb className="blueColor">
           <BreadcrumbItem active className="mr-4">
             POTRERO {potrero.Nombre} - {potrero.Codigo}
-          </BreadcrumbItem>{" "}
-         
+          </BreadcrumbItem>
         </Breadcrumb>
-       
-
         <Container fluid>
           {/* <!-- Page Heading --> */}
           <div className="mb-3">

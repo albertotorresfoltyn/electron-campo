@@ -134,14 +134,14 @@ class CambioCategoria extends Component {
   render() {
     return (
       <div>
-        <div data-tid="container">
-          <Breadcrumb className="blueColor">
-            <BreadcrumbItem active>Cambio de Categoría</BreadcrumbItem>{' '}
-          </Breadcrumb>
-          <Container>
-            <Card>
-              <CardBody>
-                {/* Cambio de categoria */}
+        <div className="container-fluid mt-5  p-5">
+        <div className="card shadow mb-4  mt-5">
+                  <div className="card-header py-3">
+                    <h6 className="m-0 font-weight-bold text-primary">CAMBIO DE CATEGORIA</h6>
+                  </div>
+                  <div className="card-body">
+              
+              
                 <Row className="text-canter">
                   <Col className="text-canter" md="2">
                     <label>De Categoria</label>
@@ -175,7 +175,11 @@ class CambioCategoria extends Component {
                         ))}
                       </DropdownMenu>
                     </Dropdown>
-                    <label>A Categoria:</label>
+                   
+                  </Col>
+
+                  <Col className="text-canter" md="2">
+                  <label>A Categoria:</label>
                     <Dropdown
                       isOpen={this.state.openCatDestino}
                       toggle={() => {
@@ -204,6 +208,7 @@ class CambioCategoria extends Component {
                       </DropdownMenu>
                     </Dropdown>
                   </Col>
+              
                   <Col>
                     <MovementDiff
                       mode="edit"
@@ -213,15 +218,18 @@ class CambioCategoria extends Component {
                     />
                   </Col>
                 </Row>
-              </CardBody>
-            </Card>
-            <Row className="text-center mt-3">
+                <Row className="text-center mt-3">
               <Col>
                 {' '}
-                <Button onClick={this.recategorize}>Guardar Cambios</Button>
+                <Button color="primary" onClick={this.recategorize}>
+                Guardar Cambios
+          </Button>{" "}
+             
               </Col>
             </Row>
-          </Container>
+                  </div>
+                </div>
+        
         </div>
       </div>
     );

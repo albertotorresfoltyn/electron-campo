@@ -15,6 +15,9 @@ class Historial extends Component {
       historialList: this.props.historial,
       potreros: [],
     };
+
+    console.log(this.props.historial);
+    console.log("this.props.historial");
   }
 
   componentWillMount() {
@@ -26,6 +29,7 @@ class Historial extends Component {
 
   componentWillReceiveProps(nextProps){
     this.setState({historialList: this.props.historial})
+
   }
 
 
@@ -157,12 +161,7 @@ class Historial extends Component {
       }
     ];
 
-    const defaultSorted = [
-      {
-        dataField: "Fecha",
-        order: "desc"
-      }
-    ];
+  
 
     return (
       <BootstrapTable
@@ -170,7 +169,7 @@ class Historial extends Component {
         keyField="IdMovimiento"
         data={this.state.historialList}
         columns={columns}
-        defaultSorted={defaultSorted}
+       
         pagination={paginationFactory()}
       />
     );

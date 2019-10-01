@@ -92,9 +92,11 @@ export default class DataService {
   static getPotreros(campoId) {
     const db = SQL.connect();
     if (db) {
-      const rows = db.exec(`SELECT * FROM \`Potrero\` where idCampo = ${campoId}`);
+      const rows = db.exec(`SELECT Movimiento.PotreroDetalle, Potrero.* FROM  Movimiento  INNER JOIN Potrero ON Movimiento.IdPotrero=Potrero.IdPotrero where Potrero.IdCampo= ${campoId}  GROUP BY Movimiento.IdPotrero ORDER BY MAX(IdMovimiento) ASC`);
       const objects = rowsToMagic(rows);
       db.close();
+      console.log("potreros" );
+      console.log(objects);
       return objects;
     }
     return [];
@@ -179,7 +181,7 @@ export default class DataService {
   static getDetallePotreros() {
     const db = SQL.connect();
     if (db) {
-      const rows = db.exec('SELECT IdPotrero,PotreroDetalle FROM  `Movimiento` GROUP BY IdPotrero ORDER BY MAX(Fecha) ASC');
+      const rows = db.exec('SELECT IdMovimiento,IdPotrero,PotreroDetalle FROM  `Movimiento` GROUP BY IdPotrero ORDER BY MAX(IdMovimiento) DESC');
       const objects = (rowsToMagic(rows));
       db.close();
       return objects;
@@ -200,7 +202,7 @@ export default class DataService {
     if (db) {
       try {
         const rows = db.run(
-          'INSERT INTO `Movimiento` (IdPotrero, Fecha, Motivo, Observaciones, MovimientoDetalle, PotreroDetalle, PotreroOrigen, PotreroDestino,TipoMovimiento) VALUES (?, ?,?,?,?,?,?,?,?)',
+          'INSERT INTO `Movimiento` (IdPotrero, Fecha,Observaciones,Motivo, MovimientoDetalle, PotreroDetalle, PotreroOrigen, PotreroDestino,TipoMovimiento) VALUES (?, ?,?,?,?,?,?,?,?)',
           values,
         );
         SQL.close(db);

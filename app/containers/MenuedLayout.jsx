@@ -18,8 +18,15 @@ class MenuedLayout extends React.Component {
 <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div className="container ml-0">
 
-
-    <a className="navbar-brand" href="#">
+<div className="navbar-brand text-white"    onClick={() => {
+              history.goBack();
+            }}
+          >
+            {" "}
+            <i className="fas fa-arrow-left"> </i>
+  
+</div>
+    <a className="navbar-brand text-white" >
     <img src="../app/assets/img/Cow_1-128.png" width="40" height="40" alt="" className="logo"/>
      <span className="ml-5">Administración Ganadera</span> </a>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

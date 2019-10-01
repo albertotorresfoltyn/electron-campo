@@ -8,7 +8,7 @@ export default class MovementDiff extends Component {
     return (
       <div>
         <Table bordered>
-          <thead>
+          <thead className="bg-light">
             <tr>
               {
                  (this.props.type == "potrero"? <th>Potrero</th>: <th>Categoria Hacienda</th> )
@@ -29,6 +29,7 @@ export default class MovementDiff extends Component {
                   <td className="">
                     {this.props.mode === "edit" ? (
                       <Input
+                      min="0"
                         type="number"
                         placeholder="Cant. ganado a mover"
                         value = {element.cantMov}

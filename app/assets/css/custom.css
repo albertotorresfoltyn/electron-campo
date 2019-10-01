@@ -96,3 +96,7 @@
   background-color: grey
 }
 
+.vertAli{
+  vertical-align: -webkit-baseline-middle;
+}
+
