@@ -88,7 +88,7 @@ SQL.connect = function () {
 };
 
 SQL.close = function (db) {
-  debugger;
+
   this.dbClose(db, db.ourFileName);
 };
 export default SQL;

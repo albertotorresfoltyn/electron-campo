@@ -110,7 +110,6 @@ class CambioCategoria extends Component {
     const newState = {};
     newState[state] = item;
     this.setState(newState); // drinkMate
-    console.log(newState);
     fnc && fnc();
   }
 

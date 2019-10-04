@@ -16,8 +16,6 @@ class Historial extends Component {
       potreros: [],
     };
 
-    console.log(this.props.historial);
-    console.log("this.props.historial");
   }
 
   componentWillMount() {
@@ -70,8 +68,15 @@ class Historial extends Component {
 
     const formatoPotrero = cell => {
     if(cell){
-      const res = this.state.potreros.filter(x => x.IdPotrero == cell)[0].Nombre;
-      return <Fragment >{res}</Fragment>;
+      if(this.state.potreros.filter(x => x.IdPotrero == cell) != undefined && this.state.potreros.filter(x => x.IdPotrero == cell).length > 0){
+        const res = this.state.potreros.filter(x => x.IdPotrero == cell)[0].Nombre;
+        return <Fragment >{res}</Fragment>;
+      }else
+      {
+        <Fragment >{ }</Fragment>
+      }
+     
+
     }
    
     };

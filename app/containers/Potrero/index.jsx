@@ -70,7 +70,7 @@ class Potrero extends Component {
   }
 
   setPotreroOrigen(tipoMovimiento){
-    debugger
+
     switch (tipoMovimiento) {
       case "INGRESO":
         return null;
@@ -83,7 +83,7 @@ class Potrero extends Component {
   }
 
   setPotreroDestino(tipoMovimiento){
-    debugger
+ 
     switch (tipoMovimiento) {
       case "INGRESO":
         return DataService.getLastDetalleByPotrero(

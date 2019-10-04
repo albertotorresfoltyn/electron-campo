@@ -40,7 +40,6 @@ export default class MovementDialog extends Component {
     this.altaNacimiento = this.altaNacimiento.bind(this);
     this.GuardarMovimientoBD = this.GuardarMovimientoBD.bind(this);
     this.validateSelectedPotreros = this.validateSelectedPotreros.bind(this);
-    
 
     this.state = {
       openDropCampo: false,
@@ -71,27 +70,31 @@ export default class MovementDialog extends Component {
       tipoMovimiento: nextProps.tipoMovimiento,
       estadoPotreroOrigen: nextProps.potreroOrigen,
       estadoPotreroDestino: nextProps.potreroDestino,
-      observaciones:""
+      observaciones: "",
+     
     });
+    this.cargarPotreros(nextProps.tipoMovimiento);
   }
 
   // Cargar informacion de los dos potreros que intervienen en la operacion
   loadProtreros(item) {
     switch (this.state.tipoMovimiento) {
       case "INGRESO":
-        // Cargo potrero Origen
-        const potreroOrigen = DataService.getLastDetalleByPotrero(
-          item.IdPotrero
-        );
+        let potreroOrigen = null;
+          // Cargo potrero Origen
+          potreroOrigen = DataService.getLastDetalleByPotrero(item.IdPotrero);
+        
         this.setState({
           estadoPotreroOrigen: potreroOrigen
         });
         break;
       case "EGRESO":
+          let potreroDestino = null;
         // Cargo potrero destino
-        const potreroDestino = DataService.getLastDetalleByPotrero(
-          item.IdPotrero
-        );
+        if (item.IdPotrero != "OTRO") {
+         potreroDestino = DataService.getLastDetalleByPotrero(item.IdPotrero);
+        }
+      
         this.setState({
           estadoPotreroDestino: potreroDestino
         });
@@ -113,25 +116,29 @@ export default class MovementDialog extends Component {
 
   // valida si tiene movimientos la operacion
   validatehasMovement() {
-    
-    if (this.state.estadoPotreroOrigen != null && this.getCantTotalMov(this.state.estadoPotreroOrigen) == 0) {
+    if (
+      this.state.estadoPotreroOrigen != null &&
+      this.getCantTotalMov(this.state.estadoPotreroOrigen) == 0
+    ) {
       return "No existen movimientos";
     }
     return "";
   }
 
+  // valida si tiene movimientos la operacion
+  validateSelectedPotreros() {
+    if (this.state.potreroSelected.Nombre != "OTRO" && (!this.state.estadoPotreroOrigen || !this.state.estadoPotreroDestino))
+      return "Selecciona potrero";
 
-    // valida si tiene movimientos la operacion
-    validateSelectedPotreros() {
-      if(!this.state.estadoPotreroOrigen || !this.state.estadoPotreroDestino)
-        return "Selecciona potrero";
-     
-      return "";
-    }
-  
+    return "";
+  }
+
   // valida si tiene cantidad de hacienda para dar de alta
   validatehasAlta() {
-    if (parseInt(this.state.cantidadAlta) == 0 || isNaN(this.state.cantidadAlta) ) {
+    if (
+      parseInt(this.state.cantidadAlta) == 0 ||
+      isNaN(this.state.cantidadAlta)
+    ) {
       return "Debes ingresar la cantidad de hacienda para dar de alta. ";
     }
     return "";
@@ -201,16 +208,14 @@ export default class MovementDialog extends Component {
     }
   }
 
-  GuardarMovimientoBD(tipoMov, estado,origen, destino, motivo,idPotrero ) {
+  GuardarMovimientoBD(tipoMov, estado, origen, destino, motivo, idPotrero) {
 
     let movimientos = estado.map(e =>
       DataConvert.toDefaultEntity(e.type, e.cantMov)
     );
-    let detalle = estado.map(e =>
-      DataConvert.toDefaultEntity(e.type, e.total)
-    );
+    let detalle = estado.map(e => DataConvert.toDefaultEntity(e.type, e.total));
     if (tipoMov == "NACIMIENTO") {
-     this.altaNacimiento(movimientos, detalle);
+      this.altaNacimiento(movimientos, detalle);
     }
 
     let mov = DataConvert.toMovimientoEntity(
@@ -235,20 +240,23 @@ export default class MovementDialog extends Component {
     let motivo = null;
     let estado = this.state.estadoPotreroOrigen;
     let segundoEstado = this.state.estadoPotreroDestino;
-    
-    const dobleMovimiento = this.state.tipoMovimiento == "INGRESO" || this.state.tipoMovimiento == "EGRESO"; // en los casos de ingreso o egreso hay que hacer un doble movimiento. 
+
+
+    const dobleMovimiento =
+      this.state.tipoMovimiento == "INGRESO" ||
+      (this.state.tipoMovimiento == "EGRESO" && this.state.potreroSelected.Nombre != "OTRO"); // en los casos de ingreso o egreso hay que hacer un doble movimiento.
 
     switch (this.props.tipoMovimiento) {
       case "INGRESO":
-          idOrigen = this.state.potreroSelected.IdPotrero;
-          idDestino= this.props.IdPotrero;
-          estado = this.state.estadoPotreroDestino;
-          segundoEstado = this.state.estadoPotreroOrigen;
-          break;
+        idOrigen = this.state.potreroSelected.IdPotrero;
+        idDestino = this.props.IdPotrero;
+        estado = this.state.estadoPotreroDestino;
+        segundoEstado = this.state.estadoPotreroOrigen;
+        break;
       case "EGRESO":
-          idOrigen = this.props.IdPotrero;
-          idDestino = this.state.potreroSelected.IdPotrero;
-          break;
+        idOrigen = this.props.IdPotrero;
+        idDestino = this.state.potreroSelected.IdPotrero;
+        break;
       case "BAJA":
         motivo = this.state.motivoSelected.amount;
         break;
@@ -257,35 +265,45 @@ export default class MovementDialog extends Component {
     }
 
     // Guarda el movimiento principal
-      this.GuardarMovimientoBD(this.state.tipoMovimiento,
-         estado,
-         idOrigen ,
-         idDestino,
-         motivo,
-         this.props.IdPotrero);
+    this.GuardarMovimientoBD(
+      this.state.tipoMovimiento,
+      estado,
+      idOrigen,
+      idDestino,
+      motivo,
+      this.props.IdPotrero
+    );
 
-      if(dobleMovimiento){
-        // el segundo movimiento siempre es el opuesto del primero 
-        this.GuardarMovimientoBD(this.state.tipoMovimiento == "INGRESO" ? "EGRESO":"INGRESO",
+    if (dobleMovimiento) {
+      // el segundo movimiento siempre es el opuesto del primero
+      this.GuardarMovimientoBD(
+        this.state.tipoMovimiento == "INGRESO" ? "EGRESO" : "INGRESO",
         segundoEstado,
-          idOrigen ,
-          idDestino,
-          motivo,
-          this.state.potreroSelected.IdPotrero);
-      }
+        idOrigen,
+        idDestino,
+        motivo,
+        this.state.potreroSelected.IdPotrero
+      );
+    }
     alert("Guardados correctamente");
     // cerrar el modal
     this.props.toggle();
   }
 
   // Busca potreros de BD y guarda en estado para cargar el dropdown
-  cargarPotreros() {
+  cargarPotreros(mov) {
+  
+    
     const potreros = DataService.getAllPotreros();
     // sacar de este listado el potrero destino.
     potreros.splice(
       potreros.findIndex(i => i.IdPotrero === this.props.IdPotrero),
       1
     );
+    if(mov && mov == "EGRESO"){
+      potreros.push({ IdPotrero: "OTRO", Nombre: "OTRO" });
+    }
+   
     // Guarda en el estado
     this.setState({ potreros: potreros }); // por defecto seteo el primero
   }
@@ -294,7 +312,6 @@ export default class MovementDialog extends Component {
   changeDrop(e, state, item, fnc) {
     const newState = {};
     newState[state] = item;
-    debugger;
     this.setState(newState); //drinkMate
     fnc && fnc();
   }
@@ -308,16 +325,18 @@ export default class MovementDialog extends Component {
 
   // se cambia algun valor en los input para mover hacienda
   changesValues(type, value) {
-  
-    let estadoPotreroEditable =this.state.estadoPotreroOrigen;
+    let estadoPotreroEditable = this.state.estadoPotreroOrigen;
     let estadoPotreroReadOnly = this.state.estadoPotreroDestino;
     const recordEditable = estadoPotreroEditable.find(v => v.type === type);
 
-    if(this.state.tipoMovimiento == "INGRESO" || this.state.tipoMovimiento == "EGRESO" ){
-     const errormsj = this.validateSelectedPotreros();
-      if(errormsj != ""){
-       alert(errormsj);
-       return;
+    if (
+      this.state.tipoMovimiento == "INGRESO" ||
+      this.state.tipoMovimiento == "EGRESO"
+    ) {
+      const errormsj = this.validateSelectedPotreros();
+      if (errormsj != "") {
+        alert(errormsj);
+        return;
       }
     }
 
@@ -328,9 +347,9 @@ export default class MovementDialog extends Component {
       if (value.trim() == "") {
         value = 0;
       }
-      value =  parseInt(value) ;
+      value = parseInt(value);
       // Modificando el origen
-      recordEditable.total =  recordEditable.qtty - value;
+      recordEditable.total = recordEditable.qtty - value;
       recordEditable.cantMov = value;
       const indexPotrero = estadoPotreroEditable.findIndex(
         v => v.type === type
@@ -366,7 +385,6 @@ export default class MovementDialog extends Component {
         estadoPotreroOrigen: estadoPotreroEditable,
         estadoPotreroDestino: estadoPotreroReadOnly
       });
-    
     }
   }
 
@@ -482,7 +500,7 @@ export default class MovementDialog extends Component {
                       .filter(
                         x =>
                           x.Nombre.toUpperCase() == "TERNERO" ||
-                          x.Nombre.toUpperCase() == "TERNERA" || 
+                          x.Nombre.toUpperCase() == "TERNERA" ||
                           x.Nombre.toUpperCase() == "TORITO"
                       )
                       .map(item => (
@@ -508,8 +526,8 @@ export default class MovementDialog extends Component {
               <Col>
                 <label>Cantidad</label>
                 <Input
-                required
-                 min="0"
+                  required
+                  min="0"
                   type="number"
                   placeholder="Cantidad"
                   value={this.state.cantidadAlta}

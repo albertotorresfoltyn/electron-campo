@@ -73,13 +73,12 @@ export default class DataConvert {
 
 
   static convertDetalleToModel(listDetalle, colores) {
-    console.log('colores');
-    console.log(colores);
+  
     if (listDetalle != undefined) {
       const result = [];
       listDetalle.map((item, i) => {
         const colorE = colores.find(e => e.Nombre.toUpperCase() == item.type.toUpperCase());
-        console.log(item);
+       
         const elem = {
           name: item.type,
           value: item.total,

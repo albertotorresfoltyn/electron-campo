@@ -75,7 +75,7 @@ export default class DataService {
           }
           return acc;
         }, []);
-        console.log(res);
+      
         return res;
       };
       const unifiedList = unify([...potrerodetalle, mov1, mov2]);
@@ -95,8 +95,7 @@ export default class DataService {
       const rows = db.exec(`SELECT Movimiento.PotreroDetalle, Potrero.* FROM  Movimiento  INNER JOIN Potrero ON Movimiento.IdPotrero=Potrero.IdPotrero where Potrero.IdCampo= ${campoId}  GROUP BY Movimiento.IdPotrero ORDER BY MAX(IdMovimiento) ASC`);
       const objects = rowsToMagic(rows);
       db.close();
-      console.log("potreros" );
-      console.log(objects);
+    
       return objects;
     }
     return [];
@@ -156,8 +155,7 @@ export default class DataService {
     const db = SQL.connect();
     if (db) {
       const rows = db.exec(`SELECT IdMovimiento ,PotreroDetalle FROM  \`Movimiento\` where IdPotrero = ${idPotrero}  order by IdMovimiento DESC LIMIT 1`);
-      console.log('rowsToMagic(rows)[0]');
-      console.log(rowsToMagic(rows)[0]);
+    
       const objects = toPotreroModel(rowsToMagic(rows)[0].PotreroDetalle);
       db.close();
       return objects;
@@ -167,7 +165,7 @@ export default class DataService {
 
   // recupera TODOS los movimientos de UN potrero
   static getAllDetalleByPotrero(idPotrero) {
-    console.log(`llamo a getall con ${idPotrero}`);
+ 
     const db = SQL.connect();
     if (db) {
       const rows = db.exec(`SELECT Movimiento.*, Potrero.Nombre FROM  Movimiento  INNER JOIN Potrero ON Movimiento.IdPotrero=Potrero.IdPotrero  where Movimiento.IdPotrero = ${idPotrero}  order by IdMovimiento desc`);
