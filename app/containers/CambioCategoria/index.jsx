@@ -132,9 +132,14 @@ class CambioCategoria extends Component {
 
   render() {
     return (
-      <div>
-        <div className="container-fluid mt-5  p-5">
-        <div className="card shadow mb-4  mt-5">
+      <div style={{ paddingTop: "50px" }}>
+
+<Breadcrumb className="text-white bg-darklight">
+          <BreadcrumbItem  className="text-white bg-darklight" active> <span className="vertAli">LA EUGENIA</span></BreadcrumbItem>
+        
+        </Breadcrumb>
+        <div className="container-fluid   pl-5 pr-5">
+        <div className="card shadow mb-4  mt-1">
                   <div className="card-header py-3">
                     <h6 className="m-0 font-weight-bold text-primary">CAMBIO DE CATEGORIA</h6>
                   </div>

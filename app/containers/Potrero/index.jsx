@@ -39,72 +39,76 @@ class Potrero extends Component {
       potreroDetalle: DataService.getLastDetalleByPotrero(
         this.props.match.params.potreroId
       ),
-      potreroHistorial: DataService.getAllDetalleByPotrero(this.props.match.params.potreroId),
+      potreroHistorial: DataService.getAllDetalleByPotrero(
+        this.props.match.params.potreroId
+      ),
       coloresHacienda: DataService.getCategoriaHacienda(),
       modalVisible: false,
       tipoMovimiento: "",
-      potreroOrigen :{},
-      potreroDestino :{}
+      potreroOrigen: {},
+      potreroDestino: {}
     };
-    this.saveHookHandler=this.saveHookHandler.bind(this);
+    this.saveHookHandler = this.saveHookHandler.bind(this);
     this.toggle = this.toggle.bind(this);
     this.abrirModalMovimiento = this.abrirModalMovimiento.bind(this);
     this.setPotreroDestino = this.setPotreroDestino.bind(this);
     this.setPotreroOrigen = this.setPotreroOrigen.bind(this);
-
-    
   }
 
   toggle() {
-    this.setState({ modalVisible: !this.state.modalVisible,
-      potrero: DataService.getPotrero(this.props.match.params.potreroId),
-      potreroDetalle: DataService.getLastDetalleByPotrero(
-        this.props.match.params.potreroId
-      ),
-      potreroHistorial: DataService.getAllDetalleByPotrero(this.props.match.params.potreroId)
-     }, ()=>{this.forceUpdate()});
+    this.setState(
+      {
+        modalVisible: !this.state.modalVisible,
+        potrero: DataService.getPotrero(this.props.match.params.potreroId),
+        potreroDetalle: DataService.getLastDetalleByPotrero(
+          this.props.match.params.potreroId
+        ),
+        potreroHistorial: DataService.getAllDetalleByPotrero(
+          this.props.match.params.potreroId
+        )
+      },
+      () => {
+        this.forceUpdate();
+      }
+    );
   }
 
   saveHookHandler() {
     this.forceUpdate();
   }
 
-  setPotreroOrigen(tipoMovimiento){
-
+  setPotreroOrigen(tipoMovimiento) {
     switch (tipoMovimiento) {
       case "INGRESO":
         return null;
 
-      default: //NACIMIENTO BAJA EGRESO EL ORIGEN ES EL POTRERO ACTUAL
-        return  DataService.getLastDetalleByPotrero(
+      default:
+        //NACIMIENTO BAJA EGRESO EL ORIGEN ES EL POTRERO ACTUAL
+        return DataService.getLastDetalleByPotrero(
           this.state.potrero.IdPotrero
         );
     }
   }
 
-  setPotreroDestino(tipoMovimiento){
- 
+  setPotreroDestino(tipoMovimiento) {
     switch (tipoMovimiento) {
       case "INGRESO":
         return DataService.getLastDetalleByPotrero(
           this.state.potrero.IdPotrero
         );
-      default://NACIMIENTO BAJA EGRESO EL DESTINO ES NULL 
+      default:
+        //NACIMIENTO BAJA EGRESO EL DESTINO ES NULL
         return null;
     }
   }
 
-
   abrirModalMovimiento(tipoMovimiento) {
-
-   
     this.setState({
       potreroOrigen: this.setPotreroOrigen(tipoMovimiento),
       potreroDestino: this.setPotreroDestino(tipoMovimiento),
       tipoMovimiento: tipoMovimiento,
       modalVisible: !this.state.modalVisible
     });
-    
   }
 
   render() {
@@ -123,60 +127,67 @@ class Potrero extends Component {
     } = potrero;
 
     return (
-      <div>
-        <Breadcrumb className="blueColor">
-          <BreadcrumbItem active className="mr-4">
-            POTRERO {potrero.Nombre} - {potrero.Codigo}
+      <div style={{ paddingTop: "50px" }}>
+        <Breadcrumb className="text-white bg-darklight">
+          <BreadcrumbItem className="text-white bg-darklight" active>
+            {" "}
+            <span className="vertAli text-uppercase ">
+           <strong className="vertAli">{potrero.Nombre} </strong>
+            
+            </span>
           </BreadcrumbItem>
+
+          <div className=" pl-3">
+            <a
+              className="btn btn-primary btn-icon-split mr-4"
+              onClick={() => {
+                this.abrirModalMovimiento(TiposMov.INGRESO);
+              }}
+            >
+              <span className="icon text-white-50">
+                <i className="fas fa-arrow-down"></i>
+              </span>
+              <span className="text">INGRESO</span>
+            </a>
+            <a
+              className="btn btn-primary btn-icon-split mr-4"
+              onClick={() => {
+                this.abrirModalMovimiento(TiposMov.EGRESO);
+              }}
+            >
+              <span className="icon text-white-50">
+                <i className="fas fa-arrow-up"></i>
+              </span>
+              <span className="text">EGRESO</span>
+            </a>
+            <a
+              className="btn btn-danger btn-icon-split mr-4"
+              onClick={() => {
+                this.abrirModalMovimiento(TiposMov.BAJA);
+              }}
+            >
+              <span className="icon text-white-50">
+                <i className="fas fa-trash"></i>
+              </span>
+              <span className="text">BAJA</span>
+            </a>
+            <a
+              className="btn btn-success btn-icon-split mr-4"
+              onClick={() => {
+                this.abrirModalMovimiento(TiposMov.NACIMIENTO);
+              }}
+            >
+              <span className="icon text-white-50">
+                <i className="fas fa-check"></i>
+              </span>
+              <span className="text">NACIMIENTO</span>
+            </a>
+          </div>
         </Breadcrumb>
+
         <Container fluid>
-          {/* <!-- Page Heading --> */}
-          <div className="mb-3">
-        <a
-            className="btn btn-primary btn-icon-split mr-4"
-            onClick={() => {
-              this.abrirModalMovimiento(TiposMov.INGRESO);
-            }}
-          >
-            <span className="icon text-white-50">
-              <i className="fas fa-arrow-down"></i>
-            </span>
-            <span className="text">INGRESO</span>
-          </a>
-          <a
-            className="btn btn-primary btn-icon-split mr-4"
-            onClick={() => {
-              this.abrirModalMovimiento(TiposMov.EGRESO);
-            }}
-          >
-            <span className="icon text-white-50">
-              <i className="fas fa-arrow-up"></i>
-            </span>
-            <span className="text">EGRESO</span>
-          </a>
-          <a
-            className="btn btn-danger btn-icon-split mr-4"
-            onClick={() => {
-              this.abrirModalMovimiento(TiposMov.BAJA);
-            }}
-          >
-            <span className="icon text-white-50">
-              <i className="fas fa-trash"></i>
-            </span>
-            <span className="text">BAJA</span>
-          </a>
-          <a
-            className="btn btn-success btn-icon-split mr-4"
-            onClick={() => {
-              this.abrirModalMovimiento(TiposMov.NACIMIENTO);
-            }}
-          >
-            <span className="icon text-white-50">
-              <i className="fas fa-check"></i>
-            </span>
-            <span className="text">NACIMIENTO</span>
-          </a>
-        </div>
+        
+         
           {/* <!-- Content Row --> */}
           <div className="row">
             {/* <!-- Earnings (Monthly) Card Example --> */}
@@ -395,8 +406,8 @@ class Potrero extends Component {
             IdPotrero={this.state.potrero.IdPotrero}
             tipoMovimiento={this.state.tipoMovimiento}
             categoriasHacienda={this.state.coloresHacienda}
-            potreroOrigen ={this.state.potreroOrigen}
-            potreroDestino ={this.state.potreroDestino}
+            potreroOrigen={this.state.potreroOrigen}
+            potreroDestino={this.state.potreroDestino}
             onSaveHook={this.saveHookHandler}
           />
         </Container>

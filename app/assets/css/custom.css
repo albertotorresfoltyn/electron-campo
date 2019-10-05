@@ -4,9 +4,12 @@
   background-color:#000 ;
 }
 
-.bg-dark  ol{
-  background-color:#858796 ;
+
+.bg-darklight,.bg-darklight ol {
+  background-color: #454a50 !important;
 }
+
+
 .text-white li {
   color: white;
 }

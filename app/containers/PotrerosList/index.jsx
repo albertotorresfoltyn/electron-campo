@@ -69,9 +69,9 @@ class PotrerosList extends Component {
     const { history } = this.props;
     return (
       <div style={{paddingTop: '50px'}}>
-        <Breadcrumb className="text-white bg-dark">
-          <BreadcrumbItem  className="text-white" active> <span className="vertAli">LA EUGENIA</span></BreadcrumbItem>
-          <BreadcrumbItem  className="text-white" active> <Button
+        <Breadcrumb className="text-white bg-darklight">
+          <BreadcrumbItem  className="text-white bg-darklight" active> <span className="vertAli">LA EUGENIA</span></BreadcrumbItem>
+          <BreadcrumbItem  className="text-white bg-darklight" active> <Button
                   className=""
                   color="success"
                   onClick={() => {
