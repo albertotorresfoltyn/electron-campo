@@ -4,6 +4,10 @@ import styles from "./Estado.css";
 import DataConvert from "../../utils/DataConvert";
 import DataService from "../../services/DataService";
 import { PieChart, Pie, Legend, Tooltip, Cell, Sector } from "recharts";
+import {
+  Row,
+  Col
+} from 'reactstrap';
 
 class Estado extends Component {
   constructor(props) {
@@ -58,8 +62,34 @@ class Estado extends Component {
     };
 
     return (
-      <div className={styles.estado}>
-        <PieChart width={400} height={400}>
+      <div className={styles.estado} className="container">
+        <Row>
+          <Col md="3" style={{
+                      marginTop: 120
+                    }}>
+          {this.state.data.map((items, i) => (
+          
+          <div className="row">
+            {
+              <div>
+                <span className="mr-2">
+                  <i
+                    className="fas fa-circle"
+                    style={{
+                      color: items.color
+                    }}
+                  ></i>{" "}
+                </span>
+<span className="text-dark">{items.name}</span>
+                
+              </div>
+            }
+        </div>
+      ))}
+          </Col>
+          <Col md="9">
+
+          <PieChart width={400} height={400}>
           <Pie
             data={this.state.data}
             cx={200}
@@ -86,6 +116,13 @@ class Estado extends Component {
             ))}
         </Pie>
         </PieChart>
+          </Col>
+
+      
+
+        </Row>
+         
+        
 
       </div>
     );
