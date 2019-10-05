@@ -127,17 +127,12 @@ class Potrero extends Component {
     } = potrero;
 
     return (
-      <div style={{ paddingTop: "50px" }}>
-        <Breadcrumb className="text-white bg-darklight">
-          <BreadcrumbItem className="text-white bg-darklight" active>
-            {" "}
-            <span className="vertAli text-uppercase ">
-           <strong className="vertAli">{potrero.Nombre} </strong>
-            
-            </span>
-          </BreadcrumbItem>
+      <div className="containerCustom">
+        <Breadcrumb className="text-white bg-darklight breadcumclass">
+        <BreadcrumbItem  className="text-white bg-darklight" active> <span className="vertAli text-uppercase">{potrero.Nombre} </span></BreadcrumbItem>
+          
 
-          <div className=" pl-3">
+          <div className=" ml-5">
             <a
               className="btn btn-primary btn-icon-split mr-4"
               onClick={() => {
@@ -185,7 +180,7 @@ class Potrero extends Component {
           </div>
         </Breadcrumb>
 
-        <Container fluid>
+        <Container fluid className="mt-4">
         
          
           {/* <!-- Content Row --> */}

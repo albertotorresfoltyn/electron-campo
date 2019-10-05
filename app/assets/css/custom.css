@@ -9,10 +9,16 @@
   background-color: #454a50 !important;
 }
 
-
+.breadcumclass ol{
+height: 70px !important;
+}
 .text-white li {
   color: white;
 }
+.containerCustom {
+  margin-top: 55px !important;
+}
+
 
 .withoutborder{
   border-radius: 0 !important;

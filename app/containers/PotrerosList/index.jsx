@@ -68,8 +68,8 @@ class PotrerosList extends Component {
   render() {
     const { history } = this.props;
     return (
-      <div style={{paddingTop: '50px'}}>
-        <Breadcrumb className="text-white bg-darklight">
+      <div className="containerCustom"  >
+        <Breadcrumb className="text-white bg-darklight breadcumclass">
           <BreadcrumbItem  className="text-white bg-darklight" active> <span className="vertAli">LA EUGENIA</span></BreadcrumbItem>
           <BreadcrumbItem  className="text-white bg-darklight" active> <Button
                   className=""
@@ -82,27 +82,12 @@ class PotrerosList extends Component {
                 </Button>{" "}</BreadcrumbItem>
         </Breadcrumb>
 
-        <div className={styles.container} data-tid="container">
+        <div className={styles.container} data-tid="container" className="mt-4">
           <Container fluid className="text-center">
-            {/* <Row className="mb-3 text-left">
-              <Col md="12">
-                <Button
-                  className=""
-                  color="success"
-                  onClick={() => {
-                    history.push("/CambioCategoria/");
-                  }}
-                >
-                  Cambio de categoria
-                </Button>{" "}
-              </Col>
-            </Row> */}
+         
             <Row>
               <Col md="8">
-                {/* <div className="card shadow mb-4">
-                  <div className="card-header py-3">
-                    <h6 className="m-0 font-weight-bold text-primary">POTREROS</h6>
-                  </div> */}
+              
                   <div className="card-body pt-0">
                     <Row>
                       {this.state.potreros.map(potrero => (
