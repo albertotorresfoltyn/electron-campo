@@ -92,7 +92,9 @@ export default class DataService {
   static getPotreros(campoId) {
     const db = SQL.connect();
     if (db) {
-      const rows = db.exec(`SELECT Movimiento.PotreroDetalle, Potrero.* FROM  Movimiento  INNER JOIN Potrero ON Movimiento.IdPotrero=Potrero.IdPotrero where Potrero.IdCampo= ${campoId}  GROUP BY Movimiento.IdPotrero ORDER BY MAX(IdMovimiento) ASC`);
+      const rows = db.exec(`SELECT * FROM  Potrero  INNER JOIN 
+      (select max(IdMovimiento) lastmov, MovimientoDetalle, PotreroDetalle, IdPotrero
+      from Movimiento group by IdPotrero) m  ON m.IdPotrero=Potrero.IdPotrero where Potrero.IdCampo= ${campoId}  order by Potrero.Orden`);
       const objects = rowsToMagic(rows);
       db.close();
     
