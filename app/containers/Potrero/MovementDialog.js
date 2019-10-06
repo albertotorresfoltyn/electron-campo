@@ -435,7 +435,7 @@ export default class MovementDialog extends Component {
         <Row>
           <Col>
             <Alert className="mt-3" color="secondary">
-              ORIGEN
+              ORIGEN { this.props.tipoMovimiento == "INGRESO"? "":<span> - { this.props.NombrePotrero}</span> }
             </Alert>
             <MovementDiff
               mode="edit"
@@ -446,7 +446,7 @@ export default class MovementDialog extends Component {
           </Col>
           <Col>
             <Alert className="mt-3" color="secondary">
-              DESTINO
+              DESTINO { this.props.tipoMovimiento == "EGRESO"? "":<span> - { this.props.NombrePotrero}</span> }
             </Alert>
             <MovementDiff
               mode="readonly"
@@ -479,7 +479,7 @@ export default class MovementDialog extends Component {
     return (
       <Fragment>
         <Card>
-          <CardHeader>Nombre del potrero</CardHeader>
+          <CardHeader> {this.props.NombrePotrero} </CardHeader>
           <CardBody>
             <Row>
               <Col>
@@ -565,7 +565,7 @@ export default class MovementDialog extends Component {
     return (
       <Fragment>
         <Card>
-          <CardHeader>Nombre del protrero</CardHeader>
+          <CardHeader>{this.props.NombrePotrero}</CardHeader>
           <CardBody>
             <Row>
               <Col>

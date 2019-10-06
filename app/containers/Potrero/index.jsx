@@ -399,6 +399,7 @@ class Potrero extends Component {
             toggle={this.toggle}
             campos={this.state.campos}
             IdPotrero={this.state.potrero.IdPotrero}
+            NombrePotrero={this.state.potrero.Nombre}
             tipoMovimiento={this.state.tipoMovimiento}
             categoriasHacienda={this.state.coloresHacienda}
             potreroOrigen={this.state.potreroOrigen}
