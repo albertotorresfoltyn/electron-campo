@@ -70,7 +70,7 @@ class PotrerosList extends Component {
     return (
       <div className="containerCustom"  >
         <Breadcrumb className="text-white bg-darklight breadcumclass">
-          <BreadcrumbItem  className="text-white bg-darklight" active> <span className="vertAli">LA EUGENIA</span></BreadcrumbItem>
+          <BreadcrumbItem  className="text-white bg-darklight" active> <span className="vertAli ">LA EUGENIA</span></BreadcrumbItem>
           <BreadcrumbItem  className="text-white bg-darklight" active> <Button
                   className=""
                   color="success"
