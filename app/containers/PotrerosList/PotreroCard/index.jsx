@@ -16,6 +16,8 @@ const Example = ({ potrero, ...props }) => {
     Codigo,
     PotreroDetalle
   } = potrero;
+  console.log("PotreroDetalle");
+  console.log(PotreroDetalle);
 
   return (
     <div className="mb-4" {...props}>
@@ -31,7 +33,7 @@ const Example = ({ potrero, ...props }) => {
                 {
                   PotreroDetalle.map( x=> x.amount).reduce((acc, item) => {
                     return parseInt(acc) + parseInt(item)
-                  })
+                  },  [0])
                 }
                 </span>{" "}
                 <span>cabezas</span>{" "}
