@@ -384,6 +384,7 @@ class Potrero extends Component {
                         key={potrero.Nombre}
                         potreroDetalle={this.state.potreroDetalle}
                         type="potrero"
+                        onSaveHook={this.saveHookHandler}
                       />
                     </div>
                   </CardBody>
