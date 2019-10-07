@@ -75,8 +75,10 @@ export default class DataService {
           }
           return acc;
         }, []);
+        alert("Operación exitosa");
       
         return res;
+        
       };
       const unifiedList = unify([...potrerodetalle, mov1, mov2]);
       const mov = DataConvert.toMovimientoEntity(r.id, '', 'RECATEGORIZACION', [mov1, mov2], unifiedList, r.id, r.id, 'RECATEGORIZACION');
