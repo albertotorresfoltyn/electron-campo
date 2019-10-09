@@ -128,6 +128,7 @@ class CambioCategoria extends Component {
       this.state.categoriaOrSeleccionada,
       this.state.categoriaDesSeleccionada,
     ):alert('selecciona las dos categorias, palurdo')
+    
   }
 
   render() {

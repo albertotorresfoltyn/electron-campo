@@ -75,8 +75,7 @@ export default class DataService {
           }
           return acc;
         }, []);
-        alert("Operación exitosa");
-      
+     
         return res;
         
       };
@@ -88,6 +87,8 @@ export default class DataService {
     result.forEach((element) => {
       this.guardarMovimiento(element);
     });
+
+    alert("Operación exitosa");
   }
 
   // Devuelve todos los potreros correspondientes a un campo
