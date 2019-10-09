@@ -50,15 +50,20 @@ class Historial extends Component {
 
     const formatoMov = (cell, row) => {
       const res = cell.map(item => {
-        const isBajaOrEgreso =
+        let amount = item.amount;
+        const isNegative =
           row.TipoMovimiento == "BAJA" || row.TipoMovimiento == "EGRESO";
+        if (isNegative) { // si es baja o egreso, convier a valor negativo 
+          amount = amount *-1;
+        }
+
         return (
           <div className="small">
             <strong
-              style={isBajaOrEgreso ? { color: "red" } : { color: "green" }}
+              style={amount > 0 ? { color: "green" } : { color: "red" }}
             >
               {" "}
-              {`${isBajaOrEgreso ? "-" : "+"} ${item.amount} ${item.type}`}{" "}
+              {`${ amount > 0 ? "+" : ""} ${amount} ${item.type}`}{" "}
             </strong>
           </div>
         );
