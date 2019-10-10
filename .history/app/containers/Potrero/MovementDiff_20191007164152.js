@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import { Table, FormGroup, Label, Input } from 'reactstrap';
+import React, { Component } from "react";
+import { Table, FormGroup, Label, Input } from "reactstrap";
 
 export default class MovementDiff extends Component {
+
   render() {
+
     return (
       <div>
         <Table bordered>
           <thead className="bg-light">
             <tr>
               {
-                (this.props.type == 'potrero' ? <th>Potrero</th> : <th>Categoria Hacienda</th>)
+                 (this.props.type == "potrero"? <th>Potrero</th>: <th>Categoria Hacienda</th> )
               }
 
               <th>Cant. Original</th>
@@ -18,17 +20,19 @@ export default class MovementDiff extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.initialValues && this.props.initialValues.map((element, index) => (
+            {this.props.initialValues && this.props.initialValues.map((element, index) => {
+
+              return (
                 <tr key={index}>
                   <th scope="row">{element.type}</th>
                   <td>{element.qtty}</td>
                   <td className="">
                     {this.props.mode === "edit" ? (
                       <Input
-                        min="0"
+                      min="0"
                         type="number"
                         placeholder="Cant. ganado a mover"
-                        value={element.cantMov}
+                        value = {element.cantMov}
                         onChange={e => {
                           this.props.changesValues(
                             element.type,
@@ -38,12 +42,13 @@ export default class MovementDiff extends Component {
                         }}
                       />
                     ) : (
-                        <span> {element.cantMov}</span>
-                      )}
+                      <span> {element.cantMov}</span>
+                    )}
                   </td>
                   <td>{element.total}</td>
                 </tr>
-              ))}
+              );
+            })}
           </tbody>
         </Table>
       </div>

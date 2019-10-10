@@ -115,13 +115,10 @@ class CambioCategoria extends Component {
 
   changesValues(type, value, element) {
     const e = element;
-    if (e.qtty - e.cantMov <= 0) return;
     const listado = this.state.listadoExistencia;
     e.cantMov = Number(value);
-    e.total = e.qtty - e.cantMov;
     listado[listado.indexOf(element)] = e;
-    debugger;
-    this.setState({ listadoExistencia: listado }, this.forceUpdate);
+    this.setState({ listadoExistencia: listado });
   }
 
   recategorize(e) {
@@ -131,7 +128,7 @@ class CambioCategoria extends Component {
       this.state.categoriaOrSeleccionada,
       this.state.categoriaDesSeleccionada,
     ):alert('Debes seleccionar las dos categorias.')
-
+    
   }
 
   render() {
@@ -140,7 +137,7 @@ class CambioCategoria extends Component {
 
 <Breadcrumb className="text-white bg-darklight breadcumclass">
           <BreadcrumbItem  className="text-white bg-darklight" active> <span className="vertAli">LA EUGENIA</span></BreadcrumbItem>
-
+        
         </Breadcrumb>
         <div className="container-fluid   pl-5 pr-5 mt-4" >
         <div className="card shadow mb-4  mt-1">
@@ -148,8 +145,8 @@ class CambioCategoria extends Component {
                     <h6 className="m-0 font-weight-bold text-primary">CAMBIO DE CATEGORIA</h6>
                   </div>
                   <div className="card-body">
-
-
+              
+              
                 <Row className="text-canter">
                   <Col className="text-canter" md="2">
                     <label>De Categoria</label>
@@ -183,7 +180,7 @@ class CambioCategoria extends Component {
                         ))}
                       </DropdownMenu>
                     </Dropdown>
-
+                   
                   </Col>
 
                   <Col className="text-canter" md="2">
@@ -216,7 +213,7 @@ class CambioCategoria extends Component {
                       </DropdownMenu>
                     </Dropdown>
                   </Col>
-
+              
                   <Col>
                     <MovementDiff
                       mode="edit"
@@ -232,12 +229,12 @@ class CambioCategoria extends Component {
                 <Button color="primary" onClick={this.recategorize}>
                 Guardar Cambios
           </Button>{" "}
-
+             
               </Col>
             </Row>
                   </div>
                 </div>
-
+        
         </div>
       </div>
     );

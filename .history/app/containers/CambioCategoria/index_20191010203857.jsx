@@ -115,10 +115,9 @@ class CambioCategoria extends Component {
 
   changesValues(type, value, element) {
     const e = element;
-    if (e.qtty - e.cantMov <= 0) return;
     const listado = this.state.listadoExistencia;
     e.cantMov = Number(value);
-    e.total = e.qtty - e.cantMov;
+    e.total -= e.cantMov;
     listado[listado.indexOf(element)] = e;
     debugger;
     this.setState({ listadoExistencia: listado }, this.forceUpdate);
