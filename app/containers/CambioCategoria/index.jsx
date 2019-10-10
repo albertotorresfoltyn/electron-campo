@@ -127,7 +127,7 @@ class CambioCategoria extends Component {
       this.state.listadoExistencia,
       this.state.categoriaOrSeleccionada,
       this.state.categoriaDesSeleccionada,
-    ):alert('selecciona las dos categorias, palurdo')
+    ):alert('Debes seleccionar las dos categorias.')
     
   }
 

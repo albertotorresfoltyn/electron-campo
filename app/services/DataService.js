@@ -52,15 +52,18 @@ export default class DataService {
   // guarda una lista masiva de movimientos, mas que nada recategorizaciones
 
   static saveMovements(list, originVacaKind, vacaKind) {
+    debugger
     const potreros = this.getDetallePotreros();
     const result = list.map((r) => {
-      const potrero = potreros.find(p => p.id === r.idPotrero);
+      const potrero = potreros.find(p => p.IdPotrero === r.id);
       const potrerodetalle = potrero.PotreroDetalle;
       const detalleTipoVaca = potrerodetalle.find(d => d.type === originVacaKind);
       // sacar vacas de potrero detalle, originVacaKind
+      debugger
       const mov1 = { type: originVacaKind, amount: -r.cantMov };
       const mov2 = { type: vacaKind, amount: r.cantMov }; // agregar vacas en potrero detalle, vacakind
       const unify = (array) => {
+        debugger
         const res = array.reduce((acc, i) => {
           const isPresent = acc.find(e => e.type === i.type);
           if (!isPresent) {
