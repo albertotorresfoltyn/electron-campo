@@ -175,12 +175,18 @@ class Historial extends Component {
 
     return (
       <BootstrapTable
+      
         bootstrap4
         keyField="IdMovimiento"
         data={this.state.historialList}
         columns={columns}
        
-        pagination={paginationFactory()}
+        pagination={paginationFactory()
+        }
+
+        striped
+        hover
+        condensed
       />
     );
   }

@@ -55,8 +55,8 @@ class Estado extends Component {
     ];
 
     var layout = {
-      height: 400,
-      width: 400
+      height: 350,
+      width: 350
     };
 
     return (
